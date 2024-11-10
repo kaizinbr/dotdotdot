@@ -82,9 +82,6 @@ export default async function Page({ params }: { params: { room: string } }) {
                                     </h2>
                                     <span className="text-xs">
                                         {criado}
-                                        {/* <PastRelativeTime
-                                    date={new Date(data?.updated_at)}
-                                /> */}
                                     </span>
                                 </div>
                             </div>

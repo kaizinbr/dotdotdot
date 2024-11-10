@@ -13,7 +13,9 @@ import {
     TbUserFilled,
     TbFolderFilled,
     TbSquareRoundedPlusFilled,
+    TbSquareRoundedArrowLeftFilled,
 } from "react-icons/tb";
+import { HiUsers } from "react-icons/hi2";
 
 export default function ArtisticHeader({ user }: { user: User | null }) {
     const pathname = usePathname();
@@ -88,72 +90,114 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
             data-floating={true}
             data-mobile={true}
             className={`
-                    group fixed left-24 bottom-0  z-40 max-w-screen-lg  p-4 py-12  transition-all duration-300
+                    group fixed left-4 top-4 z-40 max-w-screen-lg  p-4 py-6  transition-all duration-300
                     border border-transparent lg:border-woodsmoke-700/90 
                     hidden
                     lg:block data-[expanded=true]:max-w-screen-xlg bg-woodsmoke-600/90  
-                     backdrop-blur-lg data-[expanded=true]:lg:block lg:rounded-full
-                    data-[expanded=true]:lg:!bottom-4 lg:bottom-8 data-[mobile=false]:lg:block 
+                    backdrop-blur-lg data-[expanded=true]:lg:block lg:rounded-xl
+                    bottom-4 data-[mobile=false]:lg:block 
                     data-[expanded=true]:lg:w-artistic-header-expanded-width-lg 
                     data-[expanded=true]:xlg:w-full
                 `}
         >
-            <div className="flex items-center justify-between lg:mx-auto lg:max-w-screen-lg group-data-[expanded=true]:lg:max-w-screen-xl">
-                <div className="flex items-center gap-48">
+            <div className="flex items-center justify-between h-full lg:mx-auto lg:max-w-screen-lg group-data-[expanded=true]:lg:max-w-screen-xl">
+                <div className="flex items-center gap-48 h-full">
                     <Pc>
-                        <div className="flex flex-col items-center gap-6">
+                        <div className="flex flex-col items-center justify-between  h-full gap-6">
+                            <div className="flex flex-col items-center h-full gap-6">
+                                
                             <Link
-                                data-active={pathname === "/"}
-                                href={`/`}
-                                className={`
-                                        jelly jelly-increased flex basis-0 cursor-pointer
-                                        flex-col items-center gap-1
-                                        text-woodsmoke-400 data-[active=true]:text-main-600
-                                        selected:text-gray-300 data-[active=true]:hover:text-main-400
-                                        hover:text-main-400
-                                        transition-all duration-200 ease-in-out
-                                    `}
-                            >
-                                <Icon type="home" className="h-7" />
-                                <div className="text-12 font-600">Home</div>
-                            </Link>
-                            <Link
-                                data-active={
-                                    pathname === "/create" ||
-                                    pathname === `/profile${username}`
-                                }
-                                href={`/create`}
-                                className={`
-                                        jelly jelly-increased flex basis-0 cursor-pointer
-                                        flex-col items-center gap-1
-                                        text-woodsmoke-400 data-[active=true]:text-main-600
-                                        selected:text-gray-300 data-[active=true]:hover:text-main-400
-                                        hover:text-main-400
-                                        transition-all duration-200 ease-in-out
-                                    `}
-                            >
-                                <TbSquareRoundedPlusFilled className="size-8" />
-                                <div className="text-12 font-600">
-                                    Criar
-                                </div>
-                            </Link>
-                            <Link
-                                data-active={pathname === "/manage"}
-                                href={`/manage`}
-                                className={`
-                                        jelly jelly-increased flex basis-0 cursor-pointer
-                                        flex-col items-center gap-1
-                                        text-woodsmoke-400 data-[active=true]:text-main-600
-                                        selected:text-gray-300 data-[active=true]:hover:text-main-400
-                                        hover:text-main-400
-                                        transition-all duration-200 ease-in-out
-                                    `}
-                            >
-                                <TbFolderFilled className="size-8" />
-                                <div className="text-12 font-600">
-                                    Meus
-                                </div>
-                            </Link>
+                                    data-active={
+                                        pathname === "/create" ||
+                                        pathname === `/profile${username}`
+                                    }
+                                    href={`/create`}
+                                    className={`
+                                            jelly jelly-increased flex basis-0 cursor-pointer
+                                            flex-col items-center gap-1
+                                            text-woodsmoke-400 data-[active=true]:text-main-600
+                                            selected:text-gray-300 data-[active=true]:hover:text-main-400
+                                            hover:text-main-400
+                                            transition-all duration-200 ease-in-out
+                                        `}
+                                >
+                                    <TbSquareRoundedArrowLeftFilled className="size-7" />
+                                    <div className="text-12 font-600">
+                                        Voltar
+                                    </div>
+                                </Link>
+                                <Link
+                                    data-active={pathname === "/"}
+                                    href={`/`}
+                                    className={`
+                                            jelly jelly-increased flex basis-0 cursor-pointer
+                                            flex-col items-center gap-1
+                                            text-woodsmoke-400 data-[active=true]:text-main-600
+                                            selected:text-gray-300 data-[active=true]:hover:text-main-400
+                                            hover:text-main-400
+                                            transition-all duration-200 ease-in-out
+                                        `}
+                                >
+                                    <Icon type="home" className="h-6" />
+                                    <div className="text-12 font-600">Home</div>
+                                </Link>
+                                <Link
+                                    data-active={
+                                        pathname === "/create" ||
+                                        pathname === `/profile${username}`
+                                    }
+                                    href={`/create`}
+                                    className={`
+                                            jelly jelly-increased flex basis-0 cursor-pointer
+                                            flex-col items-center gap-1
+                                            text-woodsmoke-400 data-[active=true]:text-main-600
+                                            selected:text-gray-300 data-[active=true]:hover:text-main-400
+                                            hover:text-main-400
+                                            transition-all duration-200 ease-in-out
+                                        `}
+                                >
+                                    <TbSquareRoundedPlusFilled className="size-7" />
+                                    <div className="text-12 font-600">
+                                        Criar
+                                    </div>
+                                </Link>
+                                <Link
+                                    data-active={pathname === "/manage"}
+                                    href={`/manage`}
+                                    className={`
+                                            jelly jelly-increased flex basis-0 cursor-pointer
+                                            flex-col items-center gap-1
+                                            text-woodsmoke-400 data-[active=true]:text-main-600
+                                            selected:text-gray-300 data-[active=true]:hover:text-main-400
+                                            hover:text-main-400
+                                            transition-all duration-200 ease-in-out
+                                            
+                                        `}
+                                >
+                                    <TbFolderFilled className="size-7" />
+                                    <div className="text-12 font-600">
+                                        Meus
+                                    </div>
+                                </Link>
+                                <Link
+                                    data-active={pathname === "/manage"}
+                                    href={`/manage`}
+                                    className={`
+                                            jelly jelly-increased flex basis-0 cursor-pointer
+                                            flex-col items-center gap-1
+                                            text-woodsmoke-400 data-[active=true]:text-main-600
+                                            selected:text-gray-300 data-[active=true]:hover:text-main-400
+                                            hover:text-main-400
+                                            transition-all duration-200 ease-in-out
+                                            
+                                        `}
+                                >
+                                    <HiUsers className="size-7" />
+                                    <div className="text-12 font-600">
+                                        Pessoas
+                                    </div>
+                                </Link>
+                            </div>
                             <Link
                                 data-active={pathname === "/profile"}
                                 href={`/profile${username ? "/" + username : ""}`}
@@ -171,7 +215,7 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
                                         <AvatarB size={28} url={avatar_url} />
                                     </div>
                                 ) : (
-                                    <TbUserFilled className="size-8" />
+                                    <TbUserFilled className="size-7" />
                                 )}
                                 <div className="text-12 font-600">Perfil</div>
                             </Link>

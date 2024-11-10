@@ -9,16 +9,13 @@ import Avatar from "./AvatarDisplay";
 import PastRelativeTime from "../core/PastRelativeTime";
 import EditOptions from "./EditOptions";
 import { motion } from "framer-motion";
+
 import Icon from "../core/Icon";
+import { TbBookmark, TbShare3, TbDotsVertical } from "react-icons/tb";
 
 import { generateHTML } from "@tiptap/html";
-import Bold from "@tiptap/extension-bold";
-// Option 2: Browser-only (lightweight)
-// import { generateHTML } from '@tiptap/core'
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
 import ExtensionKit from "@/extensions/extension-kit-display";
+import ShareBtn from "./ShareBtn";
 
 interface Post {
     title: string;
@@ -52,6 +49,7 @@ export default function CardPost({
 }) {
     const [userProfile, setUserProfile] = useState<User | null>(null);
     const [userImg, setUserImg] = useState<string | null>(null);
+    const [postImg, setPostImg] = useState<string | null>(null);
 
     if (post.content.length === 0) {
         return null;
@@ -72,8 +70,25 @@ export default function CardPost({
     }, [post]);
 
 
-    // console.log(post.content.content);
+    console.log(post.content.content);
     // console.log(output);
+
+    useEffect(() => {
+        async function fetchPostImage() {
+            const url = post.content.content.find(
+                (item: any) => item.type === "imageBlock"
+            )?.attrs.src;
+
+            console.log(url)
+
+            if (url) {
+                setPostImg(url);
+            }
+
+        }
+
+        fetchPostImage();
+    }, []);
 
 
     useEffect(() => {
@@ -101,21 +116,17 @@ export default function CardPost({
         <motion.div
             whileTap={{ scale: 0.8 }}
             className={`
-            flex flex-col gap-2 
+            flex flex-col 
             
-            bg-[#1f1f1f] 
+            bg-woodsmoke-700
             max-w-[600px] w-full
             transition-all duration-200 ease-in-out   
             rounded-3xl overflow-hidden relative
         `}
         >
-            <Link
-                href={`/${edit ? "create" : "status"}/${post.room}`}
-                className="z-20"
-            >
                 <div className="flex flex-row justify-between items-center gap-1 p-3 pb-0 relative">
                     {userProfile && (
-                        <div className="flex flex-row items-center gap-1">
+                        <Link href={`/profile/${userProfile.username}`} className="flex flex-row items-center gap-1">
                             <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full ">
                                 <Avatar
                                     size={36}
@@ -124,32 +135,41 @@ export default function CardPost({
                                     intrisicSize={"size-8"}
                                 />
                             </div>
-                            <div className="flex items-center flex-row gap-2">
-                                <p className="text-sm PFRegalTextPro">
-                                    {userProfile!.username}
-                                </p>
+                            <div className="flex items-center justify-center flex-row gap-2">
+                                <h2 className="text-sm">
+                                        <span className="text-white font-bold">
+                                            {userProfile!.full_name}
+                                        </span>{" "}
+                                        <span className="text-xs">
+                                            @{userProfile!.username}
+                                        </span>
+                                    </h2>
                                 <span className=" text-xs text-stone-500 dark:text-stone-400">
                                     <PastRelativeTime
                                         date={new Date(post.updated_at)}
                                     />
                                 </span>
                             </div>
-                        </div>
+                        </Link>
                     )}
-                    {edit && <EditOptions />}
+                    <EditOptions edit={edit} />
                 </div>
+            <Link
+                href={`/${edit ? "create" : "status"}/${post.room}`}
+                className="z-20"
+            >
                 <div className="flex flex-col gap-3 p-3 pb-0 max-h-[500px] overflow-clip">
                     {output && (
                         <div
-                            className="text-stone-300 cardContent"
+                            className="text-stone-300 text-sm cardContent"
                             dangerouslySetInnerHTML={{ __html: output }}
                         ></div>
                     )}
                 </div>
-                {post.image && (
+                {postImg && (
                     <picture className="w-full flex p-3 pb-0">
                         <Image
-                            src={post.image}
+                            src={postImg}
                             alt="Authentication"
                             width={500}
                             height={500}
@@ -158,12 +178,16 @@ export default function CardPost({
                     </picture>
                 )}
 
-                <div className="flex w-full flex-row justify-between gap-3 p-3 ">
-                    <span className=" text-xs text-stone-300">
-                        <Icon name="eye" type="comment" className="size-6" />
-                    </span>
-                </div>
             </Link>
+                <div className="flex w-full flex-row justify gap-3 p-3 ">
+                    <Link href={`/status/${post.room}`}className=" text-xs text-woodsmoke-100">
+                        <Icon name="eye" type="comment" className="size-6" />
+                    </Link>
+                    <ShareBtn room={post.room} edit={edit} />
+                    {/* <span className=" text-xs text-stone-300">
+                        <TbDotsVertical className="size-6" />
+                    </span> */}
+                </div>
         </motion.div>
     );
 }

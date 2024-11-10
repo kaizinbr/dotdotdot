@@ -6,7 +6,7 @@ interface Props extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDi
 
 export default function Pc({ className, children, ...props }: Props) {
   return (
-    <div className={`hidden lg:block ${className}`} {...props}>
+    <div className={`hidden lg:block h-full ${className}`} {...props}>
       {children}
     </div>
   );
