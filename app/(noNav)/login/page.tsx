@@ -32,7 +32,7 @@ export default function Login({
     const signUp = async (formData: FormData) => {
         "use server";
 
-        const origin = headers().get("origin");
+        const origin = (await headers()).get("origin");
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
         const supabase = createClient();
@@ -84,25 +84,25 @@ export default function Login({
                         flex-1 flex flex-col w-full justify-center gap-2 
                         text-foreground 
                         p-8
-                        border-2 border-[#cbc4c1] rounded-3xl overflow-hidden
+                        bg-woodsmoke-800 rounded-3xl overflow-hidden
                     `}
                 >
                     <legend className={`text-xl font-bold text-center mb-8`}>Faça login ou cadastre-se</legend>
 
-                    <label className="text-md" htmlFor="email">
+                    <label className="text-sm" htmlFor="email">
                         Email
                     </label>
                     <input
-                        className="rounded-xl px-4 py-2 bg-inherit border-2 border-fantasy-950/30 focus:border-fantasy-950/50 transition-all duration-300 outline-none mb-6"
+                        className="rounded-xl px-4 py-2 bg-woodsmoke-700 border-2 border-transparent focus:border-woodsmoke-600 transition-all duration-300 outline-none mb-6"
                         name="email"
                         placeholder="luiZinho@example.com"
                         required
                     />
-                    <label className="text-md" htmlFor="password">
+                    <label className="text-sm" htmlFor="password">
                         Senha
                     </label>
                     <input
-                        className="rounded-xl px-4 py-2 bg-inherit border-2 border-fantasy-950/30 focus:border-fantasy-950/50 transition-all duration-300 outline-none mb-6"
+                        className="rounded-xl px-4 py-2 bg-inherit border-2 border-woodsmoke-600/50 focus:border-woodsmoke-600 transition-all duration-300 outline-none mb-6"
                         type="password"
                         name="password"
                         placeholder="••••••••"
@@ -110,19 +110,19 @@ export default function Login({
                     />
                     <SubmitButton
                         formAction={signIn}
-                        className="bg-sandybrown-400 rounded-xl border-2 border-b-defaultB border-fantasy-950 px-4 py-2 text-woodsmoke-800 font-bold mb-2"
+                        className="bg-main-600 rounded-xl  px-4 py-2 text-woodsmoke-800 font-bold mb-2"
                         pendingText="Logando..."
                     >
                         Login
                     </SubmitButton>
                     <SubmitButton
                         formAction={signUp}
-                        className="rounded-xl border-2 border-b-defaultB border-fantasy-950 px-4 py-2 text-foreground font-bold mb-2"
+                        className="rounded-xl border-2 border-main-600 px-4 py-2 text-foreground font-bold mb-2"
                         pendingText="Cadastrando..."
                     >
                         Cadastrar
                     </SubmitButton>
-                    <Link href="/reset/password" className="text-center">Esqueci minha senha</Link>
+                    <Link href="/reset/password" className="text-center text-sm text-woodsmoke-400">Esqueci minha senha</Link>
                     {searchParams?.message && (
                         <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
                             {searchParams.message}

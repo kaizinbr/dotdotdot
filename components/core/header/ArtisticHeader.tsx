@@ -72,7 +72,7 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
     function handlePush(path: string) {
         router.push(path);
     }
-    console.log(pathname)
+    console.log(pathname);
 
     const isDisplayedOnMobile = ["/", "/profile", "/chapter", "/talk"].includes(
         pathname,
@@ -85,64 +85,109 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
     return (
         <div
             data-expanded={isExpanded}
-            data-floating={isFloating}
+            data-floating={true}
             data-mobile={true}
             className={`
-                    group fixed left-1/2 top-0 z-40 w-full max-w-screen-lg -translate-x-1/2 p-6 text-black transition-all duration-300
-                    border border-transparent data-[floating=true]:lg:border-woodsmoke-200/70 
+                    group fixed left-24 bottom-0  z-40 max-w-screen-lg  p-4 py-12  transition-all duration-300
+                    border border-transparent lg:border-woodsmoke-700/90 
                     hidden
-                    lg:block data-[expanded=true]:max-w-screen-xlg data-[floating=true]:bg-woodsmoke-50/90  data-[floating=true]:py-5 
-                    data-[floating=true]:text-black data-[floating=true]:backdrop-blur-lg data-[expanded=true]:lg:block lg:rounded-full
-                    data-[expanded=true]:lg:!top-4 data-[floating=true]:lg:top-8 data-[mobile=false]:lg:block 
-                    data-[expanded=true]:lg:w-artistic-header-expanded-width-lg data-[floating=true]:lg:px-7 
-                    data-[floating=true]:lg:py-4 data-[expanded=true]:xlg:w-full
+                    lg:block data-[expanded=true]:max-w-screen-xlg bg-woodsmoke-600/90  
+                     backdrop-blur-lg data-[expanded=true]:lg:block lg:rounded-full
+                    data-[expanded=true]:lg:!bottom-4 lg:bottom-8 data-[mobile=false]:lg:block 
+                    data-[expanded=true]:lg:w-artistic-header-expanded-width-lg 
+                    data-[expanded=true]:xlg:w-full
                 `}
         >
             <div className="flex items-center justify-between lg:mx-auto lg:max-w-screen-lg group-data-[expanded=true]:lg:max-w-screen-xl">
                 <div className="flex items-center gap-48">
                     <Pc>
-                        <div className="flex items-center gap-6">
+                        <div className="flex flex-col items-center gap-6">
                             <Link
                                 data-active={pathname === "/"}
                                 href={`/`}
-                                className="jelly cursor-pointer text-5 font-500 opacity-60 transition-all hover:opacity-80 data-[active=true]:font-700 data-[active=true]:opacity-100 group-data-[floating=true]:text-4"
+                                className={`
+                                        jelly jelly-increased flex basis-0 cursor-pointer
+                                        flex-col items-center gap-1
+                                        text-woodsmoke-400 data-[active=true]:text-main-600
+                                        selected:text-gray-300 data-[active=true]:hover:text-main-400
+                                        hover:text-main-400
+                                        transition-all duration-200 ease-in-out
+                                    `}
                             >
-                                Home
+                                <Icon type="home" className="h-7" />
+                                <div className="text-12 font-600">Home</div>
                             </Link>
                             <Link
-                                data-active={pathname === "/create" || pathname === `/profile${username}`}
+                                data-active={
+                                    pathname === "/create" ||
+                                    pathname === `/profile${username}`
+                                }
                                 href={`/create`}
-                                className="jelly cursor-pointer text-5 font-500 opacity-60 transition-all hover:opacity-80 data-[active=true]:font-700 data-[active=true]:opacity-100 group-data-[floating=true]:text-4"
+                                className={`
+                                        jelly jelly-increased flex basis-0 cursor-pointer
+                                        flex-col items-center gap-1
+                                        text-woodsmoke-400 data-[active=true]:text-main-600
+                                        selected:text-gray-300 data-[active=true]:hover:text-main-400
+                                        hover:text-main-400
+                                        transition-all duration-200 ease-in-out
+                                    `}
                             >
-                                Novo post
+                                <TbSquareRoundedPlusFilled className="size-8" />
+                                <div className="text-12 font-600">
+                                    Criar
+                                </div>
                             </Link>
                             <Link
                                 data-active={pathname === "/manage"}
                                 href={`/manage`}
-                                className="jelly cursor-pointer text-5 font-500 opacity-60 transition-all hover:opacity-80 data-[active=true]:font-700 data-[active=true]:opacity-100 group-data-[floating=true]:text-4"
+                                className={`
+                                        jelly jelly-increased flex basis-0 cursor-pointer
+                                        flex-col items-center gap-1
+                                        text-woodsmoke-400 data-[active=true]:text-main-600
+                                        selected:text-gray-300 data-[active=true]:hover:text-main-400
+                                        hover:text-main-400
+                                        transition-all duration-200 ease-in-out
+                                    `}
                             >
-                                Seus posts
+                                <TbFolderFilled className="size-8" />
+                                <div className="text-12 font-600">
+                                    Meus
+                                </div>
                             </Link>
                             <Link
                                 data-active={pathname === "/profile"}
                                 href={`/profile${username ? "/" + username : ""}`}
-                                className="jelly cursor-pointer text-5 font-500 opacity-60 transition-all hover:opacity-80 data-[active=true]:font-700 data-[active=true]:opacity-100 group-data-[floating=true]:text-4"
+                                className={`
+                                        jelly jelly-increased flex basis-0 cursor-pointer
+                                        flex-col items-center gap-1
+                                        text-woodsmoke-400 data-[active=true]:text-main-600
+                                        selected:text-gray-300 data-[active=true]:hover:text-main-400
+                                        hover:text-main-400 group/card
+                                        \
+                                    `}
                             >
-                                Perfil
+                                {avatar_url ? (
+                                    <div className="rounded-full border-2 border-woodsmoke-400 p-[2px] data-[active=true]:border-main-600 group-hover/card:border-main-400 data-[active=true]:group-hover/card:border-main-400 transition-all duration-200 ease-in-out">
+                                        <AvatarB size={28} url={avatar_url} />
+                                    </div>
+                                ) : (
+                                    <TbUserFilled className="size-8" />
+                                )}
+                                <div className="text-12 font-600">Perfil</div>
                             </Link>
                         </div>
                     </Pc>
                 </div>
-                <Link
+                {/* <Link
                     href={`/profile${username ? "/" + username : ""}`}
-                    className="group-data-[floating=true]:jelly group-data-[floating=true]:jelly-increased -m-8 p-8 group-data-[floating=true]:hover:scale-105"
+                    className="group-jelly group-jelly-increased -m-8 p-8 group-hover:scale-105"
                 >
                     {avatar_url ? (
                         <AvatarB size={24} url={avatar_url} />
                     ) : (
                         <TbUserFilled className="size-6" />
                     )}
-                </Link>
+                </Link> */}
             </div>
         </div>
     );

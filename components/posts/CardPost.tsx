@@ -3,13 +3,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "./AvatarDisplay";
 import PastRelativeTime from "../core/PastRelativeTime";
 import EditOptions from "./EditOptions";
 import { motion } from "framer-motion";
 import Icon from "../core/Icon";
+
+import { generateHTML } from "@tiptap/html";
+import Bold from "@tiptap/extension-bold";
+// Option 2: Browser-only (lightweight)
+// import { generateHTML } from '@tiptap/core'
+import Document from "@tiptap/extension-document";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import ExtensionKit from "@/extensions/extension-kit-display";
 
 interface Post {
     title: string;
@@ -43,24 +52,29 @@ export default function CardPost({
 }) {
     const [userProfile, setUserProfile] = useState<User | null>(null);
     const [userImg, setUserImg] = useState<string | null>(null);
-    const [paragraph, setParagraph] = useState<any | null>(null);
 
-    // console.log(post);
+    if (post.content.length === 0) {
+        return null;
+    }
 
-    useEffect(() => {
-        async function fetchParagraph() {
-            const extractParagraphFromEditor =
-                post.content.content.find(
-                    (item: any) => item.type === "paragraph" && item.content,
-                ) || null;
+    const reduced = post.content.content
+        .filter((item: any) => item.type !== "imageBlock")
+        .slice(0, 3);
 
-            // console.log(extractParagraphFromEditor);
+    const output = useMemo(() => {
+        return generateHTML(
+            {
+                type: "doc",
+                content: reduced,
+            },
+            [...ExtensionKit()],
+        );
+    }, [post]);
 
-            setParagraph(extractParagraphFromEditor);
-        }
 
-        fetchParagraph();
-    }, []);
+    // console.log(post.content.content);
+    // console.log(output);
+
 
     useEffect(() => {
         async function fetchUserProfile() {
@@ -83,8 +97,6 @@ export default function CardPost({
         fetchUserProfile();
     }, []);
 
-    // console.log(userProfile);
-
     return (
         <motion.div
             whileTap={{ scale: 0.8 }}
@@ -92,7 +104,7 @@ export default function CardPost({
             flex flex-col gap-2 
             
             bg-[#1f1f1f] 
-            bg
+            max-w-[600px] w-full
             transition-all duration-200 ease-in-out   
             rounded-3xl overflow-hidden relative
         `}
@@ -116,26 +128,26 @@ export default function CardPost({
                                 <p className="text-sm PFRegalTextPro">
                                     {userProfile!.username}
                                 </p>
-                                    <span className=" text-xs text-stone-500 dark:text-stone-400">
-                                        <PastRelativeTime
-                                            date={new Date(post.updated_at)}
-                                        />
-                                    </span>
+                                <span className=" text-xs text-stone-500 dark:text-stone-400">
+                                    <PastRelativeTime
+                                        date={new Date(post.updated_at)}
+                                    />
+                                </span>
                             </div>
                         </div>
                     )}
                     {edit && <EditOptions />}
                 </div>
-                <div className="flex flex-col gap-3 p-3">
-                    {/* <h1 className="text-3xl PFRegalTextPro">{post.title}</h1> */}
-                    {paragraph && (
-                        <p className="text-sm line-clamp-3">
-                            {paragraph.content![0].text}
-                        </p>
+                <div className="flex flex-col gap-3 p-3 pb-0 max-h-[500px] overflow-clip">
+                    {output && (
+                        <div
+                            className="text-stone-300 cardContent"
+                            dangerouslySetInnerHTML={{ __html: output }}
+                        ></div>
                     )}
                 </div>
                 {post.image && (
-                    <picture className="w-full flex p-3">
+                    <picture className="w-full flex p-3 pb-0">
                         <Image
                             src={post.image}
                             alt="Authentication"
@@ -146,25 +158,12 @@ export default function CardPost({
                     </picture>
                 )}
 
-                {/* <div className="flex w-full flex-row justify-between gap-3 p-3">
-                    <span className=" text-xs text-stone-500 dark:text-stone-400">
-                        <Icon name="eye" type="heart" className="size-6" />
+                <div className="flex w-full flex-row justify-between gap-3 p-3 ">
+                    <span className=" text-xs text-stone-300">
+                        <Icon name="eye" type="comment" className="size-6" />
                     </span>
-                </div> */}
-            </Link>
-            {/* {edit && (
-                <div className="footercard grid grid-cols-2 gap-4">
-                    <Link
-                        href={`/chapter/${post.room}`}
-                        className="w-full rounded-3xl border border-sandybrown-950/20 py-3"
-                    >
-                        Ver publicação
-                    </Link>
-                    <button className="w-full rounded-lg bg-sky-700/30 border-2 border-sky-600/30 py-3">
-                        Mais opções
-                    </button>
                 </div>
-            )} */}
+            </Link>
         </motion.div>
     );
 }

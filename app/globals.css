@@ -75,3 +75,15 @@ input[type="range"] {
     padding-bottom: 0 !important;
     padding-top: 0 !important;
 }
+
+.cardContent p:last-child {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+}
+
+.cardContent pre {
+    @apply p-2 bg-woodsmoke-600 rounded-lg overflow-hidden;
+}

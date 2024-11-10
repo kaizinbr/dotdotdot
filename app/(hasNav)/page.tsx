@@ -10,6 +10,7 @@ export default async function Index() {
         .select()
         .eq("public", true)
         .order("updated_at", { ascending: false });
+        // .eq("author_id", "f2fa3e53-f0fa-47a2-9eda-b50511239d70")
 
 
     const { data: { user } } = await supabase.auth.getUser();

@@ -48,10 +48,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
       variant === 'ghost' &&
         cn(
-          'bg-transparent border-transparent text-woodsmoke-700 dark:text-neutral-400',
+          'bg-transparent border-transparent',
           !disabled &&
             !active &&
-            'hover:bg-black/5 hover:text-neutral-700 active:bg-woodsmoke-800/50 active:text-woodsmoke-700 dark:hover:bg-white/10 dark:hover:text-woodsmoke-700 dark:active:text-neutral-200',
+            'hover:bg-woodsmoke-300 hover:text-neutral-700 active:bg-woodsmoke-800/50 active:text-woodsmoke-700 dark:hover:bg-white/10 dark:hover:text-woodsmoke-700 dark:active:text-neutral-200',
           active && cn('bg-woodsmoke-800/50 text-woodsmoke-700 dark:bg-white/20 dark:text-neutral-200', activeClassname),
         ),
 

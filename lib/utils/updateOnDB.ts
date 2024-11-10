@@ -2,12 +2,12 @@
 
 const updatePost = async (editor: any, room: any, supabase: any) => {
     const content = editor.getJSON();
-    const extractTitleFromEditor =
-        content.content.find(
-            (item: any) => item.type === "heading" && item.content,
-        ).content[0].text || null;
+    // const extractTitleFromEditor =
+    //     content.content.find(
+    //         (item: any) => item.type === "heading" && item.content,
+    //     ).content[0].text || null;
 
-    console.log(extractTitleFromEditor);
+    // console.log(extractTitleFromEditor);
 
     const extractImageFromEditor =
         content.content.find((item: any) => item.type === "imageBlock")|| null;
@@ -39,7 +39,7 @@ const updatePost = async (editor: any, room: any, supabase: any) => {
             .update({
                 content,
                 updated_at: new Date(),
-                title: extractTitleFromEditor,
+                title: null,
                 image,
                 author_username: userProfile.data[0].username,
             })

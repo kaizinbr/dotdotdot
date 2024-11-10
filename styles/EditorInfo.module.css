@@ -1,6 +1,6 @@
 .content {
-    background-color: rgb(231, 231, 231) !important;
-    border-radius: 0.75rem !important;
+    background-color: rgb(40, 40, 40) !important;
+    border-radius: 1rem !important;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

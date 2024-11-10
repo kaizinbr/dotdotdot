@@ -125,7 +125,7 @@ export default function PubModal({
                     <Button
                         onClick={async () => {
                             await getMainData();
-                            open();
+                            await setPublished({ room, value: false })
                         }}
                         className="rounded-lg px-3 py-2 bg-sky-600 text-xs"
                         classNames={{
@@ -171,7 +171,7 @@ export default function PubModal({
                     <Button
                         onClick={async () => {
                             await getMainData();
-                            open();
+                            await setPublished({ room, value: true })
                         }}
                         className="rounded-lg px-3 py-2 bg-sky-600 text-xs"
                         classNames={{

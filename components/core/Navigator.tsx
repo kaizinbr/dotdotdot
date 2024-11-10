@@ -74,8 +74,8 @@ export default function Navigator({ user }: { user: User | null }) {
             transition-all duration-300 z-[999]
             left-0 flex w-full items-center justify-evenly 
             border-t-1 
-            bg-woodsmoke-600/90 border-woodsmoke-700/90
-            backdrop-blur-lg px-6 
+            bg-woodsmoke-600/90 border-woodsmoke-500/50
+            backdrop-blur-lg px-6
         `}
         >
             <motion.button whileTap={{ scale: 0.75 }}>
