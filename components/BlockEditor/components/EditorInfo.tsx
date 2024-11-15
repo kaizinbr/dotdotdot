@@ -60,7 +60,7 @@ export const EditorInfo = memo(
         return (
             <div className="flex items-center">
                 <div className="flex flex-col justify-center  mr-2 text-right ">
-                    <div className="text-xs font-semibold text-neutral-300 bg-woodsmoke-700">
+                    <div className="text-xs font-semibold text-neutral-300">
                         {words} {words === 1 ? "palavra" : "palavras"}
                     </div>
                     <div className="text-xs font-semibold text-neutral-300">

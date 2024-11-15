@@ -39,7 +39,7 @@ export const EditorHeader = ({
                 >
                     <ChevronLeft size={24}  />
                 </Toolbar.Button>
-                <div className="flex items-center gap-x-1.5  text-woodsmoke-200">
+                {/* <div className="flex items-center gap-x-1.5  text-woodsmoke-200">
                     <Toolbar.Button
                         tooltip={
                             isSidebarOpen ? "Close sidebar" : "Open sidebar"
@@ -54,7 +54,7 @@ export const EditorHeader = ({
                             }
                         />
                     </Toolbar.Button>
-                </div>
+                </div> */}
             </div>
             <EditorInfo
                 characters={characters}

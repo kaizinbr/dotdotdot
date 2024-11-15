@@ -74,7 +74,7 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
     function handlePush(path: string) {
         router.push(path);
     }
-    console.log(pathname);
+    // console.log(pathname);
 
     const isDisplayedOnMobile = ["/", "/profile", "/chapter", "/talk"].includes(
         pathname,
