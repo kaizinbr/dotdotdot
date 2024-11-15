@@ -69,27 +69,24 @@ export default function CardPost({
         );
     }, [post]);
 
-
     console.log(post.content.content);
     // console.log(output);
 
     useEffect(() => {
         async function fetchPostImage() {
             const url = post.content.content.find(
-                (item: any) => item.type === "imageBlock"
+                (item: any) => item.type === "imageBlock",
             )?.attrs.src;
 
-            console.log(url)
+            console.log(url);
 
             if (url) {
                 setPostImg(url);
             }
-
         }
 
         fetchPostImage();
     }, []);
-
 
     useEffect(() => {
         async function fetchUserProfile() {
@@ -124,36 +121,48 @@ export default function CardPost({
             rounded-3xl overflow-hidden relative
         `}
         >
-                <div className="flex flex-row justify-between items-center gap-1 p-3 pb-0 relative">
-                    {userProfile && (
-                        <Link href={`/profile/${userProfile.username}`} className="flex flex-row items-center gap-1">
-                            <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full ">
-                                <Avatar
-                                    size={36}
-                                    url={userImg}
-                                    username={userProfile.username}
-                                    intrisicSize={"size-8"}
-                                />
-                            </div>
-                            <div className="flex items-center justify-center flex-row gap-2">
-                                <h2 className="text-sm">
-                                        <span className="text-white font-bold">
-                                            {userProfile!.full_name}
-                                        </span>{" "}
-                                        <span className="text-xs">
-                                            @{userProfile!.username}
-                                        </span>
-                                    </h2>
-                                <span className=" text-xs text-stone-500 dark:text-stone-400">
-                                    <PastRelativeTime
-                                        date={new Date(post.updated_at)}
-                                    />
+            <div className="flex flex-row justify-between items-center gap-1 p-3 pb-0 relative">
+                {userProfile && (
+                    <Link
+                        href={`/profile/${userProfile.username}`}
+                        className="flex flex-row items-center gap-1"
+                    >
+                        <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full ">
+                            <Avatar
+                                size={36}
+                                url={userImg}
+                                username={userProfile.username}
+                                intrisicSize={"size-8"}
+                            />
+                        </div>
+                        <div className="flex items-center justify-center flex-row gap-2">
+                            <h2 className="text-sm">
+                                <span className="text-white font-bold">
+                                    {userProfile!.full_name}
+                                </span>{" "}
+                                <span className="text-xs">
+                                    @{userProfile!.username}
                                 </span>
-                            </div>
-                        </Link>
-                    )}
-                    <EditOptions edit={edit} />
-                </div>
+                            </h2>
+                            <span className=" text-xs text-stone-500 dark:text-stone-400">
+                                <PastRelativeTime
+                                    date={new Date(post.updated_at)}
+                                />
+                            </span>
+                        </div>
+                    </Link>
+                )}
+                {!userProfile && (
+                    <div className="flex flex-row items-center gap-1">
+                        <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full bg-woodsmoke-550"></div>
+                        <div className="flex items-center justify-center flex-row gap-2">
+                            <h2 className="text-sm"> </h2>
+                            <span className=" text-xs text-stone-500 dark:text-stone-400"></span>
+                        </div>
+                    </div>
+                )}
+                <EditOptions edit={edit} />
+            </div>
             <Link
                 href={`/${edit ? "create" : "status"}/${post.room}`}
                 className="z-20"
@@ -177,17 +186,19 @@ export default function CardPost({
                         />
                     </picture>
                 )}
-
             </Link>
-                <div className="flex w-full flex-row justify gap-3 p-3 ">
-                    <Link href={`/status/${post.room}`}className=" text-xs text-woodsmoke-100">
-                        <Icon name="eye" type="comment" className="size-6" />
-                    </Link>
-                    <ShareBtn room={post.room} edit={edit} />
-                    {/* <span className=" text-xs text-stone-300">
+            <div className="flex w-full flex-row justify gap-3 p-3 ">
+                <Link
+                    href={`/status/${post.room}`}
+                    className=" text-xs text-woodsmoke-100"
+                >
+                    <Icon name="eye" type="comment" className="size-6" />
+                </Link>
+                <ShareBtn room={post.room} edit={edit} />
+                {/* <span className=" text-xs text-stone-300">
                         <TbDotsVertical className="size-6" />
                     </span> */}
-                </div>
+            </div>
         </motion.div>
     );
 }

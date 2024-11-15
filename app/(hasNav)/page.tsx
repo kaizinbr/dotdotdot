@@ -24,7 +24,7 @@ export default async function Index() {
                 className={`
                     absolute -top-8 left-0 right-0 h-[400px]
                     bg-gradient-to-b from-main-700 to-transparent opacity-80
-                    z-10
+                    -z-10
                 `}
             ></div>
             <LoggedStart user={profile} />

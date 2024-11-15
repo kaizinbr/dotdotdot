@@ -10,14 +10,15 @@ export default async function Account({
     params: { username: string };
 }) {
     const supabase = createClient();
-    let itsMe;
+    let itsMe = false;
 
-    console.log("user", params.username);
+    const username = await params.username
+
     const {
         data: { user },
     } = await supabase.auth.getUser();
 
-    const lowercasedUsername = params.username.toLowerCase();
+    const lowercasedUsername = username.toLowerCase();
 
     const { data, error } = await supabase
         .from("profiles")
@@ -26,15 +27,18 @@ export default async function Account({
 
     console.log("data", data);
 
-    if (data?.length === 0) {
+    if (username == "me"){
+        console.log("user", username);
+        itsMe = true
+    } else if (data?.length === 0) {
         console.log("Usuario nao encontrado");
     } else {
-        itsMe = user?.id === data![0].id;
+        itsMe = user?.id === data![0].id ;
     }
 
     return (
         <div className="flex flex-col w-full md:flex-row">
-            {data?.length === 0 ? (
+            {data?.length === 0 && itsMe == false ? (
                 <div className="flex-1 w-full flex flex-col gap-20 items-center">
                     <div
                         className={`

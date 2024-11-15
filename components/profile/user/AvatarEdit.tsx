@@ -118,7 +118,7 @@ export default function Avatar({
                     ) : (
                         ""
                     )}
-                    <div className="button primary block bg-stone-300 p-3 rounded-full absolute right-2 bottom-2 z-20">
+                    <div className="button primary block bg-main-500 p-3 rounded-full absolute right-2 bottom-2 z-20">
                         <Pen size={14} className="" />
                     </div>
                 </label>

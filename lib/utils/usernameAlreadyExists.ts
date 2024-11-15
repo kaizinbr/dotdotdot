@@ -11,12 +11,15 @@ export default async function usernameAlreadyExists({
     const { data, error } = await supabase
         .from("profiles")
         .select("username")
-        .eq("username", username);
+        .eq("lower_username", username.toLowerCase());
 
     if (error) {
         console.log(error);
         return false;
     }
+    console.log(actualUsername)
+    console.log(username)
+console.log(data)
     
 
     if (data.length > 0) {

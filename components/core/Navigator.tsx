@@ -132,10 +132,10 @@ export default function Navigator({ user }: { user: User | null }) {
             <motion.button whileTap={{ scale: 0.75 }}>
                 <Link
                     data-active={
-                        pathname === "/profile" ||
+                        pathname === "/profile/me" ||
                         pathname === `/profile${username}`
                     }
-                    href={`/profile${username ? "/" + username : ""}`}
+                    href={`/profile/me`}
                     className={`
                             jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
                             flex-col items-center gap-1 rounded-8 p-3

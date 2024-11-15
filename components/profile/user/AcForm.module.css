@@ -5,7 +5,7 @@
     /* color: rgb(24 24 24 / 1); */
     padding: 4px 0;
     margin-bottom: 16px;
-    @apply dark:text-white;
+    @apply text-white;
 }
 
 .m_8fb7ebe7 {
