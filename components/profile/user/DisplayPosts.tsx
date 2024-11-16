@@ -23,7 +23,7 @@ export default function DisplayPosts({ user }: { user: any }) {
             const { data, error, status } = await supabase
                 .from("posts")
                 .select()
-                .eq("author_id", user[0]?.id)
+                .eq("author_id", user)
                 .eq("public", true)
                 .order('updated_at', { ascending: false })
 

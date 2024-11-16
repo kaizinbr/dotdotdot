@@ -20,10 +20,10 @@ export default function Avatar({
     const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
-        console.log("effect")
+        // console.log("effect")
         async function downloadImage(path: string) {
             try {
-                console.log("Downloading image:", path);
+                // console.log("Downloading image:", path);
                 const { data, error } = await supabase.storage
                     .from("avatars")
                     .download(path);

@@ -4,36 +4,97 @@ import DisplayUser from "@/components/profile/user/displayUser";
 import DisplayPosts from "@/components/profile/user/DisplayPosts";
 import Link from "next/link";
 
+import type { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
+    params: Promise<{ username: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata(
+    { params, searchParams }: Props,
+    parent: ResolvingMetadata,
+): Promise<Metadata> {
+    const supabase = createClient();
+    // read route params
+    const username = (await params).username;
+
+    if (username == "me") {
+        const { data: { user } } = await supabase.auth.getUser();
+        const { data: profile } = await supabase.from("profiles").select().eq("id", user!.id).single()
+        return {
+            title: profile?.full_name,
+            description: "Seu perfil",
+            openGraph: {
+                images: [profile?.avatar_url],
+            },
+        };
+    } else {
+        const lowercasedUsername = username.toLowerCase();
+        let { data, error } = await supabase
+            .from("profiles")
+            .select()
+            .eq("lower_username", lowercasedUsername);
+
+        return {
+            title: data![0]?.full_name,
+            description: "Perfil de " + data![0]?.full_name,
+            openGraph: {
+                images: [data![0]?.avatar_url],
+            },
+        };
+    }
+
+    // fetch data
+    // const product = await fetch(`https://.../${id}`).then((res) => res.json());
+
+    // optionally access and extend (rather than replace) parent metadata
+    // const previousImages = (await parent).openGraph?.images || [];
+
+    // return {
+    //     title: product.title,
+    //     openGraph: {
+    //         images: ["/some-specific-page-image.jpg", ...previousImages],
+    //     },
+    // };
+}
+
 export default async function Account({
     params,
 }: {
     params: { username: string };
 }) {
+    const username = (await params).username;
     const supabase = createClient();
     let itsMe = false;
-
-    const username = await params.username
 
     const {
         data: { user },
     } = await supabase.auth.getUser();
 
+    // console.log("user", user!.id);
+
+    let userId;
+
     const lowercasedUsername = username.toLowerCase();
 
-    const { data, error } = await supabase
+    let { data, error } = await supabase
         .from("profiles")
         .select()
         .eq("lower_username", lowercasedUsername);
 
-    console.log("data", data);
+    console.log("data", data![0]?.id);
 
-    if (username == "me"){
+    userId = data![0]?.id;
+
+    if (username == "me") {
         console.log("user", username);
-        itsMe = true
+        itsMe = true;
+        userId = user!.id;
     } else if (data?.length === 0) {
         console.log("Usuario nao encontrado");
     } else {
-        itsMe = user?.id === data![0].id ;
+        itsMe = user?.id === data![0].id;
     }
 
     return (
@@ -60,8 +121,12 @@ export default async function Account({
                 </div>
             ) : (
                 <>
-                    {itsMe ? <AccountForm user={user} /> : <DisplayUser user={data} />} 
-                    <DisplayPosts user={data} /> 
+                    {itsMe ? (
+                        <AccountForm user={user} />
+                    ) : (
+                        <DisplayUser user={data} />
+                    )}
+                    <DisplayPosts user={userId} />
                 </>
             )}
         </div>

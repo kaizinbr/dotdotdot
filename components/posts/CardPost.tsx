@@ -69,7 +69,7 @@ export default function CardPost({
         );
     }, [post]);
 
-    console.log(post.content.content);
+    // console.log(post.content.content);
     // console.log(output);
 
     useEffect(() => {
@@ -78,7 +78,7 @@ export default function CardPost({
                 (item: any) => item.type === "imageBlock",
             )?.attrs.src;
 
-            console.log(url);
+            // console.log(url);
 
             if (url) {
                 setPostImg(url);

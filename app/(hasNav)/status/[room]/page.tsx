@@ -16,6 +16,13 @@ import Comments from "@/components/room/comments/Comments";
 
 import classes from "@/styles/Textarea.module.css";
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: "Post",
+    description: "...",
+};
+
 export default async function Page({ params }: { params: { room: string } }) {
     const supabase = createClient();
 

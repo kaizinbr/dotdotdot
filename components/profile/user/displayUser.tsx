@@ -1,18 +1,9 @@
 "use client";
 import { useCallback, useEffect, useState, ChangeEvent } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { type User } from "@supabase/supabase-js";
+import Link from "next/link";
 import Avatar from "../../posts/AvatarDisplay";
-import { Textarea } from "@mantine/core";
-import { ProfilePic } from "@/components/profile/general/ProfilePic";
 import { useSearchParams, useRouter } from "next/navigation";
-import { X } from "lucide-react";
-import Loading, { LoadingSm } from "@/components/Loading";
-import containsSpecialChars from "@/lib/utils/containsSpecialChars";
-import ColorSelect from "@/components/profile/me/ColorSelect";
-import Image from "next/image";
-
-import classes from "./AcForm.module.css";
 
 export default function DisplayUser({ user }: { user: any }) {
     const supabase = createClient();
@@ -193,7 +184,7 @@ export default function DisplayUser({ user }: { user: any }) {
                                 </p>
                             </div>
                             <div>
-                                <p
+                                <Link href={`https://${website}`}
                                     className={`
                                             rounded-lg
                                             outline-none
@@ -201,9 +192,10 @@ export default function DisplayUser({ user }: { user: any }) {
                                             transition duration-200 ease-in-out
                                             text-lg  font-medium py-1
                                         `}
+                                        target="_blank"
                                 >
                                     {website || ""}
-                                </p>
+                                </Link>
                             </div>
                             <div>
                                 <p

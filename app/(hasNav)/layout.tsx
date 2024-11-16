@@ -5,6 +5,13 @@ import Navigator from "@/components/core/Navigator";
 import Transistor from "@/components/core/Transitor";
 import Mobile from "@/components/core/responsive/Mobile";
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: "Home - Feed",
+    description: "...",
+};
+
 export default async function Layout({
     children,
 }: {
