@@ -1,5 +1,5 @@
 .ProseMirror {
-    @apply caret-black dark:caret-black outline-0 px-8 md:pl-20 py-16 z-0 lg:pl-8 lg:pr-8;
+    @apply caret-white  outline-0 px-4 md:pl-20 pb-16 z-0 lg:pl-8 lg:pr-8;
 
     & > * {
         @apply mx-auto max-w-2xl;
@@ -11,7 +11,7 @@
 
     .selection,
     *::selection {
-        @apply bg-black/20;
+        @apply bg-woodsmoke-100/40;
     }
 
     & > .react-renderer {
@@ -26,13 +26,13 @@
         @apply relative w-full max-w-2xl mx-auto;
 
         &:after {
-            @apply border-t-black/40 dark:border-t-white/40 w-full -top-[1.5em] max-w-2xl mx-auto left-0 right-0;
+            @apply border-t-white/40 w-full -top-[1.5em] max-w-2xl mx-auto left-0 right-0;
         }
     }
 }
 
 .displaying .ProseMirror {
-    @apply caret-black dark:caret-black outline-0 px-0 z-0 ;
+    @apply caret-white outline-0 px-0 z-0 ;
 
     & > * {
         @apply mx-auto max-w-2xl;
@@ -44,7 +44,7 @@
 
     .selection,
     *::selection {
-        @apply bg-black/20;
+        @apply bg-woodsmoke-100/40;
     }
 
     & > .react-renderer {
@@ -59,7 +59,7 @@
         @apply relative w-full max-w-2xl mx-auto;
 
         &:after {
-            @apply border-t-black/40 dark:border-t-white/40 w-full -top-[1.5em] max-w-2xl mx-auto left-0 right-0;
+            @apply border-t-white/40 w-full -top-[1.5em] max-w-2xl mx-auto left-0 right-0;
         }
     }
 }

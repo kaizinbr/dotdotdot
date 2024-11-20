@@ -9,6 +9,7 @@ export interface TiptapProps {
     initialContent?: any;
     authorId?: string;
     loggedId?: string;
+    avatarData?: { url: string; username: string, full_name: string };
 }
 
 export type EditorUser = {

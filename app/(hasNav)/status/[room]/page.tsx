@@ -11,10 +11,10 @@ import Avatar from "@/components/posts/AvatarDisplay";
 import Divider from "@/components/Divider";
 import { Textarea } from "@mantine/core";
 
-import SetAComment from "@/components/room/comments/SetComment";
-import Comments from "@/components/room/comments/Comments";
+// import SetAComment from "@/components/room/comments/SetComment";
+// import Comments from "@/components/room/comments/Comments";
 
-import classes from "@/styles/Textarea.module.css";
+// import classes from "@/styles/Textarea.module.css";
 
 import type { Metadata } from 'next'
 
@@ -35,7 +35,6 @@ export default async function Page({ params }: { params: { room: string } }) {
         .eq("room", params.room)
         .eq("public", true)
         .single();
-    // console.log(error, "aaaaaaa");
 
     if (error) {
         console.error(error);

@@ -18,6 +18,8 @@ import { TiptapProps } from "./types";
 import { EditorHeader } from "./components/EditorHeader";
 import { TextMenu } from "../menus/TextMenu";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
+import AvatarB from "@/components/Navbar/Avatar";
+import { TbUserFilled } from "react-icons/tb";
 
 import { createClient } from "@/utils/supabase/client";
 
@@ -28,13 +30,13 @@ export const BlockEditor = ({
     initialContent,
     authorId,
     loggedId,
+    avatarData,
 }: TiptapProps) => {
     const menuContainerRef = useRef(null);
     const editorRef = useRef<PureEditorContent | null>(null);
     const supabase = createClient();
-        const router = useRouter();
+    const router = useRouter();
 
-    
     if (authorId !== loggedId) {
         console.log("You are not the author of this document");
         router.push("/nottoday");
@@ -44,6 +46,7 @@ export const BlockEditor = ({
         useBlockEditor({ ydoc, provider, room, supabase, initialContent });
 
     const displayedUsers = users.slice(0, 3);
+    console.log(avatarData);
 
     const providerValue = useMemo(() => {
         return {};
@@ -56,7 +59,6 @@ export const BlockEditor = ({
     return (
         <EditorContext.Provider value={providerValue}>
             <div className="flex h-full " ref={menuContainerRef}>
-                
                 <Sidebar
                     isOpen={leftSidebar.isOpen}
                     onClose={leftSidebar.close}
@@ -73,10 +75,39 @@ export const BlockEditor = ({
                         room={room}
                         editor={editor}
                     />
+
+                    <div className="flex flex-row items-center gap-2 mx-4 mt-24">
+                        <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full ">
+                            {avatarData!.url ? (
+                                <AvatarB
+                                    size={42}
+                                    url={avatarData!.url}
+                                    className="size-10"
+                                />
+                            ) : (
+                                <TbUserFilled className="size-10" />
+                            )}
+                        </div>
+                        <div className="flex items-start justify-center flex-col ">
+                            <h2 className="text-sm">
+                                <span className="text-white font-bold">
+                                    {avatarData!.full_name}
+                                </span>{" "}
+                                <span className="text-xs">
+                                    @{avatarData!.username}
+                                </span>
+                            </h2>
+                            <span className=" text-xs text-stone-500 dark:text-stone-400">
+                                {/* <PastRelativeTime
+                                    date={new Date(post.updated_at)}
+                                /> */} Salvo automaticamente
+                            </span>
+                        </div>
+                    </div>
                     <EditorContent
                         editor={editor}
                         ref={editorRef as React.RefObject<HTMLDivElement>}
-                        className="flex-1 overflow-y-auto mt-20 min-h-full"
+                        className="flex-1 overflow-y-auto mt-4 min-h-full"
                     />
                     {/* <ContentItemMenu editor={editor} /> */}
                     <LinkMenu editor={editor} appendTo={menuContainerRef} />

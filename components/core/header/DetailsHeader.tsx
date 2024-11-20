@@ -1,13 +1,8 @@
 "use client";
 
 import Icon from "@/components/core/Icon";
-// import useHistory from "@/hooks/history";
-// import useTitle from "@/hooks/title";
 import { usePathname, useRouter } from "next/navigation";
 import useScrollDirection from "@/hooks/useScrollDirection";
-import BackBtn from "../BackBtn";
-
-import Avatar from "@/components/posts/AvatarDisplay";
 
 export default function DetailsHeader({
     content,

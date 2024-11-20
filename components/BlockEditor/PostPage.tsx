@@ -4,31 +4,17 @@ import { TiptapCollabProvider } from "@hocuspocus/provider";
 import "iframe-resizer/js/iframeResizer.contentWindow";
 import { useSearchParams } from "next/navigation";
 import {
-    useCallback,
     useEffect,
-    useLayoutEffect,
     useMemo,
     useState,
 } from "react";
 import { Doc as YDoc } from "yjs";
 
-import { BlockEditor } from "../../../../components/BlockEditor";
-import { createPortal } from "react-dom";
-import { Surface } from "../../../../components/ui/Surface";
-import { Toolbar } from "../../../../components/ui/Toolbar";
-import { Icon } from "../../../../components/ui/Icon";
-
+import { BlockEditor } from "@/components/BlockEditor";
 import { createClient } from "@/utils/supabase/client";
 
-export default function Document({ params }: { params: { room: string } }) {
-    // const { isDarkMode, darkMode, lightMode } = useDarkmode()
-    const [provider, setProvider] = useState<TiptapCollabProvider | null>(null);
-    const [collabToken, setCollabToken] = useState<string | null>(null);
-    const searchParams = useSearchParams();
+export default function PostPage({ status }: { status: string }) {
 
-    const hasCollab = parseInt(searchParams.get("noCollab") as string) !== 1;
-
-    const { room } = params;
 
     const [initialContent, setInitialContent] = useState<string | null>(null);
     const [title, setTitle] = useState<string | null>(null);
@@ -36,6 +22,10 @@ export default function Document({ params }: { params: { room: string } }) {
 
     const [loggedId, setLoggedId] = useState("");
     const [authorId, setAuthorId] = useState("");
+
+    const [userImg, setUserImg] = useState<string | null>(null);
+    const [userDisplayName, setUserDisplayName] = useState<string | null>(null);
+    const [userUsername, setUserUsername] = useState<string | null>(null);
 
     const supabase = createClient();
 
@@ -48,11 +38,17 @@ export default function Document({ params }: { params: { room: string } }) {
             if (!session) {
                 return;
             }
+            const { data: profile } = await supabase.from("profiles").select().eq("id", session!.session!.user.id).single()
+            console.log(profile);
+            setUserImg(profile.avatar_url);
+            setUserDisplayName(profile.full_name);
+            setUserUsername(profile.username);
+
 
             const exists = await supabase
                 .from("posts")
                 .select("*")
-                .eq("room", room);
+                .eq("room", status);
 
             if (exists.data?.length === 0) {
                 setAuthorId(session!.session!.user.id);
@@ -60,7 +56,7 @@ export default function Document({ params }: { params: { room: string } }) {
                 console.log("Um momento, estou criando...");
                 await supabase.from("posts").insert([
                     {
-                        room,
+                        room: status,
                         content: "",
                         author_id: session!.session!.user.id,
                     },
@@ -72,7 +68,7 @@ export default function Document({ params }: { params: { room: string } }) {
                 const { data, error } = await supabase
                     .from("posts")
                     .select("content,title,image,author_id")
-                    .eq("room", room)
+                    .eq("room", status)
                     .single();
 
                 console.log(data);
@@ -85,7 +81,6 @@ export default function Document({ params }: { params: { room: string } }) {
                 setTitle(data.title);
                 setImage(data.image);
                 setAuthorId(data.author_id);
-                console.log(data.author_id);
             }
         };
 
@@ -104,59 +99,23 @@ export default function Document({ params }: { params: { room: string } }) {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    useEffect(() => {
-        // fetch data
-        const dataFetch = async () => {
-            const data = await (
-                await fetch("/api/collaboration", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-            ).json();
-
-            const { token } = data;
-
-            // set state when the data received
-            setCollabToken(token);
-        };
-
-        dataFetch();
-    }, []);
 
     const ydoc = useMemo(() => new YDoc(), []);
 
-    useLayoutEffect(() => {
-        if (hasCollab && collabToken) {
-            setProvider(
-                new TiptapCollabProvider({
-                    name: `${process.env.NEXT_PUBLIC_COLLAB_DOC_PREFIX}${room}`,
-                    appId: process.env.NEXT_PUBLIC_TIPTAP_COLLAB_APP_ID ?? "",
-                    token: collabToken,
-                    document: ydoc,
-                }),
-            );
-        }
-    }, [setProvider, collabToken, ydoc, room, hasCollab]);
-
-    if (hasCollab && (!collabToken || !provider)) return;
-
-    // console.log("authorId", authorId);
-    // console.log("loggedId", loggedId);
-
     return (
         <>
-            {/* {DarkModeSwitcher} */}
-            {authorId && loggedId && <BlockEditor
-                hasCollab={false}
-                ydoc={ydoc}
-                provider={null}
-                room={room}
-                initialContent={initialContent}
-                authorId={authorId}
-                loggedId={loggedId}
-            />}
+            {authorId && loggedId && (
+                <BlockEditor
+                    hasCollab={false}
+                    ydoc={ydoc}
+                    provider={null}
+                    room={status}
+                    initialContent={initialContent}
+                    authorId={authorId}
+                    loggedId={loggedId}
+                    avatarData={{url: userImg!, username: userUsername!, full_name: userDisplayName!}}
+                />
+            )}
         </>
     );
 }
