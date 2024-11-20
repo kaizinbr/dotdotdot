@@ -97,8 +97,8 @@ export default function Navigator({ user }: { user: User | null }) {
             </motion.button>
             <motion.button whileTap={{ scale: 0.75 }}>
                 <Link
-                    data-active={pathname === "/create"}
-                    href={`/create`}
+                    data-active={pathname === "/compose"}
+                    href={`/compose`}
                     className={`
                             jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
                             flex-col items-center gap-1 rounded-8 p-3

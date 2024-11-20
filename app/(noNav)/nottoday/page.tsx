@@ -15,7 +15,7 @@ export default async function Index() {
                     Hm... Tudo bem, você pode continuar agora!
                 </span>
                 <Link
-                    href="/create"
+                    href="/compose"
                     className="flex flex-row items-center gap-2 w-fit bg-sandybrown-400 transition hover:bg-sandybrown-500 rounded-xl border-2 border-b-defaultB border-fantasy-950 px-4 py-2 text-woodsmoke-800 font-bold mb-2"
                 >
                     <span className="text-lg">Criar novo post</span>

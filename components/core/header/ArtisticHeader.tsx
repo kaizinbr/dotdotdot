@@ -108,10 +108,10 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
                                 
                             <Link
                                     data-active={
-                                        pathname === "/create" ||
+                                        pathname === "/compose" ||
                                         pathname === `/profile${username}`
                                     }
-                                    href={`/create`}
+                                    href={`/compose`}
                                     className={`
                                             jelly jelly-increased flex basis-0 cursor-pointer
                                             flex-col items-center gap-1
@@ -143,10 +143,10 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
                                 </Link>
                                 <Link
                                     data-active={
-                                        pathname === "/create" ||
+                                        pathname === "/compose" ||
                                         pathname === `/profile${username}`
                                     }
-                                    href={`/create`}
+                                    href={`/compose`}
                                     className={`
                                             jelly jelly-increased flex basis-0 cursor-pointer
                                             flex-col items-center gap-1

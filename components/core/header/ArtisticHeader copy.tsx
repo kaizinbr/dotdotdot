@@ -110,8 +110,8 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
                                 Home
                             </Link>
                             <Link
-                                data-active={pathname === "/create" || pathname === `/profile${username}`}
-                                href={`/create`}
+                                data-active={pathname === "/compose" || pathname === `/profile${username}`}
+                                href={`/compose`}
                                 className="jelly cursor-pointer text-5 font-500 opacity-60 transition-all hover:opacity-80 data-[active=true]:font-700 data-[active=true]:opacity-100 group-data-[floating=true]:text-4"
                             >
                                 Novo post

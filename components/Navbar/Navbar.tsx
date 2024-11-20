@@ -151,7 +151,7 @@ export default function HeaderTabs({ user }: { user: User | null }) {
                                         <FileText size="1.3rem" className="mr-4" /> Posts
                                     </Link>
                             <Link
-                                href="/create"
+                                href="/compose"
                                 onClick={close}
                                 className={`
                                         w-full flex flex-row items-center justify-start

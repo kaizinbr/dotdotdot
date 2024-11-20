@@ -195,9 +195,6 @@ export default function CardPost({
                     <Icon name="eye" type="comment" className="size-6" />
                 </Link>
                 <ShareBtn room={post.room} edit={edit} />
-                {/* <span className=" text-xs text-stone-300">
-                        <TbDotsVertical className="size-6" />
-                    </span> */}
             </div>
         </motion.div>
     );

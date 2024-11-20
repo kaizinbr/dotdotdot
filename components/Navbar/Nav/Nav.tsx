@@ -56,7 +56,7 @@ export default function Nav({
             </div>
             <motion.div className={`flex flex-col gap-3`}>
                 <motion.a
-                    href="/create"
+                    href="/compose"
                     className="text-3xl gelica-menu text-center py-2 bg-sky-700 rounded-full text-stone-200 flex flex-col items-center"
                     onClick={() => {
                         setIsActive(false);
@@ -71,7 +71,7 @@ export default function Nav({
                 </motion.a>
 
                 <motion.a
-                    href="/create"
+                    href="/compose"
                     className="text-3xl gelica-menu py-2 border-2 border-sky-700 rounded-full text-stone-800 flex flex-col items-center"
                     onClick={() => {
                         setIsActive(false);

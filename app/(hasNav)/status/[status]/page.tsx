@@ -9,12 +9,6 @@ import PastRelativeTime from "@/components/core/PastRelativeTime";
 // import ShowViews from "@/components/posts/ShowViews";
 import Avatar from "@/components/posts/AvatarDisplay";
 import Divider from "@/components/Divider";
-import { Textarea } from "@mantine/core";
-
-// import SetAComment from "@/components/room/comments/SetComment";
-// import Comments from "@/components/room/comments/Comments";
-
-// import classes from "@/styles/Textarea.module.css";
 
 import type { Metadata } from 'next'
 
@@ -23,7 +17,12 @@ export const metadata: Metadata = {
     description: "...",
 };
 
-export default async function Page({ params }: { params: { room: string } }) {
+export default async function Page({
+    params,
+}: {
+    params: Promise<{ status: string }>;
+}) {
+    const status = (await params).status;
     const supabase = createClient();
 
     const { data, error } = await supabase
@@ -32,7 +31,7 @@ export default async function Page({ params }: { params: { room: string } }) {
             `*,
 	        profiles!posts_author_id_fkey("*")`,
         )
-        .eq("room", params.room)
+        .eq("room", status)
         .eq("public", true)
         .single();
 

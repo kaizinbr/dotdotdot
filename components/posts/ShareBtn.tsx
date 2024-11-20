@@ -104,7 +104,7 @@ export default function ShareBtn({
                     className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
                 >
                     <WhatsappShare
-                        url={`/status/${room}`}
+                        url={`${baseUrl}status/${room}`}
                         blankTarget={true}
                         buttonTitle={"WhatsApp"}
                     />
@@ -118,7 +118,7 @@ export default function ShareBtn({
                     className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
                 >
                     <TwitterShare
-                        url={`/status/${room}`}
+                        url={`${baseUrl}status/${room}`}
                         blankTarget={true}
                         buttonTitle={"Twitter"}
                     />
@@ -130,7 +130,7 @@ export default function ShareBtn({
                     className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
                 >
                     <EmailShare
-                        url={`/status/${room}`}
+                        url={`${baseUrl}status/${room}`}
                         blankTarget={true}
                         buttonTitle={"E-Mail"}
                     />
