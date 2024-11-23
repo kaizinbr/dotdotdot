@@ -9,8 +9,11 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
 import {
     TbUserFilled,
+    TbBellFilled,
+    TbSearch,
     TbFolderFilled,
     TbSquareRoundedPlusFilled,
+    TbPlus,
 } from "react-icons/tb";
 
 import { motion } from "framer-motion";
@@ -67,92 +70,136 @@ export default function Navigator({ user }: { user: User | null }) {
     }, [user, getProfile]);
 
     return (
-        <div
-            className={`
-            fixed 
-            ${scrollDirection > "down" ? "bottom-0" : "-bottom-24"}
-            transition-all duration-300 z-[999]
-            left-0 flex w-full items-center justify-evenly 
-            border-t-1 
-            bg-woodsmoke-600/90 border-woodsmoke-500/50
-            backdrop-blur-lg px-6
-        `}
-        >
-            <motion.button whileTap={{ scale: 0.75 }}>
-                <Link
-                    data-active={pathname === "/"}
-                    href={`/`}
-                    className={`
-                            jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
-                            flex-col items-center gap-1 rounded-8 p-3
-                            text-woodsmoke-400 data-[active=true]:text-main-600
-                            selected:bg-woodsmoke-400 selected:text-gray-300
-                             hover:bg-woodsmoke-550 hover:text-main-400
-                            transition-all duration-200 ease-in-out
-                        `}
-                >
-                    <Icon type="home" className="h-5" />
-                    <div className="text-12 font-600">Home</div>
-                </Link>
-            </motion.button>
-            <motion.button whileTap={{ scale: 0.75 }}>
-                <Link
-                    data-active={pathname === "/compose"}
-                    href={`/compose`}
-                    className={`
-                            jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
-                            flex-col items-center gap-1 rounded-8 p-3
-                            text-woodsmoke-400 data-[active=true]:text-main-600
-                            selected:bg-woodsmoke-400 selected:text-gray-300
-                             hover:bg-woodsmoke-550 hover:text-main-400
-                            transition-all duration-200 ease-in-out
-                        `}
-                >
-                    <TbSquareRoundedPlusFilled className="size-6" />
-                    <div className="text-12 font-600">Novo</div>
-                </Link>
-            </motion.button>
-            <motion.button whileTap={{ scale: 0.75 }}>
-                <Link
-                    data-active={pathname === "/manage"}
-                    href={`/manage`}
-                    className={`
-                            jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
-                            flex-col items-center gap-1 rounded-8 p-3
-                            text-woodsmoke-400 data-[active=true]:text-main-600
-                            selected:bg-woodsmoke-400 selected:text-gray-300
-                             hover:bg-woodsmoke-550 hover:text-main-400
-                            transition-all duration-200 ease-in-out
-                        `}
-                >
-                    <TbFolderFilled className="size-6" />
-                    <div className="text-12 font-600">Posts</div>
-                </Link>
-            </motion.button>
-            <motion.button whileTap={{ scale: 0.75 }}>
-                <Link
-                    data-active={
-                        pathname === "/profile/me" ||
-                        pathname === `/profile${username}`
-                    }
-                    href={`/profile/me`}
-                    className={`
-                            jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
-                            flex-col items-center gap-1 rounded-8 p-3
-                            text-woodsmoke-400 data-[active=true]:text-main-600
-                            selected:bg-woodsmoke-400 selected:text-gray-300
-                             hover:bg-woodsmoke-550 hover:text-main-400
-                            transition-all duration-200 ease-in-out
-                        `}
-                >
-                    {avatar_url ? (
-                        <AvatarB size={24} url={avatar_url} />
-                    ) : (
-                        <TbUserFilled className="size-6" />
-                    )}
-                    <div className="text-12 font-600">Perfil</div>
-                </Link>
-            </motion.button>
+        <div className="relative">
+            <div className={`
+                    fixed right-4  z-[999]
+                    transition-all duration-300 
+                    ${scrollDirection > "down" ? "bottom-20" : "-bottom-24 scale-0"}
+                    bg-main-600 text-woodsmoke-100 
+                    rounded-full p-3 cursor-pointer
+                `}>
+                <TbPlus className="size-8 " />
+            </div>
+            <div
+                className={`
+                fixed
+                ${scrollDirection > "down" ? "bottom-0" : "-bottom-24"}
+                transition-all duration-300 z-[999]
+                left-0 flex w-full items-center justify-evenly
+                border-t-1
+                bg-woodsmoke-600/90 border-woodsmoke-500/50
+                backdrop-blur-lg px-6 py-1
+            `}
+            >
+                <motion.button whileTap={{ scale: 0.75 }}>
+                    <Link
+                        data-active={pathname === "/"}
+                        href={`/`}
+                        className={`
+                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
+                                flex-col items-center gap-1 rounded-8 p-3
+                                text-woodsmoke-400 data-[active=true]:text-main-600
+                                selected:bg-woodsmoke-400 selected:text-gray-300
+                                 hover:bg-woodsmoke-550 hover:text-main-400
+                                transition-all duration-200 ease-in-out
+                            `}
+                    >
+                        <Icon type="home" className="h-5" />
+                        {/* <div className="text-12 font-600">Home</div> */}
+                    </Link>
+                </motion.button>
+                {/* <motion.button whileTap={{ scale: 0.75 }}>
+                    <Link
+                        data-active={pathname === "/compose"}
+                        href={`/compose`}
+                        className={`
+                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
+                                flex-col items-center gap-1 rounded-8 p-3
+                                text-woodsmoke-400 data-[active=true]:text-main-600
+                                selected:bg-woodsmoke-400 selected:text-gray-300
+                                 hover:bg-woodsmoke-550 hover:text-main-400
+                                transition-all duration-200 ease-in-out
+                            `}
+                    >
+                        <TbSquareRoundedPlusFilled className="size-6" />
+                    </Link>
+                </motion.button> */}
+                <motion.button whileTap={{ scale: 0.75 }}>
+                    <Link
+                        data-active={pathname === "/manage"}
+                        href={`/manage`}
+                        className={`
+                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
+                                flex-col items-center gap-1 rounded-8 p-3
+                                text-woodsmoke-400 data-[active=true]:text-main-600
+                                selected:bg-woodsmoke-400 selected:text-gray-300
+                                 hover:bg-woodsmoke-550 hover:text-main-400
+                                transition-all duration-200 ease-in-out
+                            `}
+                    >
+                        <TbFolderFilled className="size-6" />
+                        {/* <div className="text-12 font-600">Posts</div> */}
+                    </Link>
+                </motion.button>
+                <motion.button whileTap={{ scale: 0.75 }}>
+                    <Link
+                        data-active={pathname === "/search"}
+                        href={`/search`}
+                        className={`
+                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
+                                flex-col items-center gap-1 rounded-8 p-3
+                                text-woodsmoke-400 data-[active=true]:text-main-600
+                                selected:bg-woodsmoke-400 selected:text-gray-300
+                                 hover:bg-woodsmoke-550 hover:text-main-400
+                                transition-all duration-200 ease-in-out
+                            `}
+                    >
+                        <TbSearch className="size-6" />
+                        {/* <div className="text-12 font-600">Pesquisa</div> */}
+                    </Link>
+                </motion.button>
+                <motion.button whileTap={{ scale: 0.75 }}>
+                    <Link
+                        // data-active={pathname === "/"}
+                        href={`#`}
+                        className={`
+                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
+                                flex-col items-center gap-1 rounded-8 p-3
+                                text-woodsmoke-400 data-[active=true]:text-main-600
+                                selected:bg-woodsmoke-400 selected:text-gray-300
+                                 hover:bg-woodsmoke-550 hover:text-main-400
+                                transition-all duration-200 ease-in-out
+                            `}
+                    >
+                        <TbBellFilled className="size-6" />
+                        {/* <div className="text-12 font-600">Notificações</div> */}
+                    </Link>
+                </motion.button>
+                <motion.button whileTap={{ scale: 0.75 }}>
+                    <Link
+                        data-active={
+                            pathname === "/profile/me" ||
+                            pathname === `/profile${username}`
+                        }
+                        href={`/profile/me`}
+                        className={`
+                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
+                                flex-col items-center gap-1 rounded-8 p-3
+                                text-woodsmoke-400 data-[active=true]:text-main-600
+                                selected:bg-woodsmoke-400 selected:text-gray-300
+                                 hover:bg-woodsmoke-550 hover:text-main-400
+                                transition-all duration-200 ease-in-out
+                            `}
+                    >
+                        {avatar_url ? (
+                            <AvatarB size={24} url={avatar_url} />
+                        ) : (
+                            <TbUserFilled className="size-6" />
+                        )}
+                        {/* <div className="text-12 font-600">Perfil</div> */}
+                    </Link>
+                </motion.button>
+            </div>
         </div>
     );
 }

@@ -51,13 +51,10 @@ export default function CardPost({
     const [userImg, setUserImg] = useState<string | null>(null);
     const [postImg, setPostImg] = useState<string | null>(null);
 
-    if (post.content.length === 0) {
-        return null;
-    }
-
     const reduced = post.content.content
         .filter((item: any) => item.type !== "imageBlock")
         .slice(0, 3);
+
 
     const output = useMemo(() => {
         return generateHTML(
@@ -108,6 +105,11 @@ export default function CardPost({
 
         fetchUserProfile();
     }, []);
+
+    
+    if (post.content.length === 0) {
+        return null;
+    }
 
     return (
         <motion.div
@@ -194,7 +196,7 @@ export default function CardPost({
                 >
                     <Icon name="eye" type="comment" className="size-6" />
                 </Link>
-                <ShareBtn room={post.room} edit={edit} />
+                {/* <ShareBtn room={post.room} edit={edit} /> */}
             </div>
         </motion.div>
     );

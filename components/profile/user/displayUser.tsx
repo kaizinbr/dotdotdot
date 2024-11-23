@@ -4,10 +4,15 @@ import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import Avatar from "../../posts/AvatarDisplay";
 import { useSearchParams, useRouter } from "next/navigation";
+import { getPastRelativeTime, formatTimeAsDate } from "@/lib/utils/time";
+import { TbLink, TbCalendar } from "react-icons/tb";
 
 export default function DisplayUser({ user }: { user: any }) {
     const supabase = createClient();
     const [loading, setLoading] = useState(true);
+    const [created_at, setCreatedAt] = useState<Date>(
+        new Date(2005, 4, 26, 0, 0, 0),
+    );
     const [fullname, setFullname] = useState<string | null>(null);
     const [username, setUsername] = useState<string | null>(null);
     const [website, setWebsite] = useState<string | null>(null);
@@ -21,9 +26,7 @@ export default function DisplayUser({ user }: { user: any }) {
 
             const { data, error, status } = await supabase
                 .from("profiles")
-                .select(
-                    `full_name, username, website, avatar_url, bio, pronouns`,
-                )
+                .select("*")
                 .eq("username", user[0]?.username)
                 .single();
 
@@ -33,6 +36,8 @@ export default function DisplayUser({ user }: { user: any }) {
             }
 
             if (data) {
+                setCreatedAt(data.created_at);
+                console.log(data.created_at);
                 setFullname(data.full_name);
                 setUsername(data.username);
                 setWebsite(data.website);
@@ -51,46 +56,11 @@ export default function DisplayUser({ user }: { user: any }) {
         getProfile();
     }, [user, getProfile]);
 
-    async function updateProfile({
-        username,
-        website,
-        avatar_url,
-        fullname,
-        bio,
-        pronouns,
-    }: {
-        username: string | null;
-        fullname: string | null;
-        website: string | null;
-        avatar_url: string | null;
-        bio: string | null;
-        pronouns: string | null;
-    }) {
-        try {
-            setLoading(true);
-
-            const { error } = await supabase.from("profiles").upsert({
-                id: user?.id as string,
-                full_name: fullname,
-                username,
-                website,
-                avatar_url,
-                bio,
-                pronouns,
-                updated_at: new Date().toISOString(),
-            });
-            if (error) throw error;
-            alert("Profile updated!");
-        } catch (error) {
-            alert("Error updating the data!");
-        } finally {
-            setLoading(false);
-        }
-    }
     const router = useRouter();
 
     return (
-        <div className="form-widget flex flex-col justify-center w-full max-h-screen md:max-w-md md:w-2/5">
+        <div className="form-widget  flex flex-col justify-center w-full max-h-screen md:max-w-md md:w-2/5">
+            
             <div className="md:fixed top-0 bottom-0 w-full pt-16 md:pt-0 md:max-w-md md:w-2/5 px-8 md:px-0 md:pl-16 flex flex-col justify-center">
                 <div
                     className={`
@@ -107,24 +77,23 @@ export default function DisplayUser({ user }: { user: any }) {
                         <div
                             className={`
             
-                            flex flex-row justify-start items-center
-                            gap-3 pt-8 px-4 w-full h-56
-                            bg-gradient-to- from-transparent to-black/45 from-40%
-                            z-30
-                        `}
+                                flex flex-row justify-center items-end
+                                gap-3 pt-8 px-4 w-full h-56
+                                z-30
+                            `}
                         >
                             <picture
                                 className={`
-                            flex flex-row justify-center items-center
-                            bg-neutral-800 rounded-full overflow-hidden
-                            w-48 h-48
-            
-                        `}
+                                    flex flex-row justify-center items-center
+                                    bg-neutral-800 rounded-full overflow-hidden
+                                    size-28
+                    
+                                `}
                             >
                                 {avatar_url && (
-                                    <div className="flex relative flex-col justify-center items-center size-48 rounded-full ">
+                                    <div className="flex relative flex-col justify-center items-center size-28 rounded-full ">
                                         <Avatar
-                                            size={196}
+                                            size={114}
                                             url={avatar_url}
                                             username={username}
                                         />
@@ -141,8 +110,7 @@ export default function DisplayUser({ user }: { user: any }) {
                         col-span-6 lg:col-span-4
                         relative
                         w-full
-                        mt-8
-                        px-4
+                        mt-4
                     `}
                 >
                     <div
@@ -152,10 +120,10 @@ export default function DisplayUser({ user }: { user: any }) {
             
                                 bg-default-fill
                                 rounded-3xl w-full
-                                gap-3
+                                gap-6
                             `}
                     >
-                        <div className="flex flex-col justify-start items-start w-full">
+                        <div className="flex flex-col justify-start items-center w-full">
                             <div>
                                 <p
                                     className={`
@@ -169,7 +137,7 @@ export default function DisplayUser({ user }: { user: any }) {
                                     {fullname || ""}
                                 </p>
                             </div>
-                            <div className="flex flex-row py-1">
+                            <div className="flex flex-row py-1 text-woodsmoke-200">
                                 <span className="text-lg font-medium">@</span>
                                 <p
                                     className={`
@@ -183,44 +151,82 @@ export default function DisplayUser({ user }: { user: any }) {
                                     {username || ""}
                                 </p>
                             </div>
-                            <div>
-                                <Link href={`https://${website}`}
-                                    className={`
-                                            rounded-lg
-                                            outline-none
-                                             w-full
-                                            transition duration-200 ease-in-out
-                                            text-lg  font-medium py-1
-                                        `}
-                                        target="_blank"
-                                >
-                                    {website || ""}
-                                </Link>
-                            </div>
-                            <div>
+                            {pronouns && (<div>
                                 <p
                                     className={`
                                             rounded-lg
                                             outline-none
-                                             w-full
+                                            w-full
                                             transition duration-200 ease-in-out
-                                            text-lg  font-medium py-1
+                                            text-base  font-medium py-1 text-woodsmoke-200
                                         `}
                                 >
                                     {pronouns || ""}
                                 </p>
+                            </div>)}
+                            <div className="flex flex-row gap-4 w-full justify-center items-center">
+                                <p
+                                    className={`
+                                            rounded-lg
+                                            outline-none
+                                            w-full
+                                            transition duration-200 ease-in-out
+                                            text-base  font-medium py-1 text-woodsmoke-200
+                                            text-right
+                                        `}
+                                >
+                                    100 Seguidores
+                                </p>
+                                <p
+                                    className={`
+                                            rounded-lg
+                                            outline-none
+                                            w-full
+                                            transition duration-200 ease-in-out
+                                            text-base  font-medium py-1 text-woodsmoke-200
+                                        `}
+                                >
+                                    100 Seguindo
+                                </p>
                             </div>
-                            <div
+                            <button className="mt-3 px-8 py-2 rounded-full bg-main-600 text-woodsmoke-50">
+                                Seguir
+                            </button>
+                        </div>
+                        <div className="flex flex-col gap-2 w-full">
+                            {bio && (<div
                                 className={`
             
-                                    text-lg
+                                    text-base
                                     w-full text-wrap
                                 `}
                             >
-                                <p className="text-wrap break-words">
+                                <p className="text-woodsmoke-200 font-medium">
                                     {bio || ""}
                                 </p>
+                            </div>)}
+
+                            <div className="flex flex-row text-sm text-woodsmoke-200 items-center gap-1">
+                                    <TbCalendar />
+                                <p
+                                >
+                                    Se juntou em{" "}
+                                    {formatTimeAsDate(new Date(created_at)) ||
+                                        ""}
+                                </p>
                             </div>
+                            {website && (<div className="flex flex-row text-sm text-woodsmoke-200 items-center gap-1">
+                                    <TbLink />
+                                <Link
+                                    href={`https://${website}`}
+                                    className={`
+                                            text-sm text-woodsmoke-200 underline
+                                        `}
+                                    target="_blank"
+                                >
+                                    {website || ""}
+                                </Link>
+                            </div>)}
                         </div>
                     </div>
                 </div>

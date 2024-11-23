@@ -67,7 +67,7 @@ export function getShortPastRelativeTime(date: Date, today: Date): string {
 
 export function formatTimeAsDate(date: Date): string {
     const datetime = DateTime.fromJSDate(date, { zone: "America/Sao_Paulo" });
-    return datetime.toFormat("dd/MM/yyyy HH:mm");
+    return datetime.toFormat("dd/MM/yyyy");
 }
 
 export function formatTimeAsTime(date: Date): string {

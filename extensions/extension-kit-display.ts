@@ -95,6 +95,7 @@ export const ExtensionKit = () => [
     TableOfContents,
     TableOfContentsNode,
     ImageBlock,
+    ImageUpload,
     FileHandler.configure({
         allowedMimeTypes: [
             "image/png",

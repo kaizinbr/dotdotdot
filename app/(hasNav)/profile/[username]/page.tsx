@@ -5,6 +5,7 @@ import DisplayPosts from "@/components/profile/user/DisplayPosts";
 import Link from "next/link";
 
 import type { Metadata, ResolvingMetadata } from "next";
+import {DisplayContent} from "@/components/profile/user/DisplayContent";
 
 type Props = {
     params: Promise<{ username: string }>;
@@ -98,7 +99,8 @@ export default async function Account({
     }
 
     return (
-        <div className="flex flex-col w-full md:flex-row">
+        <div className="flex flex-col w-full md:flex-row relative">
+            <div className="absolute h-80 w-full -z-50 bg-gradient-to-t from-transparent to-main-600/60 from-40"></div>
             {data?.length === 0 && itsMe == false ? (
                 <div className="flex-1 w-full flex flex-col gap-20 items-center">
                     <div
@@ -127,6 +129,7 @@ export default async function Account({
                         <DisplayUser user={data} />
                     )}
                     <DisplayPosts user={userId} />
+                    {/* <DisplayContent user={data} /> */}
                 </>
             )}
         </div>

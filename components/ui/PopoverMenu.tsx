@@ -83,7 +83,7 @@ export const Item = ({
     'flex items-center gap-2 p-1.5 text-sm font-medium text-woodsmoke-700 text-left bg-transparent w-full rounded transition-all duration-200',
     !isActive && !disabled,
     'hover:bg-woodsmoke-800/50 hover:text-woodsmoke-200 dark:hover:bg-neutral-900 dark:hover:text-neutral-200',
-    isActive && !disabled && 'bg-woodsmoke-800/50 text-woodsmoke-700 dark:bg-neutral-900 dark:text-neutral-200',
+    isActive && !disabled && 'bg-woodsmoke-800/50 text-woodsmoke-200',
     disabled && 'text-neutral-400 cursor-not-allowed dark:text-neutral-600',
   )
 

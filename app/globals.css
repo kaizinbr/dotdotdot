@@ -4,15 +4,12 @@
 
 @import "./editor.css";
 
-
-
-
 html {
     --title-font-family: "Helvetica", sans-serif;
-    --pr-font-family: 'PF Regal Text Pro RegularA';
-    --lora-font-family: 'Lora', serif;
-    --bradford-font-family: 'LL Bradford';
-    --gelica-font-family: 'gelica';
+    --pr-font-family: "PF Regal Text Pro RegularA";
+    --lora-font-family: "Lora", serif;
+    --bradford-font-family: "LL Bradford";
+    --gelica-font-family: "gelica";
 }
 
 .gelica-menu {
@@ -32,7 +29,6 @@ html {
     font-weight: 500;
     font-style: normal;
 }
-
 
 /* body {
     font-family: Open Sans Modified, sans-serif !important;
@@ -66,7 +62,7 @@ input[type="range"] {
 }
 
 .PFRegalTextPro {
-    font-family: 'PF Regal Text Pro';
+    font-family: "PF Regal Text Pro";
     font-weight: 400;
     font-style: italic;
 }
@@ -86,4 +82,29 @@ input[type="range"] {
 
 .cardContent pre {
     @apply p-2 bg-woodsmoke-600 rounded-lg overflow-hidden;
+}
+
+:root {
+    --spinner-size: 50px;
+    --stroke-width: 5px;
+}
+
+.spinner {
+    box-sizing: border-box;
+    width: var(--spinner-size);
+    height: var(--spinner-size);
+    padding: calc(var(--stroke-width) / 2);
+    overflow: visible;
+}
+
+.spinner > circle {
+    fill: none;
+    stroke: currentColor;
+    cx: 50%;
+    cy: 50%;
+    r: 50%;
+    stroke-width: var(--stroke-width);
+    stroke-linecap: round;
+    transform-origin: center;
+    @apply stroke-main-600;
 }
