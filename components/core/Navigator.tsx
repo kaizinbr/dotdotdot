@@ -71,7 +71,9 @@ export default function Navigator({ user }: { user: User | null }) {
 
     return (
         <div className="relative">
-            <div className={`
+            <Link 
+                href={`/compose`}
+             className={`
                     fixed right-4  z-[999]
                     transition-all duration-300 
                     ${scrollDirection > "down" ? "bottom-20" : "-bottom-24 scale-0"}
@@ -79,7 +81,7 @@ export default function Navigator({ user }: { user: User | null }) {
                     rounded-full p-3 cursor-pointer
                 `}>
                 <TbPlus className="size-8 " />
-            </div>
+            </Link>
             <div
                 className={`
                 fixed
