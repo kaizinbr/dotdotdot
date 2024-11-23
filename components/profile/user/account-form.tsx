@@ -4,19 +4,13 @@ import { createClient } from "@/utils/supabase/client";
 import { type User } from "@supabase/supabase-js";
 import Avatar from "./AvatarEdit";
 import { Textarea } from "@mantine/core";
-import { ProfilePic } from "@/components/profile/general/ProfilePic";
 import { useSearchParams, useRouter } from "next/navigation";
-import { X } from "lucide-react";
-import Loading, { LoadingSm } from "@/components/Loading";
 import containsSpecialChars from "@/lib/utils/containsSpecialChars";
 import usernameAlreadyExists from "@/lib/utils/usernameAlreadyExists";
-import ColorSelect from "@/components/profile/me/ColorSelect";
-
-import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button } from "@mantine/core";
-
 import Link from "next/link";
 import Icon from "@/components/core/Icon";
+import getFollowers from "@/lib/utils/getFollowers";
+import getFollowing from "@/lib/utils/getFollowing";
 
 import classes from "./AcForm.module.css";
 
@@ -32,10 +26,10 @@ export default function AccountForm({ user }: { user: User | null }) {
     const [avatar_url, setAvatarUrl] = useState<string | null>(null);
     const [bio, setBio] = useState<string | null>(null);
     const [pronouns, setPronouns] = useState<string | null>(null);
-
-    const [opened, { open, close }] = useDisclosure(false);
     const [message, setMessage] = useState<string | null>(null);
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
+    const [followers, setFollowers] = useState<number>(0);
+    const [following, setFollowing] = useState<number>(0);
 
     const handleEditUsername = (e: ChangeEvent<HTMLInputElement>) => {
         if (containsSpecialChars(e.target.value)) {
@@ -94,6 +88,11 @@ export default function AccountForm({ user }: { user: User | null }) {
                 setAvatarUrl(data.avatar_url);
                 setBio(data.bio);
                 setPronouns(data.pronouns);
+                const followers = await getFollowers(user!.id);
+                setFollowers(followers.totalFollowers);
+
+                const following = await getFollowing(user!.id);
+                setFollowing(following.totalFollowing);
             }
         } catch (error) {
             alert("Error loading user data!");
@@ -171,59 +170,11 @@ export default function AccountForm({ user }: { user: User | null }) {
 
     return (
         <>
-            <Modal
-                opened={opened}
-                onClose={close}
-                title="Mudar username"
-                centered
-                overlayProps={{
-                    backgroundOpacity: 0.55,
-                    blur: 3,
-                }}
-                classNames={{
-                    root: "w-full",
-                    content: "!bg-woodsmoke-600 !rounded-xl",
-                    header: "!bg-woodsmoke-600",
-                }}
-            >
-                <div className="flex flex-col py-2">
-                    <input
-                        type="text"
-                        name="username"
-                        value={username || ""}
-                        onChange={(e) => handleEditUsername(e)}
-                        placeholder="username"
-                        className={`
-                                rounded-lg
-                                outline-none
-                                bg-woodsmoke-900 w-full
-                                transition duration-200 ease-in-out
-                                text-lg  font-medium py-1 px-3
-                            `}
-                    ></input>
-                    <span className="text-xs mt-2 pb-1 text-red-400">
-                        {message ? message : ""}
-                    </span>
-                </div>
-                <div className="flex w-full flex-row gap-4">
-                    <button
-                        className="bg-main-500 rounded-lg px-4 py-2 text-woodsmoke-100 font-bold"
-                        onClick={() =>
-                            updateUsername({
-                                username,
-                            })
-                        }
-                        disabled={loading || message !== null || !canUpdate}
-                    >
-                        {loading ? "Salvando..." : "Salvar"}
-                    </button>
-                </div>
-            </Modal>
-            <div className="form-widget flex flex-col justify-center w-full max-h-screen md:max-w-md md:w-2/5">
+            <div className="form-widget flex flex-col justify-center w-full max-h-screen md:max-w-md md:w-2/5 overflow-hidden">
                 <div
                     className={`
-                md:fixed top-0 bottom-0 w-full pt-16 md:pt-0 md:max-w-md md:w-2/5 px-8 md:px-0 md:pl-16 flex flex-col justify-center
-            `}
+                        md:fixed top-0 bottom-0 w-full pt-16 md:pt-0 md:max-w-md md:w-2/5 px-8 md:px-0 md:pl-16 flex flex-col justify-center
+                    `}
                 >
                     <div
                         className={`
@@ -257,16 +208,16 @@ export default function AccountForm({ user }: { user: User | null }) {
                             <div
                                 className={`
             
-                            flex flex-row justify-start items-center
-                            gap-3 pt-8 px-4 w-full h-56
-                            bg-gradient-to- from-transparent to-black/45 from-40%
-                            z-30
+                                    flex flex-row justify-center items-end
+                                    gap-3 pt-8 px-4 w-full h-56
+                                    bg-gradient-to- from-transparent to-black/45 from-40%
+                                    z-30
                         `}
                             >
                                 <Avatar
                                     uid={user?.id ?? null}
                                     url={avatar_url}
-                                    size={192}
+                                    size={114}
                                     username={username}
                                     onUpload={(url) => {
                                         setAvatarUrl(url);
@@ -285,14 +236,13 @@ export default function AccountForm({ user }: { user: User | null }) {
                     </div>
                     <div
                         className={`
-                        profile  flex-col-reverse
-                        flex items-center justify-center
-                        col-span-6 lg:col-span-4
-                        relative
-                        w-full
-                        mt-8
-                        px-4
-                    `}
+                            profile  flex-col-reverse
+                            flex items-center justify-center
+                            col-span-6 lg:col-span-4
+                            relative
+                            w-full
+                            mt-4
+                        `}
                     >
                         <div
                             className={`
@@ -309,7 +259,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                                 spellCheck="false"
                                 className="flex flex-col justify-start items-start w-full"
                             >
-                                <div>
+                                <div className=" w-full">
                                     <input
                                         type="text"
                                         name="name"
@@ -319,43 +269,74 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         }
                                         placeholder="Seu Nome..."
                                         className={`
-                                             rounded-lg
+                                            rounded-lg
                                             outline-none
-                                            bg-woodsmoke-900 w-full
+                                            bg-woodsmoke-900
+                                            w-full
                                             transition duration-200 ease-in-out
                                             text-3xl font-bold
                                         `}
                                     ></input>
-                                </div><div className="flex flex-col">
-                                    
-                                    <div className={`
-                                            flex flex-row py-1
-                                                ${message ? "text-red-400" : "" }
-                                        `}>
-                                        <span className="text-lg font-medium">
+                                </div>
+                                <div className="flex flex-col items-center w-full">
+                                    <div
+                                        className={`
+                                            flex flex-row py-1 w-full
+                                                ${message ? "text-red-400" : "text-woodsmoke-200"}
+                                        `}
+                                    >
+                                        <span className="text-lg font-medium ">
                                             @
                                         </span>
                                         <input
                                             type="text"
                                             name="username"
                                             value={username || ""}
-                                            onChange={(e) => handleEditUsername(e)}
-                                            // onClick={open}
+                                            onChange={(e) =>
+                                                handleEditUsername(e)
+                                            }
                                             placeholder="Seu Username..."
                                             className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-woodsmoke-900 w-full
+                                                bg-woodsmoke-900
                                                 transition duration-200 ease-in-out
-                                                text-lg  font-medium
+                                                text-lg  font-medium w-min
                                             `}
                                         ></input>
                                     </div>
-                                        <span className={`text-xs text-red-400 ${message ? "mb-2" : "" }`}>
-                                            {message ? message : ""}
-                                        </span>
+                                    <span
+                                        className={`text-xs  text-red-400 ${message ? "mb-2" : ""}`}
+                                    >
+                                        {message ? message : ""}
+                                    </span>
                                 </div>
-                                <div>
+
+                                <Link
+                                    href={`/profile/${username}/followers`}
+                                    className={`
+                                            rounded-lg
+                                            outline-none
+                                            transition duration-200 ease-in-out
+                                            text-base  font-medium py-1 text-woodsmoke-200
+                                            
+                                        `}
+                                >
+                                    {followers} Seguidores
+                                </Link>
+                                <Link
+                                    href={`/profile/${username}/following`}
+                                    className={`
+                                            rounded-lg
+                                            outline-none
+                                            transition duration-200 ease-in-out
+                                            text-base  font-medium py-1 text-woodsmoke-200
+
+                                        `}
+                                >
+                                    {following} Seguindo
+                                </Link>
+                                <div className=" w-full">
                                     <input
                                         type="text"
                                         name="website"
@@ -369,11 +350,11 @@ export default function AccountForm({ user }: { user: User | null }) {
                                             outline-none
                                             bg-woodsmoke-900 w-full
                                             transition duration-200 ease-in-out
-                                            text-lg  font-medium py-1
+                                            text-base text-woodsmoke-200 font-medium py-1
                                         `}
                                     ></input>
                                 </div>
-                                <div>
+                                <div className=" w-full">
                                     <input
                                         type="text"
                                         name="pronouns"
@@ -385,18 +366,16 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         className={`
                                             rounded-lg
                                             outline-none
-                                            bg-woodsmoke-900 w-full
+                                            bg-woodsmoke-900
                                             transition duration-200 ease-in-out
-                                            text-lg  font-medium py-1
+                                            text-base text-woodsmoke-200 font-medium py-1 
                                         `}
                                     ></input>
                                 </div>
                                 <div
                                     className={`
-            
-                                    text-lg
                                    bg-woodsmoke-900 w-full
-                                   dark:text-woodsmoke-100 text-woodsmoke-900
+                                    text-base text-woodsmoke-200 font-medium
                                 `}
                                 >
                                     <Textarea
@@ -417,9 +396,9 @@ export default function AccountForm({ user }: { user: User | null }) {
                             </form>
                         </div>
                     </div>
-                    <div className="flex w-full flex-row gap-4 px-4">
+                    <div className="flex w-full">
                         <button
-                            className=" px-4 py-2 rounded-lg bg-main-500 font-bold text-stone-100 disabled:bg-gray-500 disabled:opacity-50"
+                            className="px-8 py-2 rounded-full bg-main-600 font-bold text-woodsmoke-50 disabled:bg-gray-500 disabled:opacity-50"
                             onClick={() =>
                                 updateProfile({
                                     fullname,
@@ -430,8 +409,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                                     bio,
                                 })
                             }
-                            
-                        disabled={loading || message !== null || !canUpdate}
+                            disabled={loading || message !== null || !canUpdate}
                         >
                             {loading ? "Salvando..." : "Salvar"}
                         </button>

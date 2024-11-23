@@ -79,7 +79,7 @@ export default function Avatar({
                     className={`
                         flex flex-row justify-center items-center
                         bg-neutral-800 rounded-full overflow-hidden
-                        w-48 h-48
+                        size-28
                         
                     `}
                 >
@@ -108,17 +108,17 @@ export default function Avatar({
             )}
             <div style={{ width: size }} className="absolute w-full h-full">
                 <label
-                    className="w-48 h-48 cursor-pointer flex rounded-full justify-center items-center"
+                    className="size-28 cursor-pointer flex rounded-full justify-center items-center"
                     htmlFor="single"
                 >
                     {uploading ? (
-                        <div className="h-48 w-48 flex rounded-full justify-center items-center bg-black/40">
+                        <div className="size-28 flex rounded-full justify-center items-center bg-black/40">
                             Uploading ...
                         </div>
                     ) : (
                         ""
                     )}
-                    <div className="button primary block bg-main-500 p-3 rounded-full absolute right-2 bottom-2 z-20">
+                    <div className="button primary block bg-main-500 p-2 rounded-full absolute right-2 bottom-8 z-20">
                         <Pen size={14} className="" />
                     </div>
                 </label>

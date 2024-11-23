@@ -73,8 +73,6 @@ export default async function Account({
         data: { user },
     } = await supabase.auth.getUser();
 
-    // console.log("user", user!.id);
-
     let userId;
 
     const lowercasedUsername = username.toLowerCase();
@@ -83,8 +81,6 @@ export default async function Account({
         .from("profiles")
         .select()
         .eq("lower_username", lowercasedUsername);
-
-    console.log("data", data![0]?.id);
 
     userId = data![0]?.id;
 

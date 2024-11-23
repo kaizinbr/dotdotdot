@@ -6,6 +6,10 @@ import Avatar from "../../posts/AvatarDisplay";
 import { useSearchParams, useRouter } from "next/navigation";
 import { getPastRelativeTime, formatTimeAsDate } from "@/lib/utils/time";
 import { TbLink, TbCalendar } from "react-icons/tb";
+import FollowBtn from "@/components/core/FollowBtn";
+import getFollowers from "@/lib/utils/getFollowers";
+import getFollowing from "@/lib/utils/getFollowing";
+
 
 export default function DisplayUser({ user }: { user: any }) {
     const supabase = createClient();
@@ -13,12 +17,15 @@ export default function DisplayUser({ user }: { user: any }) {
     const [created_at, setCreatedAt] = useState<Date>(
         new Date(2005, 4, 26, 0, 0, 0),
     );
+    const [id, setId] = useState<string | null>(null);
     const [fullname, setFullname] = useState<string | null>(null);
     const [username, setUsername] = useState<string | null>(null);
     const [website, setWebsite] = useState<string | null>(null);
     const [avatar_url, setAvatarUrl] = useState<string | null>(null);
     const [bio, setBio] = useState<string | null>(null);
     const [pronouns, setPronouns] = useState<string | null>(null);
+    const [followers, setFollowers] = useState<number>(0);
+    const [following, setFollowing] = useState<number>(0);
 
     const getProfile = useCallback(async () => {
         try {
@@ -37,13 +44,20 @@ export default function DisplayUser({ user }: { user: any }) {
 
             if (data) {
                 setCreatedAt(data.created_at);
-                console.log(data.created_at);
+                setId(data.id);
                 setFullname(data.full_name);
                 setUsername(data.username);
                 setWebsite(data.website);
                 setAvatarUrl(data.avatar_url);
                 setBio(data.bio);
                 setPronouns(data.pronouns);
+
+                const followers = await getFollowers(data.id);
+                setFollowers(followers.totalFollowers);
+                
+                const following = await getFollowing(data.id);
+                setFollowing(following.totalFollowing);
+
             }
         } catch (error) {
             alert("Error loading user data!");
@@ -165,33 +179,34 @@ export default function DisplayUser({ user }: { user: any }) {
                                 </p>
                             </div>)}
                             <div className="flex flex-row gap-4 w-full justify-center items-center">
-                                <p
+                                <Link 
+                                    href={`/profile/${username}/followers`}
                                     className={`
                                             rounded-lg
                                             outline-none
-                                            w-full
                                             transition duration-200 ease-in-out
                                             text-base  font-medium py-1 text-woodsmoke-200
                                             text-right
                                         `}
                                 >
-                                    100 Seguidores
-                                </p>
-                                <p
+                                    {followers} Seguidores
+                                </Link>
+                                <Link
+                                    href={`/profile/${username}/following`}
                                     className={`
                                             rounded-lg
                                             outline-none
-                                            w-full
                                             transition duration-200 ease-in-out
                                             text-base  font-medium py-1 text-woodsmoke-200
                                         `}
                                 >
-                                    100 Seguindo
-                                </p>
+                                    {following} Seguindo
+                                </Link>
                             </div>
-                            <button className="mt-3 px-8 py-2 rounded-full bg-main-600 text-woodsmoke-50">
+                            {/* <button className="mt-3 px-8 py-2 rounded-full bg-main-600 text-woodsmoke-50">
                                 Seguir
-                            </button>
+                            </button> */}
+                            <FollowBtn id={id} followers={followers} setFollowers={setFollowers} />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
                             {bio && (<div

@@ -1,6 +1,9 @@
 import Results from "@/components/Search/Results";
 import Search from "@/components/Search/SearchBar";
-import { InvoicesTableSkeleton, InvoicesMobileSkeleton } from "@/components/Skeletons";
+import {
+    InvoicesTableSkeleton,
+    InvoicesMobileSkeleton,
+} from "@/components/Skeletons";
 import { Suspense } from "react";
 
 export default async function Page(props: {
@@ -15,18 +18,10 @@ export default async function Page(props: {
     const query = searchParams?.query || "";
     const currentPage = Number(searchParams?.page) || 1;
 
-    // const [posts, setPosts] = useState([]);
-    // const {
-    //     data: { user },
-    // } = await supabase.auth.getUser();
-
-    // console.log(user);
 
     return (
         <div className="flex-1 w-full flex flex-col gap-20 items-center  mx-auto max-w-4xl  mt-10">
             <Search placeholder="Pesquisar..." />
-            {/* <InvoicesMobileSkeleton /> */}
-            {/* <Results query={query} currentPage={currentPage} /> */}
             <Suspense
                 key={query + currentPage}
                 fallback={<InvoicesMobileSkeleton />}

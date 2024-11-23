@@ -110,22 +110,6 @@ export default function Navigator({ user }: { user: User | null }) {
                         {/* <div className="text-12 font-600">Home</div> */}
                     </Link>
                 </motion.button>
-                {/* <motion.button whileTap={{ scale: 0.75 }}>
-                    <Link
-                        data-active={pathname === "/compose"}
-                        href={`/compose`}
-                        className={`
-                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
-                                flex-col items-center gap-1 rounded-8 p-3
-                                text-woodsmoke-400 data-[active=true]:text-main-600
-                                selected:bg-woodsmoke-400 selected:text-gray-300
-                                 hover:bg-woodsmoke-550 hover:text-main-400
-                                transition-all duration-200 ease-in-out
-                            `}
-                    >
-                        <TbSquareRoundedPlusFilled className="size-6" />
-                    </Link>
-                </motion.button> */}
                 <motion.button whileTap={{ scale: 0.75 }}>
                     <Link
                         data-active={pathname === "/manage"}
@@ -156,8 +140,7 @@ export default function Navigator({ user }: { user: User | null }) {
                                 transition-all duration-200 ease-in-out
                             `}
                     >
-                        <TbSearch className="size-6" />
-                        {/* <div className="text-12 font-600">Pesquisa</div> */}
+                        <Icon type="search" className="h-5" />
                     </Link>
                 </motion.button>
                 <motion.button whileTap={{ scale: 0.75 }}>
