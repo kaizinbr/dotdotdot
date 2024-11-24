@@ -29,7 +29,7 @@ export default function UserPosts({ user }: { user: any }) {
         <div
             className={`
             w-full grid grid-cols-1 md:grid-cols-2 gap-10
-            px-10 pb-20
+            px-4 pb-20
         `}
         >
                 {posts?.map((post) => (

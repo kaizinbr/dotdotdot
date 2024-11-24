@@ -12,3 +12,15 @@
 .inner {
     padding-top: 128px !important;
 }
+
+.modal{
+    @apply bg-woodsmoke-700 rounded-xl;
+}
+
+.modalBody {
+    @apply p-6;
+}
+
+.header {
+    @apply bg-woodsmoke-700;
+}

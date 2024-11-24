@@ -3,19 +3,13 @@
 import { TiptapCollabProvider } from "@hocuspocus/provider";
 import "iframe-resizer/js/iframeResizer.contentWindow";
 import { useSearchParams } from "next/navigation";
-import {
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Doc as YDoc } from "yjs";
 
 import { BlockEditor } from "@/components/BlockEditor";
 import { createClient } from "@/utils/supabase/client";
 
 export default function PostPage({ status }: { status: string }) {
-
-
     const [initialContent, setInitialContent] = useState<string | null>(null);
     const [title, setTitle] = useState<string | null>(null);
     const [image, setImage] = useState<string | null>(null);
@@ -38,12 +32,15 @@ export default function PostPage({ status }: { status: string }) {
             if (!session) {
                 return;
             }
-            const { data: profile } = await supabase.from("profiles").select().eq("id", session!.session!.user.id).single()
+            const { data: profile } = await supabase
+                .from("profiles")
+                .select()
+                .eq("id", session!.session!.user.id)
+                .single();
             console.log(profile);
             setUserImg(profile.avatar_url);
             setUserDisplayName(profile.full_name);
             setUserUsername(profile.username);
-
 
             const exists = await supabase
                 .from("posts")
@@ -57,7 +54,18 @@ export default function PostPage({ status }: { status: string }) {
                 await supabase.from("posts").insert([
                     {
                         room: status,
-                        content: "",
+                        content: {
+                            "type": "doc",
+                            "content": [
+                                {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "class": null,
+                                    "textAlign": "left"
+                                }
+                                }
+                            ]
+                            },
                         author_id: session!.session!.user.id,
                     },
                 ]);
@@ -113,7 +121,11 @@ export default function PostPage({ status }: { status: string }) {
                     initialContent={initialContent}
                     authorId={authorId}
                     loggedId={loggedId}
-                    avatarData={{url: userImg!, username: userUsername!, full_name: userDisplayName!}}
+                    avatarData={{
+                        url: userImg!,
+                        username: userUsername!,
+                        full_name: userDisplayName!,
+                    }}
                 />
             )}
         </>

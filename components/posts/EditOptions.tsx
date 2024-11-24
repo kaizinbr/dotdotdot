@@ -1,12 +1,6 @@
-import { Menu, Button, Text, rem } from "@mantine/core";
-// import {
-//     IconSettings,
-//     IconSearch,
-//     IconPhoto,
-//     IconMessageCircle,
-//     IconTrash,
-//     IconArrowsLeftRight,
-// } from "@tabler/icons-react";
+import { Menu, Button, Modal, Text, rem } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import deletePost from "@/lib/utils/deletePost";
 import {
     Trash2,
     Eye,
@@ -25,104 +19,173 @@ export default function EditOptions({
     post?: any;
     edit?: Boolean;
 }) {
+    console.log(post)
+    const [opened, { open, close }] = useDisclosure(false);
     return (
-        <Menu
-            shadow="md"
-            width={200}
-            position="left-start"
-            offset={0}
-            classNames={{
-                dropdown:
-                    classes.dropdown +
-                    " !bg-woodsmoke-600/80 !border-woodsmoke-500/50 rounded-xl",
-            }}
-        >
-            <Menu.Target>
-                <button
-                    className={`z-40 size-5`}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }}
-                >
-                    <EllipsisVertical className="size-5 text-woodsmoke-300" />
-                </button>
-            </Menu.Target>
-
-            <Menu.Dropdown>
-                <Menu.Label>Opções</Menu.Label>
-                {edit && (
-                    <Menu.Item
-                        leftSection={
-                            <Eye style={{ width: rem(14), height: rem(14) }} />
-                        }
-                        className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
+        <>
+            <Modal
+                opened={opened}
+                onClose={close}
+                withCloseButton={false}
+                overlayProps={{
+                    backgroundOpacity: 0.55,
+                    blur: 3,
+                }}
+                classNames={{
+                    content: classes.modal,
+                    header: classes.header,
+                    body: classes.modalBody,
+                }}
+                className="flex flex-col gap-2"
+                centered
+            >
+                <h1 className="text-center font-bold text-2xl mb-3">
+                    Excluir post {post.id}?
+                </h1>
+                <p className="text-woodsmoke-200">
+                    Essa ação não poderá ser desfeita, e o post será removido do
+                    seu perfil, da timeline de todas as contas que seguem você e
+                    dos resultados de busca.{" "}
+                </p>
+                <div className="flex gap-4 mt-6">
+                    <button
+                        onClick={close}
+                        color="gray"
+                        className="flex-1 border-2 border-main-500 py-2 rounded-full"
+                        
                     >
-                        Visualizar post
-                    </Menu.Item>
-                )}
-                {!edit && (
-                    <>
-                        <Menu.Item
-                            leftSection={
-                                <UserRoundPlus
-                                    style={{ width: rem(14), height: rem(14) }}
-                                />
-                            }
-                            className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
-                        >
-                            Seguir autor
-                        </Menu.Item>
-                        <Menu.Item
-                            leftSection={
-                                <Flag
-                                    style={{ width: rem(14), height: rem(14) }}
-                                />
-                            }
-                            className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
-                        >
-                            Denunciar
-                        </Menu.Item>
-                        <Menu.Item
-                            leftSection={
-                                <ShieldX
-                                    style={{ width: rem(14), height: rem(14) }}
-                                />
-                            }
-                            className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
-                        >
-                            Bloquear autor
-                        </Menu.Item>
-                        <Menu.Item
-                            leftSection={
-                                <Bookmark
-                                    style={{ width: rem(14), height: rem(14) }}
-                                />
-                            }
-                            className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
-                        >
-                            Salvar
-                        </Menu.Item>
-                    </>
-                )}
+                        Cancelar
+                    </button>
+                    <button
+                        onClick={async () => {
 
-                {edit && (
-                    <>
-                        <Menu.Divider className="!border-woodsmoke-500/50" />
-                        <Menu.Label>Danger zone</Menu.Label>
+                            await deletePost(post.id);
+                            close();
+                        }}
+                        color="red"
+                        className="flex-1 transition duration-200 ease-in-out bg-red-500 border-2 border-red-500 hover:bg-transparent py-2 rounded-full"
+                        
+                    >
+                        Deletar
+                    </button>
+                </div>
+            </Modal>
+            <Menu
+                shadow="md"
+                width={200}
+                position="left-start"
+                offset={0}
+                classNames={{
+                    dropdown:
+                        classes.dropdown +
+                        " !bg-woodsmoke-600/80 !border-woodsmoke-500/50 rounded-xl",
+                }}
+            >
+                <Menu.Target>
+                    <button
+                        className={`z-40 size-5`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }}
+                    >
+                        <EllipsisVertical className="size-5 text-woodsmoke-300" />
+                    </button>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                    <Menu.Label>Opções</Menu.Label>
+                    {edit && (
                         <Menu.Item
-                            color="red"
                             leftSection={
-                                <Trash2
+                                <Eye
                                     style={{ width: rem(14), height: rem(14) }}
                                 />
                             }
+                            className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
                         >
-                            Deletar post
+                            Visualizar post
                         </Menu.Item>
-                    </>
-                )}
-            </Menu.Dropdown>
-        </Menu>
+                    )}
+                    {!edit && (
+                        <>
+                            <Menu.Item
+                                leftSection={
+                                    <UserRoundPlus
+                                        style={{
+                                            width: rem(14),
+                                            height: rem(14),
+                                        }}
+                                    />
+                                }
+                                className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
+                            >
+                                Seguir autor
+                            </Menu.Item>
+                            <Menu.Item
+                                leftSection={
+                                    <Flag
+                                        style={{
+                                            width: rem(14),
+                                            height: rem(14),
+                                        }}
+                                    />
+                                }
+                                className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
+                            >
+                                Denunciar
+                            </Menu.Item>
+                            <Menu.Item
+                                leftSection={
+                                    <ShieldX
+                                        style={{
+                                            width: rem(14),
+                                            height: rem(14),
+                                        }}
+                                    />
+                                }
+                                className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
+                            >
+                                Bloquear autor
+                            </Menu.Item>
+                            <Menu.Item
+                                leftSection={
+                                    <Bookmark
+                                        style={{
+                                            width: rem(14),
+                                            height: rem(14),
+                                        }}
+                                    />
+                                }
+                                className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
+                            >
+                                Salvar
+                            </Menu.Item>
+                        </>
+                    )}
+
+                    {edit && (
+                        <>
+                            <Menu.Divider className="!border-woodsmoke-500/50" />
+                            <Menu.Label>Danger zone</Menu.Label>
+                            <Menu.Item
+                                color="red"
+                                leftSection={
+                                    <Trash2
+                                        style={{
+                                            width: rem(14),
+                                            height: rem(14),
+                                        }}
+                                    />
+                                }
+                                onClick={open}
+                            >
+                                Deletar post
+                            </Menu.Item>
+                        </>
+                    )}
+                </Menu.Dropdown>
+            </Menu>
+        </>
     );
 }

@@ -66,16 +66,11 @@ export default function CardPost({
         );
     }, [post]);
 
-    // console.log(post.content.content);
-    // console.log(output);
-
     useEffect(() => {
         async function fetchPostImage() {
             const url = post.content.content.find(
                 (item: any) => item.type === "imageBlock",
             )?.attrs.src;
-
-            // console.log(url);
 
             if (url) {
                 setPostImg(url);
@@ -116,7 +111,6 @@ export default function CardPost({
             whileTap={{ scale: 0.8 }}
             className={`
             flex flex-col 
-            
             bg-woodsmoke-700
             max-w-[600px] w-full
             transition-all duration-200 ease-in-out   
@@ -163,10 +157,10 @@ export default function CardPost({
                         </div>
                     </div>
                 )}
-                <EditOptions edit={edit} />
+                <EditOptions post={post} edit={edit} />
             </div>
             <Link
-                href={`/${edit ? "create" : "status"}/${post.room}`}
+                href={`/${edit ? "compose" : "status"}/${post.room}`}
                 className="z-20"
             >
                 <div className="flex flex-col gap-3 p-3 pb-0 max-h-[500px] overflow-clip">
@@ -196,7 +190,7 @@ export default function CardPost({
                 >
                     <Icon name="eye" type="comment" className="size-6" />
                 </Link>
-                {/* <ShareBtn room={post.room} edit={edit} /> */}
+                <ShareBtn room={post.room} edit={edit} />
             </div>
         </motion.div>
     );
