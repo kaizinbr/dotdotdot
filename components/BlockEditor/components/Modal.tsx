@@ -6,6 +6,8 @@ import classes from "@/styles/EditorInfo.module.css";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+import { useRouter } from "next/navigation";
+
 export default function PubModal({
     room,
     postData,
@@ -29,6 +31,7 @@ export default function PubModal({
     const [isPublic, setIsPublic] = useState(false);
 
     const supabase = createClient();
+    const router = useRouter();
 
     useEffect(() => {
         const fetchPublic = async () => {
@@ -127,9 +130,9 @@ export default function PubModal({
                             await getMainData();
                             await setPublished({ room, value: false })
                         }}
-                        className="rounded-lg px-3 py-2 bg-sky-600 text-xs"
+                        className="!rounded-full !px-4 py-2 !bg-main-600 text-xs"
                         classNames={{
-                            root: classes.modalBtn,
+                            root: "rounded-full px-4 py-2 bg-main-600 text-xs",
                         }}
                     >
                         Despublicar
@@ -172,10 +175,11 @@ export default function PubModal({
                         onClick={async () => {
                             await getMainData();
                             await setPublished({ room, value: true })
+                            router.push('/')
                         }}
-                        className="rounded-lg px-3 py-2 bg-sky-600 text-xs"
+                        className="!rounded-full !px-4 py-2 !bg-main-600 text-xs"
                         classNames={{
-                            root: classes.modalBtn,
+                            root: "rounded-full px-4 py-2 bg-main-600 text-xs",
                         }}
                     >
                         Publicar

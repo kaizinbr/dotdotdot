@@ -59,23 +59,15 @@ export const EditorInfo = memo(
     
         return (
             <div className="flex items-center">
-                <div className="flex flex-col justify-center  mr-2 text-right ">
-                    <div className="text-xs font-semibold text-neutral-300">
+                <div className="flex flex-col justify-center  mr-2 text-right text-xs font-semibold text-neutral-300">
+                    <div className="">
                         {words} {words === 1 ? "palavra" : "palavras"}
                     </div>
-                    <div className="text-xs font-semibold text-neutral-300">
+                    <div className="">
                         {characters}{" "}
                         {characters === 1 ? "caractere" : "caracteres"}
                     </div>
                 </div>
-                {/* <div className="flex items-center gap-2 mr-2">
-                    <div className="flex items-center gap-1">
-                        <Tooltip>
-                                <Settings size={16} className="gap-1 min-w-[2rem] h-8 p-2 w-auto rounded hover:bg-woodsmoke-600 transition-all duration-150 bg-transparent" />
-                        </Tooltip>
-                        {/* <Icon name="Settings" /> 
-                    </div>
-                </div> */}
                 
                 <PubModal room={room} postData={postData} setPostData={setPostData} editor={editor} />
             </div>

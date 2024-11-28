@@ -40,7 +40,7 @@ export default function EditOptions({
                 centered
             >
                 <h1 className="text-center font-bold text-2xl mb-3">
-                    Excluir post {post.id}?
+                    Excluir post?
                 </h1>
                 <p className="text-woodsmoke-200">
                     Essa ação não poderá ser desfeita, e o post será removido do

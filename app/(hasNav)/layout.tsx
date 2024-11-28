@@ -26,7 +26,7 @@ export default async function Layout({
     return (
         <div className="flex flex-col min-h-screen">
             <ArtisticHeader user={user} />
-            <div className="flex flex-col">{children}</div>
+            <div className="flex flex-col mb-20">{children}</div>
             <Mobile>
                 <Navigator user={user} />
             </Mobile>

@@ -132,7 +132,7 @@ export default function CardPost({
                             />
                         </div>
                         <div className="flex items-center justify-center flex-row gap-2">
-                            <h2 className="text-sm">
+                            <h2 className="text-sm h-full flex items-center gap-1">
                                 <span className="text-white font-bold">
                                     {userProfile!.full_name}
                                 </span>{" "}
@@ -140,7 +140,7 @@ export default function CardPost({
                                     @{userProfile!.username}
                                 </span>
                             </h2>
-                            <span className=" text-xs text-stone-500 dark:text-stone-400">
+                            <span className=" h-full flex items-center text-xs text-stone-500 dark:text-stone-400">
                                 <PastRelativeTime
                                     date={new Date(post.updated_at)}
                                 />
@@ -163,7 +163,7 @@ export default function CardPost({
                 href={`/${edit ? "compose" : "status"}/${post.room}`}
                 className="z-20"
             >
-                <div className="flex flex-col gap-3 p-3 pb-0 max-h-[500px] overflow-clip">
+                <div className="flex flex-col gap-3 px-3 pt-2 pb-0 max-h-[500px] overflow-clip">
                     {output && (
                         <div
                             className="text-stone-300 text-sm cardContent"
