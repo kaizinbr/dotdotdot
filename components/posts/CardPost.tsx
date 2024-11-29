@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 
 import Icon from "../core/Icon";
 import { TbBookmark, TbShare3, TbDotsVertical } from "react-icons/tb";
+import LikeBtn from "./LikeBtn";
 
 import { generateHTML } from "@tiptap/html";
 import ExtensionKit from "@/extensions/extension-kit-display";
@@ -184,6 +185,8 @@ export default function CardPost({
                 )}
             </Link>
             <div className="flex w-full flex-row justify gap-3 p-3 ">
+                
+                <LikeBtn postId={post.id}/>
                 <Link
                     href={`/status/${post.room}`}
                     className=" text-xs text-woodsmoke-100"
