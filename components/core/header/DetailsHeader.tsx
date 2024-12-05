@@ -87,7 +87,7 @@ console.log(fullname, username, img)
                     {isPost ? (
                         <>
                             <h2 className=" text-base font-700 text-woodsmoke-100 mx-auto w-2/3 line-clamp-1 overflow-hidden">
-                                {fullname}
+                                Post de {fullname}
                             </h2>
                             <h3 className="text-sm -mt-1 text-woodsmoke-300">
                                 @{username}

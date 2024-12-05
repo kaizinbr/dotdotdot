@@ -9,6 +9,9 @@
 
 
 .ProseMirror {
+    @apply text-base leading-relaxed min-h-[50vh];
+
+
     .is-empty::before {
         @apply text-neutral-500 dark:text-neutral-400;
     }

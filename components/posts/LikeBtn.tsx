@@ -2,7 +2,9 @@
 
 import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
-import Icon from "../core/Icon";
+// import Icon from "../core/Icon";
+// import { GoHeart, GoHeartFill } from "react-icons/go";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 type LikeBtnProps = {
     postId?: string;
@@ -32,7 +34,7 @@ const checkIfLiked = async ({
         .eq("post_id", postId);
 
     if (error) console.error("Error getting likes", error);
-    console.log(data);
+    // console.log(data);
 
     if (data!.length > 0) {
         setIsLiked(true);
@@ -46,7 +48,7 @@ const checkIfLiked = async ({
 
 export default function LikeBtn({ postId, onClick }: LikeBtnProps) {
     const supabase = createClient();
-    console.log(postId)
+    // console.log(postId)
 
     const [isLiked, setIsLiked] = useState<boolean | null>(null);
 
@@ -82,7 +84,6 @@ export default function LikeBtn({ postId, onClick }: LikeBtnProps) {
             if (error) console.error("Error liking post", error);
 
             setIsLiked(false);
-            // setFollowers(followers - 1);
 
             return;
         } else {
@@ -107,16 +108,14 @@ export default function LikeBtn({ postId, onClick }: LikeBtnProps) {
         <button
             onClick={likePost}
             className={`
-                    flex items-center space-x-2 text-gray-500 hover:text-red-500
+                    flex items-center space-x-2  hover:text-red-500
                     transition-colors duration-200 ease-in-out
                     ${isLiked ? "text-red-500" : ""}
                 `}
         >
-            <Icon
-                type="heart"
-                className="size-6"
-                fill={isLiked ? "red" : "none"}
-            />
+            {isLiked ? <AiFillHeart className="size-7" /> : <AiOutlineHeart className="size-7" />}
+            {/* <Icon name="heart" size="sm" /> */}
+            {/* <Icon name="heart-fill" size="sm" /> */}
         </button>
     );
 }

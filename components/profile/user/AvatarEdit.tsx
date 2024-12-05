@@ -106,7 +106,7 @@ export default function Avatar({
                     style={{ height: size, width: size }}
                 />
             )}
-            <div style={{ width: size }} className="absolute w-full h-full">
+            <div style={{ width: size }} className="absolute w-full">
                 <label
                     className="size-28 cursor-pointer flex rounded-full justify-center items-center"
                     htmlFor="single"
@@ -118,7 +118,7 @@ export default function Avatar({
                     ) : (
                         ""
                     )}
-                    <div className="button primary block bg-main-500 p-2 rounded-full absolute right-2 bottom-8 z-20">
+                    <div className="button primary block bg-main-500 p-2 rounded-full absolute right-1 bottom-3 z-20">
                         <Pen size={14} className="" />
                     </div>
                 </label>

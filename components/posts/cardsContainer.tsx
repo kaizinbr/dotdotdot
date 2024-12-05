@@ -1,10 +1,9 @@
-
 "use client";
 import React from "react";
 // import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 import CardPost from "./CardPost";
-import { Masonry } from "react-plock";
+// import { Masonry } from "react-plock";
 
 export default function CardsContainer({
     posts,
@@ -27,7 +26,7 @@ export default function CardsContainer({
         //     className="w-full px-3 mx-auto max-w-4xl"
         // />
 
-        <div className="px-4 gap-5 flex flex-col w-full max-w-[632px]">
+        <div className="px-3 gap-5 flex flex-col w-full max-w-[632px]">
             {posts?.map((post, idx) => (
                 <CardPost key={post.id} post={post} edit={edit} />
             ))}

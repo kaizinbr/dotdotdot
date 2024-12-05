@@ -32,7 +32,7 @@ export const EditorHeader = ({
         <div className={`
             h-[64px] fixed left-0 right-0 top-0 z-[1000] flex flex-row items-center justify-between flex-none py-2 pl-6 pr-4  
             backdrop-blur-xl border-b
-            bg-woodsmoke-600/70 border-woodsmoke-600/70 
+            bg-woodsmoke-900/70 border-woodsmoke-900/70 
         `}>
             <div className="flex flex-row gap-x-1.5 items-center">
                 <Toolbar.Button

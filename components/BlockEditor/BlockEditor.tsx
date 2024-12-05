@@ -76,7 +76,7 @@ export const BlockEditor = ({
                         editor={editor}
                     />
 
-                    <div className="flex flex-row items-center gap-2 mx-4 mt-24">
+                    <div className="flex flex-row items-center gap-2 mx-4 mt-20">
                         <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full ">
                             {avatarData!.url ? (
                                 <AvatarB

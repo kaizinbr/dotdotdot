@@ -72,7 +72,9 @@ export function formatTimeAsDate(date: Date): string {
 
 export function formatTimeAsTime(date: Date): string {
     const datetime = DateTime.fromJSDate(date, { zone: "America/Sao_Paulo" });
-    return datetime.toFormat("dd. MM. yyyy. HH:mm");
+    return datetime.toFormat("dd/MM/yyyy HH:mm");    
+    // return datetime.toFormat("dd/MM/yyyy HH:mm a");
+
 }
 
 export function formatTimeAsSixDigit(date: Date): string {

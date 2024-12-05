@@ -39,7 +39,7 @@ export default async function Page({
         console.error(error);
     }
 
-    const criado = formatTimeAsDate(new Date(data?.created_at));
+    const criado = formatTimeAsTime(new Date(data?.created_at));
     // const atualizadoAs = formatTimeAsTime(new Date(data?.updated_at));
 
     const json = data?.content;
@@ -100,7 +100,7 @@ export default async function Page({
                     </div>
                     <Link
                         href={`/profile/${data?.author_username}`}
-                        className="flex flex-col mb-2 w-fit"
+                        className="flex flex-col mb-2 w-fit px-4"
                     >
                         <picture className="rounded-full overflow-hidden size-16 relative mb-2">
                             <div className="flex relative flex-col justify-center items-center size-16 rounded-full ">
@@ -121,7 +121,7 @@ export default async function Page({
                             </span>
                         </h2>
                     </Link>
-                    <span className="text-xs">
+                    <span className="text-xs px-4">
                         {criado} | Atualizado{" "}
                         <PastRelativeTime date={new Date(data?.updated_at)} />
                     </span>

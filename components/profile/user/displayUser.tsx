@@ -110,6 +110,7 @@ export default function DisplayUser({ user }: { user: any }) {
                                             size={114}
                                             url={avatar_url}
                                             username={username}
+                                            intrisicSize={"size-28"}
                                         />
                                     </div>
                                 )}
@@ -216,7 +217,7 @@ export default function DisplayUser({ user }: { user: any }) {
                                     w-full text-wrap
                                 `}
                             >
-                                <p className="text-woodsmoke-200 font-medium">
+                                <p className="text-woodsmoke-200 font-medium text-wrap break-words">
                                     {bio || ""}
                                 </p>
                             </div>)}

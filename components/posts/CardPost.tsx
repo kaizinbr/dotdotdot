@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useMemo } from "react";
 import { createClient } from "@/utils/supabase/client";
-import Avatar from "./AvatarDisplay";
+import Avatar, { AvatarCard } from "./AvatarDisplay";
 import PastRelativeTime from "../core/PastRelativeTime";
 import EditOptions from "./EditOptions";
 import { motion } from "framer-motion";
@@ -52,10 +52,110 @@ export default function CardPost({
     const [userImg, setUserImg] = useState<string | null>(null);
     const [postImg, setPostImg] = useState<string | null>(null);
 
+    const [avatarUrl, setAvatarUrl] = useState<string | null>("");
+
     const reduced = post.content.content
         .filter((item: any) => item.type !== "imageBlock")
         .slice(0, 3);
 
+    useEffect(() => {
+        async function fetchUserProfile() {
+            const supabase = createClient();
+            const { data, error } = await supabase
+                .from("profiles")
+                .select("*")
+                .eq("id", post.author_id)
+                .single();
+
+            if (error) {
+                console.log(error);
+                return null;
+            }
+            setUserProfile(data);
+            setUserImg(data.avatar_url);
+            localStorage.setItem(
+                `userProfile-${post.author_id}`,
+                JSON.stringify(data),
+            );
+        }
+
+        const cachedUserProfile = localStorage.getItem(
+            `userProfile-${post.author_id}`,
+        );
+        if (cachedUserProfile) {
+            const parsedProfile = JSON.parse(cachedUserProfile);
+            setUserProfile(parsedProfile);
+            setUserImg(parsedProfile.avatar_url);
+        } else {
+            fetchUserProfile();
+        }
+    }, []);
+
+    useEffect(() => {
+        const supabase = createClient();
+        async function downloadImage(path: string) {
+            try {
+                const { data } = supabase.storage
+                    .from("avatars")
+                    .getPublicUrl(path);
+                    
+                setAvatarUrl(data.publicUrl);
+                console.log("Downloaded image:", data);
+            } catch (error) {
+                console.log("Error downloading image: ", error);
+            }
+        }
+
+        // const cachedAvatar = localStorage.getItem(`userAvatar-${post.author_id}`);
+        // if (cachedAvatar) {
+        //     setAvatarUrl(cachedAvatar);
+        //     console.log("Cached avatar:", cachedAvatar);
+        // } else {
+        if (userImg) {
+            downloadImage(userImg);
+
+            // }
+        }
+    }, [userImg]);
+
+    // useEffect(() => {
+    //     const supabase = createClient();
+    //     async function downloadImage(path: string) {
+    //         try {
+    //             // console.log("Downloading image:", path);
+    //             const { data, error } = await supabase.storage
+    //                 .from("avatars")
+    //                 .download(path);
+    //             if (error) {
+    //                 throw error;
+    //             }
+
+    //             const url = URL.createObjectURL(data);
+    //             setAvatarUrl(url);
+
+    //             // const { data, error } = await supabase.storage
+    //             //     .from("avatars")
+    //             //     .createSignedUrl(path, 3600);
+
+    //             localStorage.setItem(`userAvatar-${post.author_id}`, url);
+    //             // localStorage.setItem(`postImg-${post.id}`, url);
+    //             console.log("Downloaded image:", data);
+    //         } catch (error) {
+    //             console.log("Error downloading image: ", error);
+    //         }
+    //     }
+
+    //     // const cachedAvatar = localStorage.getItem(`userAvatar-${post.author_id}`);
+    //     // if (cachedAvatar) {
+    //     //     setAvatarUrl(cachedAvatar);
+    //     //     console.log("Cached avatar:", cachedAvatar);
+    //     // } else {
+    //     if (userImg) {
+    //         downloadImage(userImg);
+
+    //         // }
+    //     }
+    // }, [userImg]);
 
     const output = useMemo(() => {
         return generateHTML(
@@ -75,41 +175,25 @@ export default function CardPost({
 
             if (url) {
                 setPostImg(url);
+                localStorage.setItem(`postImg-${post.id}`, url);
             }
         }
 
-        fetchPostImage();
-    }, []);
-
-    useEffect(() => {
-        async function fetchUserProfile() {
-            const supabase = createClient();
-            const { data, error } = await supabase
-                .from("profiles")
-                .select("*")
-                .eq("id", post.author_id)
-                .single();
-
-            if (error) {
-                console.log(error);
-                return null;
-            }
-            // console.log(data)
-            setUserProfile(data);
-            setUserImg(data.avatar_url);
+        const cachedPostImg = localStorage.getItem(`postImg-${post.id}`);
+        if (cachedPostImg) {
+            setPostImg(cachedPostImg);
+        } else {
+            fetchPostImage();
         }
+    }, [post]);
 
-        fetchUserProfile();
-    }, []);
-
-    
     if (post.content.length === 0) {
         return null;
     }
 
     return (
-        <motion.div
-            whileTap={{ scale: 0.8 }}
+        <div
+            // whileTap={{ scale: 0.8 }}
             className={`
             flex flex-col 
             bg-woodsmoke-700
@@ -122,12 +206,12 @@ export default function CardPost({
                 {userProfile && (
                     <Link
                         href={`/profile/${userProfile.username}`}
-                        className="flex flex-row items-center gap-1"
+                        className="flex flex-row items-center gap-2"
                     >
-                        <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full ">
-                            <Avatar
-                                size={36}
-                                url={userImg}
+                        <div className="flex relative flex-col justify-center items-center size-8 rounded-full">
+                            <AvatarCard
+                                size={32}
+                                url={avatarUrl}
                                 username={userProfile.username}
                                 intrisicSize={"size-8"}
                             />
@@ -152,7 +236,7 @@ export default function CardPost({
                 {!userProfile && (
                     <div className="flex flex-row items-center gap-1">
                         <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full bg-woodsmoke-550"></div>
-                        <div className="flex items-center justify-center flex-row gap-2">
+                        <div className="flex items-</span>center justify-center flex-row gap-2">
                             <h2 className="text-sm"> </h2>
                             <span className=" text-xs text-stone-500 dark:text-stone-400"></span>
                         </div>
@@ -185,8 +269,6 @@ export default function CardPost({
                 )}
             </Link>
             <div className="flex w-full flex-row justify gap-3 p-3 ">
-                
-                <LikeBtn postId={post.id}/>
                 <Link
                     href={`/status/${post.room}`}
                     className=" text-xs text-woodsmoke-100"
@@ -194,7 +276,8 @@ export default function CardPost({
                     <Icon name="eye" type="comment" className="size-6" />
                 </Link>
                 <ShareBtn room={post.room} edit={edit} />
+                <LikeBtn postId={post.id} />
             </div>
-        </motion.div>
+        </div>
     );
 }

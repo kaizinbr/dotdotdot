@@ -8,31 +8,26 @@ export default function Avatar({
     url,
     size,
     username,
-    intrisicSize
+    intrisicSize,
 }: {
     url: string | null;
     size: number;
     username?: string | null;
     intrisicSize?: string;
 }) {
-    const supabase = createClient();
     const [avatarUrl, setAvatarUrl] = useState<string | null>(url);
-    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
         // console.log("effect")
+        const supabase = createClient();
         async function downloadImage(path: string) {
             try {
-                // console.log("Downloading image:", path);
-                const { data, error } = await supabase.storage
+                const { data } = supabase.storage
                     .from("avatars")
-                    .download(path);
-                if (error) {
-                    throw error;
-                }
+                    .getPublicUrl(path);
 
-                const url = URL.createObjectURL(data);
-                setAvatarUrl(url);
+                setAvatarUrl(data.publicUrl);
+                console.log("Downloaded image:", data);
             } catch (error) {
                 console.log("Error downloading image: ", error);
             }
@@ -41,7 +36,6 @@ export default function Avatar({
         if (url) downloadImage(url);
     }, []);
 
-   
     return (
         <>
             {avatarUrl ? (
@@ -66,7 +60,77 @@ export default function Avatar({
                         style={{ height: size, width: "auto" }}
                     />
                 </picture>
-            ) : ""}
+            ) : (
+                ""
+            )}
+        </>
+    );
+}
+
+export function AvatarCard({
+    url,
+    size,
+    username,
+    intrisicSize,
+}: {
+    url: string | null;
+    size: number;
+    username?: string | null;
+    intrisicSize?: string;
+}) {
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(url);
+
+    // useEffect(() => {
+    //     // console.log("effect")
+    // const supabase = createClient();
+    //     async function downloadImage(path: string) {
+    //         try {
+    //             // console.log("Downloading image:", path);
+    //             const { data, error } = await supabase.storage
+    //                 .from("avatars")
+    //                 .download(path);
+    //             if (error) {
+    //                 throw error;
+    //             }
+
+    //             const url = URL.createObjectURL(data);
+    //             setAvatarUrl(url);
+    //             console.log("Downloaded image:", url);
+    //         } catch (error) {
+    //             console.log("Error downloading image: ", error);
+    //         }
+    //     }
+
+    //     if (url) downloadImage(url);
+    // }, []);
+
+    return (
+        <>
+            {url ? (
+                <picture
+                    className={`
+                        flex flex-row justify-center items-center
+                        bg-neutral-800 rounded-full overflow-hidden
+                        ${intrisicSize}
+                        
+                    `}
+                >
+                    <Image
+                        width={size}
+                        height={size}
+                        src={url}
+                        alt="Avatar"
+                        className={`
+                                object-cover object-center
+                                min-w-full
+                                avatar image
+                            `}
+                        style={{ height: size, width: "auto" }}
+                    />
+                </picture>
+            ) : (
+                ""
+            )}
         </>
     );
 }

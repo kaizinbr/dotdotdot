@@ -20,7 +20,7 @@ import classes from "@/styles/EditOptions.module.css";
 
 import { WhatsappShare, TwitterShare, EmailShare } from "react-share-kit";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const useCopyToClipboard = () => {
     const [isCopied, setIsCopied] = useState(false);
@@ -58,7 +58,10 @@ export default function ShareBtn({
     room?: any;
     edit?: Boolean;
 }) {
-    const baseUrl = window.location.href
+    const [baseUrl, setBaseUrl] = useState<string>("");
+    useEffect(() => {
+        setBaseUrl(window.location.origin);
+    }, []);
     return (
         <Menu
             shadow="md"

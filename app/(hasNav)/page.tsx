@@ -9,7 +9,8 @@ export default async function Index() {
         .from("posts")
         .select()
         .eq("public", true)
-        .order("updated_at", { ascending: false });
+        .order("updated_at", { ascending: false })
+        // .range(0, 29)
         // .eq("author_id", "f2fa3e53-f0fa-47a2-9eda-b50511239d70")
 
 

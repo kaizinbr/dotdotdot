@@ -19,15 +19,12 @@ export default function AvatarB({
     useEffect(() => {
         async function downloadImage(path: string) {
             try {
-                const { data, error } = await supabase.storage
+                const { data } = supabase.storage
                     .from("avatars")
-                    .download(path);
-                if (error) {
-                    throw error;
-                }
-
-                const url = URL.createObjectURL(data);
-                setAvatarUrl(url);
+                    .getPublicUrl(path);
+                    
+                setAvatarUrl(data.publicUrl);
+                console.log("Downloaded image:", data);
             } catch (error) {
                 console.log("Error downloading image: ", error);
             }
@@ -44,9 +41,9 @@ export default function AvatarB({
             src={avatarUrl}
             alt="Avatar"
             className={`
-                        ${className}
-                        size-6 rounded-full text-woodsmoke-700
-                        `}
+                ${className}
+                size-6 rounded-full text-woodsmoke-700
+            `}
             size={size}
         />
         // </Link>

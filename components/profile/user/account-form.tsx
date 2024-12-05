@@ -212,7 +212,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                                     gap-3 pt-8 px-4 w-full h-56
                                     bg-gradient-to- from-transparent to-black/45 from-40%
                                     z-30
-                        `}
+                                `}
                             >
                                 <Avatar
                                     uid={user?.id ?? null}

@@ -5,6 +5,7 @@ import {
     Trash2,
     Eye,
     EllipsisVertical,
+    EllipsisIcon,
     Flag,
     ShieldX,
     Bookmark,
@@ -19,7 +20,7 @@ export default function EditOptions({
     post?: any;
     edit?: Boolean;
 }) {
-    console.log(post)
+    // console.log(post)
     const [opened, { open, close }] = useDisclosure(false);
     return (
         <>
@@ -89,7 +90,7 @@ export default function EditOptions({
                             e.stopPropagation();
                         }}
                     >
-                        <EllipsisVertical className="size-5 text-woodsmoke-300" />
+                        <EllipsisIcon className="size-5 text-woodsmoke-300" />
                     </button>
                 </Menu.Target>
 
