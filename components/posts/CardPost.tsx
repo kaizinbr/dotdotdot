@@ -56,7 +56,7 @@ export default function CardPost({
     const [postData, setPostData] = useState<any | null>(null);
 
     const [avatarUrl, setAvatarUrl] = useState<string | null>("");
-    // console.log("Post data:", post);
+    // console.log("Post data:", post.room);
 
     const getPostData = useCallback(async () => {
         try {
@@ -80,7 +80,7 @@ export default function CardPost({
 
     const reduced = post.content.content
         .filter((item: any) => item.type !== "imageBlock")
-        .slice(0, 3);
+        .slice(0, 5);
 
     useEffect(() => {
         async function fetchUserProfile() {
@@ -97,22 +97,9 @@ export default function CardPost({
             }
             setUserProfile(data);
             setUserImg(data.avatar_url);
-            localStorage.setItem(
-                `userProfile-${post.author_id}`,
-                JSON.stringify(data),
-            );
         }
 
-        const cachedUserProfile = localStorage.getItem(
-            `userProfile-${post.author_id}`,
-        );
-        if (cachedUserProfile) {
-            const parsedProfile = JSON.parse(cachedUserProfile);
-            setUserProfile(parsedProfile);
-            setUserImg(parsedProfile.avatar_url);
-        } else {
-            fetchUserProfile();
-        }
+        fetchUserProfile();
     }, []);
 
     useEffect(() => {
@@ -130,15 +117,8 @@ export default function CardPost({
             }
         }
 
-        // const cachedAvatar = localStorage.getItem(`userAvatar-${post.author_id}`);
-        // if (cachedAvatar) {
-        //     setAvatarUrl(cachedAvatar);
-        //     console.log("Cached avatar:", cachedAvatar);
-        // } else {
         if (userImg) {
             downloadImage(userImg);
-
-            // }
         }
     }, [userImg]);
 
@@ -255,8 +235,8 @@ export default function CardPost({
                 )}
                 {!userProfile && (
                     <div className="flex flex-row items-center gap-1">
-                        <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full bg-woodsmoke-550"></div>
-                        <div className="flex items-</span>center justify-center flex-row gap-2">
+                        <div className="flex relative flex-col justify-center items-center size-8 rounded-full bg-woodsmoke-550"></div>
+                        <div className="flex items-center justify-center flex-row gap-2">
                             <h2 className="text-sm"> </h2>
                             <span className=" text-xs text-stone-400"></span>
                         </div>

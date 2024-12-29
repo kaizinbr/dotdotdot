@@ -113,7 +113,6 @@ export default async function Account({
                         <DisplayUser user={data} />
                     )}
                     <DisplayPosts user={userId} />
-                    {/* <DisplayContent user={data} /> */}
                 </>
             )}
         </div>

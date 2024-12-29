@@ -96,7 +96,7 @@ export default function ShareBtn({
                     }
                     className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
                 >
-                    <CopyToClipboardButton content={`${baseUrl}status/${room}`} />
+                    <CopyToClipboardButton content={`${baseUrl}/status/${room}`} />
                 </Menu.Item>
                 <Menu.Item
                     leftSection={
@@ -107,7 +107,7 @@ export default function ShareBtn({
                     className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
                 >
                     <WhatsappShare
-                        url={`${baseUrl}status/${room}`}
+                        url={`${baseUrl}/status/${room}`}
                         blankTarget={true}
                         buttonTitle={"WhatsApp"}
                     />
@@ -121,7 +121,7 @@ export default function ShareBtn({
                     className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
                 >
                     <TwitterShare
-                        url={`${baseUrl}status/${room}`}
+                        url={`${baseUrl}/status/${room}`}
                         blankTarget={true}
                         buttonTitle={"Twitter"}
                     />
@@ -133,7 +133,7 @@ export default function ShareBtn({
                     className=" !text-woodsmoke-50 data-[hovered=true]:!bg-woodsmoke-500"
                 >
                     <EmailShare
-                        url={`${baseUrl}status/${room}`}
+                        url={`${baseUrl}/status/${room}`}
                         blankTarget={true}
                         buttonTitle={"E-Mail"}
                     />

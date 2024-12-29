@@ -14,6 +14,7 @@ export default function DisplayPosts({ user }: { user: any }) {
     const supabase = createClient();
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState<any[]| null>([]);
+    const [postslength, setPostslength] = useState<number>(0);
     const [noPosts, setNoPosts] = useState(false);
 
     const getPosts = useCallback(async () => {
@@ -26,6 +27,15 @@ export default function DisplayPosts({ user }: { user: any }) {
                 .eq("author_id", user)
                 .eq("public", true)
                 .order('updated_at', { ascending: false })
+                .range(0, 29);
+
+                const { data: plength } = await supabase
+                .from("posts")
+                .select()
+                .eq("author_id", user)
+                .eq("public", true);
+
+            setPostslength(plength?.length!);
 
             if (error && status !== 406) {
                 console.log(error);
@@ -64,7 +74,7 @@ export default function DisplayPosts({ user }: { user: any }) {
                             </h1>
                         </div>
                     ) : (
-                        <CardsContainer posts={posts} />
+                        <CardsContainer posts={posts} postslength={postslength} author_id={user} />
                     )}
                 </div>
             </div>
