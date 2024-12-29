@@ -264,9 +264,10 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         type="text"
                                         name="name"
                                         value={fullname || ""}
-                                        onChange={(e) =>
-                                            setFullname(e.target.value)
-                                        }
+                                        onChange={(e) => {
+                                            setFullname(e.target.value);
+                                            setCanUpdate(true);
+                                        }}
                                         placeholder="Seu Nome..."
                                         className={`
                                             rounded-lg
@@ -341,8 +342,10 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         type="text"
                                         name="website"
                                         value={website || ""}
-                                        onChange={(e) =>
-                                            setWebsite(e.target.value)
+                                        onChange={(e) =>    {
+                                            setWebsite(e.target.value);
+                                            setCanUpdate(true);
+                                        }
                                         }
                                         placeholder="Site"
                                         className={`
@@ -360,7 +363,10 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         name="pronouns"
                                         value={pronouns || ""}
                                         onChange={(e) =>
-                                            setPronouns(e.target.value)
+                                        {
+                                            setPronouns(e.target.value);
+                                            setCanUpdate(true);
+                                        }
                                         }
                                         placeholder="Pronomes"
                                         className={`
@@ -390,7 +396,10 @@ export default function AccountForm({ user }: { user: User | null }) {
                                             root: "w-full",
                                             input: classes.textareaInput,
                                         }}
-                                        onChange={(e) => setBio(e.target.value)}
+                                        onChange={(e) => {
+                                            setBio(e.currentTarget.value);
+                                            setCanUpdate(true);
+                                        }}
                                     />
                                 </div>
                             </form>

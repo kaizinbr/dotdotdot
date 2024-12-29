@@ -56,11 +56,33 @@ export default function CardPost({
     const [postData, setPostData] = useState<any | null>(null);
 
     const [avatarUrl, setAvatarUrl] = useState<string | null>("");
-    // console.log("Post data:", post.room);
+    const [amIAuthor, setAmIAuthor] = useState<boolean>(false);
+
+    useEffect(() => {
+        async function checkAuthor() {
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
+
+            console.log(post.author_id, user?.id);
+
+            if (post.author_id == user?.id) {
+                setAmIAuthor(true);
+            } else {
+                setAmIAuthor(false);
+            }
+                console.log(amIAuthor, "aaaa");
+        }
+
+        checkAuthor();
+    }, []);
 
     const getPostData = useCallback(async () => {
         try {
             // setLoading(true);
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
 
             const { data, error, status } = await supabase
                 .from("posts")
@@ -73,6 +95,7 @@ export default function CardPost({
                 throw error;
             }
             setPostData(data);
+            // if (data.)
         } catch (error) {
             alert("Error loading user data!");
         }
@@ -183,8 +206,7 @@ export default function CardPost({
             }
         }
 
-            fetchPostImage();
-        
+        fetchPostImage();
     }, [post]);
 
     if (post.content.length === 0) {
@@ -271,7 +293,6 @@ export default function CardPost({
 
             {post.is_quote && (
                 <div className="flex flex-col gap-3 p-3">
-                    
                     <QuoteCard post={post.quoted_id} />
                 </div>
             )}
