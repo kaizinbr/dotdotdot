@@ -12,7 +12,7 @@ import { randomElement } from "../lib/utils";
 import { EditorUser } from "../components/BlockEditor/types";
 import { useSidebar } from "./useSidebar";
 // import { initialContent } from "../lib/data/initialContent";
-import updateOnDB from "@/lib/utils/updateOnDB";
+import updateOnDB, {debounce } from "@/lib/utils/updateOnDB";
 
 declare global {
     interface Window {

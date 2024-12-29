@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/client";
 import classes from "@/styles/EditorInfo.module.css";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Loading from "@/components/Loading";
 
 import { useRouter } from "next/navigation";
 
@@ -13,12 +14,15 @@ export default function PubModal({
     postData,
     setPostData,
     editor,
+    setLoading,
 }: {
     room: string;
     postData: any[];
     setPostData: Function;
     editor?: any;
+    setLoading: Function;
 }) {
+    
     const [opened, { open, close }] = useDisclosure(false);
     const [title, setTitle] = useState<string | null>(null);
     const [image, setImage] = useState<string | null>(null);
@@ -105,24 +109,34 @@ export default function PubModal({
         room: string;
         value: boolean;
     }) {
+        setLoading(true);
+        await getMainData();
+
+
         const { data, error } = await supabase
             .from("posts")
             .update({
                 public: value,
+                content: editor.getJSON(),
                 title: titleFromEditor,
                 image: imageFromEditor,
             })
             .eq("room", room);
-
         setIsPublic(value);
+
 
         if (error) {
             console.log("Error updating post: ", error);
+            setLoading(false);
             throw error;
         }
+
+        router.push('/');
+        setLoading(false);
     }
     return (
         <>
+            
             {isPublic ? (
                 <>
                     <Button
@@ -173,9 +187,8 @@ export default function PubModal({
                 <>
                     <Button
                         onClick={async () => {
-                            await getMainData();
                             await setPublished({ room, value: true })
-                            router.push('/')
+                            // router.push('/')
                         }}
                         className="!rounded-full !px-4 py-2 !bg-main-600 text-xs"
                         classNames={{

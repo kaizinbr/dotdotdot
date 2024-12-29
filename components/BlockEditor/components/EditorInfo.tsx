@@ -22,12 +22,13 @@ export type EditorInfoProps = {
     users: EditorUser[];
     room: string | any;
     editor?: any;
+    setLoading: any;
 };
 
 
 
 export const EditorInfo = memo(
-    ({ characters, collabState, users, words, room, editor }: EditorInfoProps) => {
+    ({ characters, collabState, users, words, room, editor, setLoading }: EditorInfoProps) => {
         const [opened, { open, close }] = useDisclosure(false);
         const [postData, setPostData] = useState<any[]>([]);
         const [title, setTitle] = useState<string | null>(null);
@@ -69,7 +70,7 @@ export const EditorInfo = memo(
                     </div>
                 </div>
                 
-                <PubModal room={room} postData={postData} setPostData={setPostData} editor={editor} />
+                <PubModal room={room} postData={postData} setPostData={setPostData} editor={editor} setLoading={setLoading} />
             </div>
         );
     },

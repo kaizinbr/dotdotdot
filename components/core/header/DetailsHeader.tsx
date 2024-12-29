@@ -67,13 +67,13 @@ console.log(fullname, username, img)
     return (
         <div
             className={`
-            fixed left-0 z-20 h-16 w-full
+            fixed left-0 z-20 h-14 w-full
             ${scrollDirection == "down" ? "-top-20" : "top-0"}
             transition-all duration-300
             lg:hidden
             border-b
             bg-woodsmoke-600/70 border-woodsmoke-600/70 
-            backdrop-blur-lg py-3
+            backdrop-blur-lg py-2
         `}
         >
             <div className="absolute h-10 w-full lg:left-1/2 lg:max-w-screen-lgx lg:-translate-x-1/2">

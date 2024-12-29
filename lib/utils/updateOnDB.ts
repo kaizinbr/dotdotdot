@@ -1,19 +1,21 @@
 
+export function debounce(callback: Function, delay: number) {
+    let timeoutId: any;
+    // console.log(timeoutId);
+
+    return function () {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(callback, delay);
+        // console.log(timeoutId);
+    };
+}
 
 const updatePost = async (editor: any, room: any, supabase: any) => {
     const content = editor.getJSON();
-    // const extractTitleFromEditor =
-    //     content.content.find(
-    //         (item: any) => item.type === "heading" && item.content,
-    //     ).content[0].text || null;
-
-    // console.log(extractTitleFromEditor);
-
     const extractImageFromEditor =
-        content.content.find((item: any) => item.type === "imageBlock")|| null;
+        content.content.find((item: any) => item.type === "imageBlock") || null;
 
     const image = extractImageFromEditor ? extractImageFromEditor.attrs.src : null;
-    
 
     const {
         data: { user },
@@ -39,9 +41,7 @@ const updatePost = async (editor: any, room: any, supabase: any) => {
             .update({
                 content,
                 updated_at: new Date(),
-                title: null,
-                image,
-                author_username: userProfile.data[0].username,
+                image
             })
             .eq("room", room);
 
@@ -53,23 +53,15 @@ const updatePost = async (editor: any, room: any, supabase: any) => {
     }
 };
 
-function debounce(callback: Function, delay: number) {
-    let timeoutId: any;
-    // console.log(timeoutId);
+const debouncedUpdatePost = debounce(updatePost, 1000);
 
-    return function () {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(callback, delay);
-        // console.log(timeoutId);
-    };
-}
 
 export default function updateOnDB(editor: any, room: any, supabase: any) {
     try {
         if (editor) {
             const debounced = debounce(
                 () => updatePost(editor, room, supabase),
-                1000,
+                500,
             );
             debounced();
         }

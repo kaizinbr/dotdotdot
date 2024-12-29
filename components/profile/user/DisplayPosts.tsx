@@ -59,7 +59,7 @@ export default function DisplayPosts({ user }: { user: any }) {
                         <LoadingSm />
                     ) : noPosts ? (
                         <div className="flex flex-col items-center">
-                            <h1 className="text-2xl font-bold mt-12 mb-4">
+                            <h1 className="text-xl font-bold mt-12 mb-4">
                                 Nenhum post ainda...
                             </h1>
                         </div>

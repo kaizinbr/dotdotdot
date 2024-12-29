@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Avatar, { AvatarCard } from "./AvatarDisplay";
 import PastRelativeTime from "../core/PastRelativeTime";
@@ -11,12 +11,12 @@ import EditOptions from "./EditOptions";
 import { motion } from "framer-motion";
 
 import Icon from "../core/Icon";
-import { TbBookmark, TbShare3, TbDotsVertical } from "react-icons/tb";
 import LikeBtn from "./LikeBtn";
 
 import { generateHTML } from "@tiptap/html";
 import ExtensionKit from "@/extensions/extension-kit-display";
 import ShareBtn from "./ShareBtn";
+import QuoteCard from "./QuoteCard";
 
 interface Post {
     title: string;
@@ -48,11 +48,35 @@ export default function CardPost({
     post: any;
     edit?: Boolean;
 }) {
+    const supabase = createClient();
     const [userProfile, setUserProfile] = useState<User | null>(null);
     const [userImg, setUserImg] = useState<string | null>(null);
     const [postImg, setPostImg] = useState<string | null>(null);
 
+    const [postData, setPostData] = useState<any | null>(null);
+
     const [avatarUrl, setAvatarUrl] = useState<string | null>("");
+    // console.log("Post data:", post);
+
+    const getPostData = useCallback(async () => {
+        try {
+            // setLoading(true);
+
+            const { data, error, status } = await supabase
+                .from("posts")
+                .select()
+                .eq("id", post.id)
+                .eq("public", true);
+
+            if (error && status !== 406) {
+                console.log(error);
+                throw error;
+            }
+            setPostData(data);
+        } catch (error) {
+            alert("Error loading user data!");
+        }
+    }, [post, supabase]);
 
     const reduced = post.content.content
         .filter((item: any) => item.type !== "imageBlock")
@@ -98,7 +122,7 @@ export default function CardPost({
                 const { data } = supabase.storage
                     .from("avatars")
                     .getPublicUrl(path);
-                    
+
                 setAvatarUrl(data.publicUrl);
                 console.log("Downloaded image:", data);
             } catch (error) {
@@ -175,16 +199,12 @@ export default function CardPost({
 
             if (url) {
                 setPostImg(url);
-                localStorage.setItem(`postImg-${post.id}`, url);
+                // localStorage.setItem(`postImg-${post.id}`, url);
             }
         }
 
-        const cachedPostImg = localStorage.getItem(`postImg-${post.id}`);
-        if (cachedPostImg) {
-            setPostImg(cachedPostImg);
-        } else {
             fetchPostImage();
-        }
+        
     }, [post]);
 
     if (post.content.length === 0) {
@@ -238,7 +258,7 @@ export default function CardPost({
                         <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full bg-woodsmoke-550"></div>
                         <div className="flex items-</span>center justify-center flex-row gap-2">
                             <h2 className="text-sm"> </h2>
-                            <span className=" text-xs text-stone-500 dark:text-stone-400"></span>
+                            <span className=" text-xs text-stone-400"></span>
                         </div>
                     </div>
                 )}
@@ -268,6 +288,14 @@ export default function CardPost({
                     </picture>
                 )}
             </Link>
+
+            {post.is_quote && (
+                <div className="flex flex-col gap-3 p-3">
+                    
+                    <QuoteCard post={post.quoted_id} />
+                </div>
+            )}
+
             <div className="flex w-full flex-row justify gap-3 p-3 ">
                 <Link
                     href={`/status/${post.room}`}

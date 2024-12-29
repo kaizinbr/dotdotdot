@@ -15,6 +15,7 @@ export type EditorHeaderProps = {
     users: EditorUser[];
     room: string | any;
     editor?: any;
+    setLoading: any;
 };
 
 export const EditorHeader = ({
@@ -26,11 +27,12 @@ export const EditorHeader = ({
     toggleSidebar,
     room,
     editor,
+    setLoading,
 }: EditorHeaderProps) => {
     const router = useRouter();
     return (
         <div className={`
-            h-[64px] fixed left-0 right-0 top-0 z-[1000] flex flex-row items-center justify-between flex-none py-2 pl-6 pr-4  
+            h-[64px] fixed left-0 right-0 top-0 z-[500] flex flex-row items-center justify-between flex-none py-2 pl-6 pr-4  
             backdrop-blur-xl border-b
             bg-woodsmoke-900/70 border-woodsmoke-900/70 
         `}>
@@ -50,6 +52,7 @@ export const EditorHeader = ({
                 users={users}
                 room={room}
                 editor={editor}
+                setLoading={setLoading}
             />
         </div>
     );

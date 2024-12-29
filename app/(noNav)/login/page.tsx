@@ -97,7 +97,7 @@ export default function Login({
                         Login
                     </SubmitButton>
                     <SubmitButton
-                        // formAction={signUp}
+                        formAction={signUp}
                         className="rounded-xl border-2 border-main-600 px-4 py-2 text-foreground font-bold mb-2 opacity-50"
                         pendingText="Cadastrando..."
                         disabled

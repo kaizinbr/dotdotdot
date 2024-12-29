@@ -2,7 +2,7 @@
 
 import { TiptapCollabProvider } from "@hocuspocus/provider";
 import "iframe-resizer/js/iframeResizer.contentWindow";
-import { useSearchParams } from "next/navigation";
+import Loading from "../Loading";
 import { useEffect, useMemo, useState } from "react";
 import { Doc as YDoc } from "yjs";
 
@@ -55,17 +55,17 @@ export default function PostPage({ status }: { status: string }) {
                     {
                         room: status,
                         content: {
-                            "type": "doc",
-                            "content": [
+                            type: "doc",
+                            content: [
                                 {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "class": null,
-                                    "textAlign": "left"
-                                }
-                                }
-                            ]
-                            },
+                                    type: "paragraph",
+                                    attrs: {
+                                        class: null,
+                                        textAlign: "left",
+                                    },
+                                },
+                            ],
+                        },
                         author_id: session!.session!.user.id,
                     },
                 ]);
@@ -112,6 +112,9 @@ export default function PostPage({ status }: { status: string }) {
 
     return (
         <>
+            {/* <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex justify-center items-center">
+                <Loading />
+            </div> */}
             {authorId && loggedId && (
                 <BlockEditor
                     hasCollab={false}
