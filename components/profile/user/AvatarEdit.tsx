@@ -5,22 +5,30 @@ import Image from "next/image";
 import { Avatar as Ava2 } from "@mantine/core";
 import { Pen } from "lucide-react";
 
+import { extractColors } from "extract-colors";
+
+import { updateColor } from "./ChangeColors";
+
 export default function Avatar({
     uid,
     url,
     size,
     onUpload,
-    username,
+    setColors,
+    setCurrentColor,
 }: {
     uid: string | null;
     url: string | null;
     size: number;
     onUpload: (url: string) => void;
-    username?: string | null;
+    setColors: Function;
+    setCurrentColor: (color: string) => void;
 }) {
     const supabase = createClient();
     const [avatarUrl, setAvatarUrl] = useState<string | null>(url);
     const [uploading, setUploading] = useState(false);
+
+    
 
     useEffect(() => {
         async function downloadImage(path: string) {
@@ -34,6 +42,28 @@ export default function Avatar({
 
                 const url = URL.createObjectURL(data);
                 setAvatarUrl(url);
+                extractColors(url)
+                    .then((colors) => {
+                        console.log(colors);
+                        setColors(colors);
+                        setCurrentColor(colors[0].hex);
+
+                        // analisa e pega o que tem mais intensidade
+                        const maxIntensityColor = colors.reduce(
+                            (prev, current) => {
+                                const prevIntensity =
+                                    prev.intensity;
+                                const currentIntensity =
+                                    current.intensity;
+                                return currentIntensity > prevIntensity
+                                    ? current
+                                    : prev;
+                            },
+                        );
+                        setCurrentColor(maxIntensityColor.hex);
+                        updateColor(maxIntensityColor.hex);
+                    })
+                    .catch(console.error);
             } catch (error) {
                 console.log("Error downloading image: ", error);
             }
@@ -65,6 +95,7 @@ export default function Avatar({
             }
 
             onUpload(filePath);
+            // console.log(colors);
         } catch (error) {
             alert("Error uploading avatar!");
         } finally {

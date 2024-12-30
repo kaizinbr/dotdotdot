@@ -12,7 +12,24 @@ import Icon from "@/components/core/Icon";
 import getFollowers from "@/lib/utils/getFollowers";
 import getFollowing from "@/lib/utils/getFollowing";
 
+import { extractColors } from "extract-colors";
+
 import classes from "./AcForm.module.css";
+import ChangeColors from "./ChangeColors";
+
+interface Colors {
+    hex: string;
+    red: number;
+    green: number;
+    blue: number;
+    area: number;
+    hue: number;
+    saturation: number;
+    lightness: number;
+    intensity: number;
+    
+}
+
 
 export default function AccountForm({ user }: { user: User | null }) {
     const supabase = createClient();
@@ -30,6 +47,9 @@ export default function AccountForm({ user }: { user: User | null }) {
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
     const [followers, setFollowers] = useState<number>(0);
     const [following, setFollowing] = useState<number>(0);
+
+    const [colors, setColors] = useState<Colors[]>([]);
+    const [currentColor, setCurrentColor] = useState<string>("#30d8d8");
 
     const handleEditUsername = (e: ChangeEvent<HTMLInputElement>) => {
         if (containsSpecialChars(e.target.value)) {
@@ -137,7 +157,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                 updated_at: new Date().toISOString(),
             });
             if (error) throw error;
-            alert("Profile updated!");
+            // alert("Profile updated!");
         } catch (error) {
             alert("Error updating the data!");
         } finally {
@@ -170,6 +190,16 @@ export default function AccountForm({ user }: { user: User | null }) {
 
     return (
         <>
+            <div
+                className={`
+                    absolute h-80 w-full -z-50 from-40 
+                    transition-all duration-200 ease-in-out
+                `}
+                style={{
+                    backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
+                }}
+            ></div>
+
             <div className="form-widget flex flex-col justify-center w-full max-h-screen md:max-w-md md:w-2/5 overflow-hidden">
                 <div
                     className={`
@@ -218,9 +248,12 @@ export default function AccountForm({ user }: { user: User | null }) {
                                     uid={user?.id ?? null}
                                     url={avatar_url}
                                     size={114}
-                                    username={username}
+                                    setColors={setColors}
+                                    setCurrentColor={setCurrentColor}
                                     onUpload={(url) => {
                                         setAvatarUrl(url);
+                                        console.log(url);
+                                        
                                         updateProfile({
                                             fullname,
                                             username,
@@ -342,11 +375,10 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         type="text"
                                         name="website"
                                         value={website || ""}
-                                        onChange={(e) =>    {
+                                        onChange={(e) => {
                                             setWebsite(e.target.value);
                                             setCanUpdate(true);
-                                        }
-                                        }
+                                        }}
                                         placeholder="Site"
                                         className={`
                                             rounded-lg
@@ -362,12 +394,10 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         type="text"
                                         name="pronouns"
                                         value={pronouns || ""}
-                                        onChange={(e) =>
-                                        {
+                                        onChange={(e) => {
                                             setPronouns(e.target.value);
                                             setCanUpdate(true);
-                                        }
-                                        }
+                                        }}
                                         placeholder="Pronomes"
                                         className={`
                                             rounded-lg
@@ -405,7 +435,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                             </form>
                         </div>
                     </div>
-                    <div className="flex w-full">
+                    <div className="flex w-full gap-3">
                         <button
                             className="px-8 py-2 rounded-full bg-main-600 font-bold text-woodsmoke-50 disabled:bg-gray-500 disabled:opacity-50"
                             onClick={() =>
@@ -422,6 +452,11 @@ export default function AccountForm({ user }: { user: User | null }) {
                         >
                             {loading ? "Salvando..." : "Salvar"}
                         </button>
+                        <ChangeColors
+                            colors={colors}
+                            userId={user!.id}
+                            setCurrentColor={setCurrentColor}
+                        />
                     </div>
                 </div>
             </div>

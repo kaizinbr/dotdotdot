@@ -85,6 +85,7 @@
         "dayjs": "^1.11.11",
         "eslint": "8.45.0",
         "eslint-config-next": "^14.2.5",
+        "extract-colors": "^4.1.1",
         "framer-motion": "^11.3.0",
         "iframe-resizer": "^4.4.5",
         "jsonwebtoken": "^9.0.2",

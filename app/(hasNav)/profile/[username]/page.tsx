@@ -84,7 +84,6 @@ export default async function Account({
 
     return (
         <div className="flex flex-col w-full md:flex-row relative">
-            <div className="absolute h-80 w-full -z-50 bg-gradient-to-t from-transparent to-main-600/60 from-40"></div>
             {data?.length === 0 && itsMe == false ? (
                 <div className="flex-1 w-full flex flex-col gap-20 items-center">
                     <div

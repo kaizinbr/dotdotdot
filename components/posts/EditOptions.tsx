@@ -4,7 +4,6 @@ import deletePost from "@/lib/utils/deletePost";
 import {
     Trash2,
     Eye,
-    EllipsisVertical,
     EllipsisIcon,
     Flag,
     ShieldX,
