@@ -75,11 +75,11 @@ export const BlockEditor = ({
                             setLoading={setLoading}
                         />
 
-                        <div className="flex flex-row items-center gap-2 mx-4 mt-20">
-                            <div className="flex relative flex-col justify-center items-center h-10 w-10 rounded-full ">
+                        <div className="flex flex-row items-center gap-2 mx-4 mt-16">
+                            <div className="flex relative flex-col justify-center items-center size-10 rounded-full ">
                                 {avatarData!.url ? (
                                     <AvatarB
-                                        size={42}
+                                        size={40}
                                         url={avatarData!.url}
                                         className="size-10"
                                     />

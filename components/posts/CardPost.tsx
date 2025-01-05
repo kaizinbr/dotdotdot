@@ -58,24 +58,7 @@ export default function CardPost({
     const [avatarUrl, setAvatarUrl] = useState<string | null>("");
     const [amIAuthor, setAmIAuthor] = useState<boolean>(false);
 
-    useEffect(() => {
-        async function checkAuthor() {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
-
-            console.log(post.author_id, user?.id);
-
-            if (post.author_id == user?.id) {
-                setAmIAuthor(true);
-            } else {
-                setAmIAuthor(false);
-            }
-                console.log(amIAuthor, "aaaa");
-        }
-
-        checkAuthor();
-    }, []);
+    
 
     const getPostData = useCallback(async () => {
         try {
@@ -123,7 +106,7 @@ export default function CardPost({
         }
 
         fetchUserProfile();
-    }, []);
+    }, [post]);
 
     useEffect(() => {
         const supabase = createClient();
@@ -144,6 +127,25 @@ export default function CardPost({
             downloadImage(userImg);
         }
     }, [userImg]);
+
+    // useEffect(() => {
+    //     async function checkAuthor() {
+    //         const {
+    //             data: { user },
+    //         } = await supabase.auth.getUser();
+
+    //         console.log(post.author_id, user?.id);
+
+    //         if (post.author_id == user?.id) {
+    //             setAmIAuthor(true);
+    //         } else {
+    //             setAmIAuthor(false);
+    //         }
+    //             console.log(amIAuthor, "aaaa");
+    //     }
+
+    //     checkAuthor();
+    // }, []);
 
     // useEffect(() => {
     //     const supabase = createClient();
@@ -270,10 +272,10 @@ export default function CardPost({
                 href={`/${edit ? "compose" : "status"}/${post.room}`}
                 className="z-20"
             >
-                <div className="flex flex-col gap-3 px-3 pt-2 pb-0 max-h-[500px] overflow-clip">
+                <div className="flex flex-col gap-3 px-3 pt-2 pb-0 max-h-[500px] overflow-clip displaying">
                     {output && (
                         <div
-                            className="text-stone-300 text-sm cardContent"
+                            className="text-stone-300 text-sm cardContent cardPostProseMirror"
                             dangerouslySetInnerHTML={{ __html: output }}
                         ></div>
                     )}

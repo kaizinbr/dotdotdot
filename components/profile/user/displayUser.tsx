@@ -76,7 +76,7 @@ export default function DisplayUser({ user }: { user: any }) {
         <>
             <div
                 className={`
-                    absolute h-80 w-full -z-50 from-40 
+                    absolute h-[45rem] w-full -z-50 from-40 
                     transition-all duration-200 ease-in-out
                 `}
                 style={{

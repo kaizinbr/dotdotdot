@@ -1,21 +1,23 @@
 "use client";
 
+import { Toolbar } from "@/components/ui/Toolbar";
 import Icon from "@/components/core/Icon";
 import { usePathname, useRouter } from "next/navigation";
 import useScrollDirection from "@/hooks/useScrollDirection";
+import ShareBtn from "@/components/posts/ShareBtn";
 
 export default function DetailsHeader({
     content,
     fullname,
     username,
-    chapterTitle,
+    room,
     isPost,
     img,
 }: {
     content?: string;
     fullname?: string;
     username?: string;
-    chapterTitle?: string;
+    room?: string;
     isPost?: boolean;
     img?: string;
 }) {
@@ -63,35 +65,36 @@ export default function DetailsHeader({
         default:
             title = content || "";
     }
-console.log(fullname, username, img)
+    console.log(fullname, username, img);
     return (
         <div
             className={`
-            fixed left-0 z-20 h-14 w-full
+            fixed left-0 z-20 h-12 w-full
             ${scrollDirection == "down" ? "-top-20" : "top-0"}
             transition-all duration-300
             lg:hidden
-            border-b
-            bg-woodsmoke-600/70 border-woodsmoke-600/70 
-            backdrop-blur-lg py-2
+
+            h-16 z-[500] flex flex-row items-center justify-between flex-none py-2 px-6
+            backdrop-blur-xl border-b
+            bg-woodsmoke-900/70 border-woodsmoke-900/70 
         `}
         >
-            <div className="absolute h-10 w-full lg:left-1/2 lg:max-w-screen-lgx lg:-translate-x-1/2">
-                <div
-                    onClick={handleBackClick}
-                    className="jelly jelly-increased absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer rounded-8 p-3 text-gray-200 hover:bg-gray-700 hover:text-gray-400 selected:bg-gray-50 selected:text-gray-400"
-                >
-                    <Icon type="left" className="w-4" />
+            {/* <div className="absolute h-12 w-full lg:left-1/2 lg:max-w-screen-lgx lg:-translate-x-1/2"> */}
+                <div className="flex flex-row gap-x-1.5 items-center">
+                    <Toolbar.Button
+                        tooltip={"Voltar"}
+                        onClick={handleBackClick}
+                        className={"px-0 text-woodsmoke-200"}
+                    >
+                        <Icon type="left" className="w-4" />
+                    </Toolbar.Button>
                 </div>
-                <div className="text-center flex flex-col">
+                <div className="text-center flex flex-col h-full w-20 justify-center items-center">
                     {isPost ? (
                         <>
                             <h2 className=" text-base font-700 text-woodsmoke-100 mx-auto w-2/3 line-clamp-1 overflow-hidden">
-                                Post de {fullname}
+                                Post
                             </h2>
-                            <h3 className="text-sm -mt-1 text-woodsmoke-300">
-                                @{username}
-                            </h3>
                         </>
                     ) : (
                         <h2 className=" text-xl font-700 text-black ">
@@ -99,7 +102,14 @@ console.log(fullname, username, img)
                         </h2>
                     )}
                 </div>
-            </div>
+                <div className="flex flex-row gap-x-1.5 items-center">
+                    <Toolbar.Button
+                        tooltip={"Compartilhar"}
+                        className={"px-0 text-woodsmoke-200"}
+                    >
+                        <ShareBtn room={room} />
+                    </Toolbar.Button>
+                </div>
         </div>
     );
 }

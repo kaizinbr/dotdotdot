@@ -1,14 +1,4 @@
-import { Menu, Button, Text, rem } from "@mantine/core";
-import {
-    Trash2,
-    Eye,
-    EllipsisVertical,
-    Flag,
-    ShieldX,
-    Bookmark,
-    UserRoundPlus,
-} from "lucide-react";
-
+import { Menu, rem } from "@mantine/core";
 import {
     TbMail,
     TbShare3,
@@ -71,7 +61,7 @@ export default function ShareBtn({
             classNames={{
                 dropdown:
                     classes.dropdown +
-                    " !bg-woodsmoke-600/80 !border-woodsmoke-500/50 rounded-xl",
+                    " !bg-woodsmoke-600/80 !border-woodsmoke-500/20 rounded-xl !z-[501]",
             }}
         >
             <Menu.Target>

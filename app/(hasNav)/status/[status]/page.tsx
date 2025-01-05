@@ -57,15 +57,15 @@ export default async function Page({
                 <>
                     <DetailsHeader
                         content="Details"
-                        chapterTitle={data?.title}
                         fullname={data?.profiles.full_name}
                         username={data?.profiles.username}
                         img={data?.profiles.avatar_url}
                         isPost={true}
+                        room={status}
                     />
-                    <div className="w-full mt-24 lg:mt-32">
+                    <div className="w-full mt-16 lg:mt-32">
                         <div className="px-4 mx-auto w-full max-w-2xl sm:px-0 flex flex-col mb-2 text-woodsmoke-300">
-                            <div className="flex flex-row w-fit">
+                            <div className="flex flex-row w-fit items-center">
                                 <picture className="rounded-full overflow-hidden size-10 mr-3 relative">
                                     <div className="flex relative flex-col justify-center items-center size-10 rounded-full ">
                                         <Avatar

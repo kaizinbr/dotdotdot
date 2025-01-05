@@ -3,23 +3,11 @@
 import { EditorContent, PureEditorContent } from "@tiptap/react";
 import React, { useMemo, useRef, useEffect } from "react";
 
-import { LinkMenu } from "../menus";
-
 import { useBlockEditor } from "../../hooks/useBlockEditorOff";
 
 import "@/styles/index.css";
 
-import { Sidebar } from "../Sidebar";
 import { EditorContext } from "../../context/EditorContext";
-import ImageBlockMenu from "../../extensions/ImageBlock/components/ImageBlockMenu";
-import { ColumnsMenu } from "../../extensions/MultiColumn/menus";
-import { TableColumnMenu, TableRowMenu } from "../../extensions/Table/menus";
-import { TiptapDisplayProps } from "./types";
-import { EditorHeader } from "./components/EditorHeader";
-import { TextMenu } from "../menus/TextMenu";
-import { ContentItemMenu } from "../menus/ContentItemMenu";
-
-import { createClient } from "@/utils/supabase/client";
 
 export const BlockEditor = ({ json }: { json: string }) => {
     // const menuContainerRef = useRef(null);

@@ -109,9 +109,14 @@
     }
 }
 
-.displaying p {
-    @apply text-woodsmoke-200;
+.cardPostProseMirror {
+    @apply caret-white outline-0 px-0 z-0 ;
+
+    & > * {
+        @apply leading-relaxed my-1 first:mt-0 last:mb-0 text-woodsmoke-200;
+    }
 }
+
 
 .displaying .ProseMirror {
     .is-empty::before {

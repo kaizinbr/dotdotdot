@@ -12,8 +12,6 @@ import Icon from "@/components/core/Icon";
 import getFollowers from "@/lib/utils/getFollowers";
 import getFollowing from "@/lib/utils/getFollowing";
 
-import { extractColors } from "extract-colors";
-
 import classes from "./AcForm.module.css";
 import ChangeColors from "./ChangeColors";
 
@@ -29,7 +27,6 @@ interface Colors {
     intensity: number;
     
 }
-
 
 export default function AccountForm({ user }: { user: User | null }) {
     const supabase = createClient();
@@ -49,7 +46,7 @@ export default function AccountForm({ user }: { user: User | null }) {
     const [following, setFollowing] = useState<number>(0);
 
     const [colors, setColors] = useState<Colors[]>([]);
-    const [currentColor, setCurrentColor] = useState<string>("#30d8d8");
+    const [currentColor, setCurrentColor] = useState<string>("#6d6dc7");
 
     const handleEditUsername = (e: ChangeEvent<HTMLInputElement>) => {
         if (containsSpecialChars(e.target.value)) {
@@ -192,7 +189,7 @@ export default function AccountForm({ user }: { user: User | null }) {
         <>
             <div
                 className={`
-                    absolute h-80 w-full -z-50 from-40 
+                    absolute h-[45rem] w-full -z-50 from-40 
                     transition-all duration-200 ease-in-out
                 `}
                 style={{
@@ -305,7 +302,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         className={`
                                             rounded-lg
                                             outline-none
-                                            bg-woodsmoke-900
+                                            bg-transparent
                                             w-full
                                             transition duration-200 ease-in-out
                                             text-3xl font-bold
@@ -333,7 +330,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                                             className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-woodsmoke-900
+                                                bg-transparent
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium w-min
                                             `}
@@ -383,7 +380,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         className={`
                                             rounded-lg
                                             outline-none
-                                            bg-woodsmoke-900 w-full
+                                            bg-transparent w-full
                                             transition duration-200 ease-in-out
                                             text-base text-woodsmoke-200 font-medium py-1
                                         `}
@@ -402,7 +399,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                                         className={`
                                             rounded-lg
                                             outline-none
-                                            bg-woodsmoke-900
+                                            bg-transparent
                                             transition duration-200 ease-in-out
                                             text-base text-woodsmoke-200 font-medium py-1 
                                         `}
@@ -410,7 +407,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                                 </div>
                                 <div
                                     className={`
-                                   bg-woodsmoke-900 w-full
+                                   bg-transparent w-full
                                     text-base text-woodsmoke-200 font-medium
                                 `}
                                 >
