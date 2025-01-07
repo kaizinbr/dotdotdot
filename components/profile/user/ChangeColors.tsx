@@ -46,10 +46,12 @@ export default function ChangeColors({
     userId,
     colors,
     setCurrentColor,
+    setCanUpdate,
 }: {
     userId: string;
     colors: Colors[];
     setCurrentColor: (color: string) => void;
+    setCanUpdate: (value: boolean) => void;
 }) {
     const [opened, { open, close }] = useDisclosure(false);
 
@@ -91,6 +93,7 @@ export default function ChangeColors({
                             onClick={() => {
                                 setCurrentColor(color.hex);
                                 updateColor(color.hex);
+                                setCanUpdate(true);
                                 close();
                             }}
                         ></button>

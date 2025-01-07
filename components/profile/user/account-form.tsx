@@ -453,6 +453,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                             colors={colors}
                             userId={user!.id}
                             setCurrentColor={setCurrentColor}
+                            setCanUpdate={setCanUpdate}
                         />
                     </div>
                 </div>
