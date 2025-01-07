@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 
 import Icon from "../core/Icon";
 import LikeBtn from "./LikeBtn";
+import { PenSquare } from "lucide-react";
 
 import { generateHTML } from "@tiptap/html";
 import ExtensionKit from "@/extensions/extension-kit-display";
@@ -58,8 +59,6 @@ export default function CardPost({
     const [avatarUrl, setAvatarUrl] = useState<string | null>("");
     const [amIAuthor, setAmIAuthor] = useState<boolean>(false);
 
-    
-
     const getPostData = useCallback(async () => {
         try {
             // setLoading(true);
@@ -103,8 +102,23 @@ export default function CardPost({
             }
             setUserProfile(data);
             setUserImg(data.avatar_url);
+            localStorage.setItem(
+                `userProfile-${post.author_id}`,
+                JSON.stringify(data),
+            );
         }
 
+        const cachedUserProfile = localStorage.getItem(
+            `userProfile-${post.author_id}`,
+        );
+
+        // ele puxa os dados do local storage se existir pra otimizar a exibição pro usuário
+        // depois vai puxar os dados do DB, o que demora mais, e atualizar no local storage e pro usuario
+        if (cachedUserProfile) {
+            const parsedProfile = JSON.parse(cachedUserProfile);
+            setUserProfile(parsedProfile);
+            setUserImg(parsedProfile.avatar_url);
+        } 
         fetchUserProfile();
     }, [post]);
 
@@ -300,14 +314,29 @@ export default function CardPost({
             )}
 
             <div className="flex w-full flex-row justify gap-3 p-3 ">
-                <Link
-                    href={`/status/${post.room}`}
-                    className=" text-xs text-woodsmoke-100"
-                >
-                    <Icon name="eye" type="comment" className="size-6" />
-                </Link>
-                <ShareBtn room={post.room} edit={edit} />
-                <LikeBtn postId={post.id} />
+                {edit ? <Link
+                            href={`/compose/${post.room}`}
+                            className=" text-xs text-woodsmoke-100"
+                        >
+                            <PenSquare
+                                className="size-6"
+                            />
+                        </Link> : (
+                    <>
+                        <Link
+                            href={`/status/${post.room}`}
+                            className=" text-xs text-woodsmoke-100"
+                        >
+                            <Icon
+                                name="eye"
+                                type="comment"
+                                className="size-6"
+                            />
+                        </Link>
+                        <ShareBtn room={post.room} edit={edit} />
+                        <LikeBtn postId={post.id} />
+                    </>
+                )}
             </div>
         </div>
     );
