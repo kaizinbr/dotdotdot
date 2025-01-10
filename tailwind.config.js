@@ -216,6 +216,7 @@ module.exports = {
                 "artistic-header-height-lg": "68px",
                 "artistic-header-height-md": "76px",
                 "details-header-height": "56px",
+                "body-content": "632px",
             },
         },
     },

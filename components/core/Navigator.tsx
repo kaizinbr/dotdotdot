@@ -90,7 +90,7 @@ export default function Navigator({ user }: { user: User | null }) {
                 left-0 flex w-full items-center justify-evenly
                 border-t-1
                 backdrop-blur-xl border-b
-            bg-woodsmoke-900/70 border-woodsmoke-900/70 
+                bg-woodsmoke-900/70 border-woodsmoke-900/70 
                 px-6 py-1
             `}
             >

@@ -197,10 +197,10 @@ export default function AccountForm({ user }: { user: User | null }) {
                 }}
             ></div>
 
-            <div className="form-widget flex flex-col justify-center w-full max-h-screen md:max-w-md md:w-2/5 overflow-hidden">
+            <div className="form-widget flex flex-col justify-center w-full max-h-screen  overflow-hidden">
                 <div
                     className={`
-                        md:fixed top-0 bottom-0 w-full pt-16 md:pt-0 md:max-w-md md:w-2/5 px-8 md:px-0 md:pl-16 flex flex-col justify-center
+                        top-0 bottom-0 w-full pt-16 px-8 max-w-body-content mx-auto flex flex-col justify-center
                     `}
                 >
                     <div
@@ -210,7 +210,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                     `}
                     >
                         <Link
-                            href={"/profile/settings"}
+                            href={"/settings"}
                             className="p-2 rounded-lg hover:bg-woodsmoke-300/60 bg-transparent transition-all duration-200"
                         >
                             <Icon

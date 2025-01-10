@@ -90,23 +90,21 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
             data-floating={true}
             data-mobile={true}
             className={`
-                    group fixed left-4 top-4 z-40 max-w-screen-lg  p-4 py-6  transition-all duration-300
-                    border border-transparent lg:border-woodsmoke-700/90 
+                    group fixed left-0 top-0 right-0 z-40 max-w-screen-lg  p-4  transition-all duration-300
+                    border 
                     hidden
-                    lg:block data-[expanded=true]:max-w-screen-xlg bg-woodsmoke-600/90  
-                    backdrop-blur-lg data-[expanded=true]:lg:block lg:rounded-xl
-                    bottom-4 data-[mobile=false]:lg:block 
-                    data-[expanded=true]:lg:w-artistic-header-expanded-width-lg 
-                    data-[expanded=true]:xlg:w-full
+                    lg:block 
+                    backdrop-blur-xl border-b
+                    bg-woodsmoke-900/70 border-woodsmoke-900/70  
+                     data-[expanded=true]:lg:block data-[mobile=false]:lg:block 
                 `}
         >
-            <div className="flex items-center justify-between h-full lg:mx-auto lg:max-w-screen-lg group-data-[expanded=true]:lg:max-w-screen-xl">
+            <div className="flex items-center justify-between h-full lg:mx-auto">
                 <div className="flex items-center gap-48 h-full">
                     <Pc>
-                        <div className="flex flex-col items-center justify-between  h-full gap-6">
-                            <div className="flex flex-col items-center h-full gap-6">
-                                
-                            <Link
+                        <div className="flex flex-row items-center justify-between  h-full gap-6">
+                            <div className="flex flex-row items-center h-full gap-6">
+                                <Link
                                     data-active={
                                         pathname === "/compose" ||
                                         pathname === `/profile${username}`
@@ -175,9 +173,7 @@ export default function ArtisticHeader({ user }: { user: User | null }) {
                                         `}
                                 >
                                     <TbFolderFilled className="size-7" />
-                                    <div className="text-12 font-600">
-                                        Meus
-                                    </div>
+                                    <div className="text-12 font-600">Meus</div>
                                 </Link>
                                 <Link
                                     data-active={pathname === "/manage"}

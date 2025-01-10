@@ -83,7 +83,7 @@ export default async function Account({
     }
 
     return (
-        <div className="flex flex-col w-full md:flex-row relative">
+        <div className="flex flex-col w-full  relative">
             {data?.length === 0 && itsMe == false ? (
                 <div className="flex-1 w-full flex flex-col gap-20 items-center">
                     <div

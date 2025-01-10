@@ -84,8 +84,8 @@ export default function DisplayUser({ user }: { user: any }) {
                 }}
             ></div>
 
-            <div className="form-widget  flex flex-col justify-center w-full max-h-screen md:max-w-md md:w-2/5">
-                <div className="md:fixed top-0 bottom-0 w-full pt-16 md:pt-0 md:max-w-md md:w-2/5 px-8 md:px-0 md:pl-16 flex flex-col justify-center">
+            <div className="form-widget  flex flex-col justify-center w-full max-h-screen">
+                <div className="top-0 bottom-0 w-full pt-16 max-w-body-content mx-auto flex flex-col justify-center">
                     <div
                         className={`
                         flex flex-col justify-start
