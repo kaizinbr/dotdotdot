@@ -118,6 +118,7 @@ export default function PubModal({
             .update({
                 public: value,
                 content: editor.getJSON(),
+                raw: editor.getText({ blockSeparator: "\n\n" }),
                 title: titleFromEditor,
                 image: imageFromEditor,
             })

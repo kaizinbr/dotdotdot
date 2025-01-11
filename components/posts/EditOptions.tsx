@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import classes from "@/styles/EditOptions.module.css";
 
+import { useRouter } from "next/navigation";
+
 export default function EditOptions({
     post,
     edit,
@@ -19,7 +21,7 @@ export default function EditOptions({
     post?: any;
     edit?: Boolean;
 }) {
-    // console.log(post)
+    const router = useRouter();
     const [opened, { open, close }] = useDisclosure(false);
     return (
         <>
@@ -60,6 +62,7 @@ export default function EditOptions({
                         onClick={async () => {
 
                             await deletePost(post.id);
+                            router.reload();
                             close();
                         }}
                         color="red"

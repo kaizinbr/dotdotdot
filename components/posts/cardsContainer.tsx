@@ -7,7 +7,6 @@ import CardPost from "./CardPost";
 import { motion } from "framer-motion";
 
 import { createClient } from "@/utils/supabase/client";
-import { off } from "process";
 
 export default function CardsContainer({
     posts,
@@ -24,7 +23,9 @@ export default function CardsContainer({
     const supabase = createClient();
     const [offset, setOffset] = useState(10);
 
-    const [posts2, setPosts] = useState<any[] | null>(posts);
+    const posts2 = posts;
+
+    console.log(posts2, posts);
 
     async function loadMore() {
         if (offset >= postslength) return;

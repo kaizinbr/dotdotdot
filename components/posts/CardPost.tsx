@@ -118,7 +118,7 @@ export default function CardPost({
             const parsedProfile = JSON.parse(cachedUserProfile);
             setUserProfile(parsedProfile);
             setUserImg(parsedProfile.avatar_url);
-        } 
+        }
         fetchUserProfile();
     }, [post]);
 
@@ -233,11 +233,12 @@ export default function CardPost({
         <div
             // whileTap={{ scale: 0.8 }}
             className={`
-            flex flex-col 
-            bg-woodsmoke-700
-            max-w-[600px] w-full
-            transition-all duration-200 ease-in-out   
-            rounded-3xl overflow-hidden relative
+                flex flex-col 
+                bg-woodsmoke-700
+                max-w-[600px] w-full
+                transition-all duration-200 ease-in-out   
+                rounded-3xl overflow-hidden relative
+                post-${post.id}
         `}
         >
             <div className="flex flex-row justify-between items-center gap-1 p-3 pb-0 relative">
@@ -314,14 +315,17 @@ export default function CardPost({
             )}
 
             <div className="flex w-full flex-row justify gap-3 p-3 ">
-                {edit ? <Link
-                            href={`/compose/${post.room}`}
-                            className=" text-xs text-woodsmoke-100"
-                        >
-                            <PenSquare
-                                className="size-6"
-                            />
-                        </Link> : (
+                {edit ? (
+                    <span
+                        className={`
+                            text-xs text-woodsmoke-100
+                            px-6 py-1 rounded-full border  
+                            ${post.public ? "bg-green-800  border-green-600" : "bg-red-800/40 border-red-600"}
+                        `}
+                    >
+                        {post.public ? "Publicado" : "Privado"}
+                    </span>
+                ) : (
                     <>
                         <Link
                             href={`/status/${post.room}`}

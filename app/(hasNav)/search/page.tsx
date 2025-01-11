@@ -6,6 +6,8 @@ import {
 } from "@/components/Skeletons";
 import { Suspense } from "react";
 
+import MainTabs from "@/components/Search/SearchPage";
+
 export default async function Page(props: {
     searchParams?: Promise<{
         query?: string;
@@ -20,14 +22,10 @@ export default async function Page(props: {
 
 
     return (
-        <div className="flex-1 w-full flex flex-col gap-20 items-center  mx-auto max-w-4xl  mt-10">
+        <div className="flex-1 w-full flex flex-col gap-8 items-center  mx-auto max-w-4xl  mt-10">
             <Search placeholder="Pesquisar..." />
-            <Suspense
-                key={query + currentPage}
-                fallback={<InvoicesMobileSkeleton />}
-            >
-                <Results query={query} currentPage={currentPage} />
-            </Suspense>
+            <MainTabs query={query} currentPage={currentPage} />
+            
         </div>
     );
 }

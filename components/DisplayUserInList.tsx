@@ -12,7 +12,7 @@ export default function DisplayUserInList({
     return (
         <Link
             href={`/profile/${data.username}`}
-            className={`flex flex-row w-full items-center bg-woodsmoke-800 rounded-3xl p-4 ${className}`}
+            className={`flex flex-row w- items-center bg-woodsmoke-800 rounded-3xl p-4 mx-3 ${className}`}
         >
             <div className="size-12 rounded-full bg-woodsmoke-300 mr-3">
                 <Avatar

@@ -1,0 +1,28 @@
+.list {
+    @apply flex flex-row justify-center w-full;
+    position: relative;
+    margin-bottom: var(--mantine-spacing-md);
+}
+
+.indicator {
+    @apply bg-main-600 rounded-full
+}
+
+.tab {
+    @apply text-woodsmoke-50 font-semibold;
+    z-index: 1;
+    font-weight: 500;
+    transition: color 100ms ease;
+
+    &[data-active] {
+        color: var(--mantine-color-black);
+    }
+
+    @mixin dark {
+        color: var(--mantine-color-dark-1);
+
+        &[data-active] {
+            color: var(--mantine-color-white);
+        }
+    }
+}

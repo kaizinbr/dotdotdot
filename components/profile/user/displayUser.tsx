@@ -135,7 +135,7 @@ export default function DisplayUser({ user }: { user: any }) {
                         col-span-6 lg:col-span-4
                         relative
                         w-full
-                        mt-4
+                        mt-4 px-4
                     `}
                     >
                         <div

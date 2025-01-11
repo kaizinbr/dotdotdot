@@ -12,6 +12,9 @@ import Icon from "@/components/core/Icon";
 import getFollowers from "@/lib/utils/getFollowers";
 import getFollowing from "@/lib/utils/getFollowing";
 
+import { extractColors } from "extract-colors";
+import { updateColor } from "./ChangeColors";
+
 import classes from "./AcForm.module.css";
 import ChangeColors from "./ChangeColors";
 
@@ -25,7 +28,6 @@ interface Colors {
     saturation: number;
     lightness: number;
     intensity: number;
-    
 }
 
 export default function AccountForm({ user }: { user: User | null }) {
@@ -87,7 +89,7 @@ export default function AccountForm({ user }: { user: User | null }) {
             const { data, error, status } = await supabase
                 .from("profiles")
                 .select(
-                    `full_name, username, website, avatar_url, bio, pronouns`,
+                    `full_name, username, website, avatar_url, bio, pronouns, color`,
                 )
                 .eq("id", user?.id)
                 .single();
@@ -107,6 +109,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                 setPronouns(data.pronouns);
                 const followers = await getFollowers(user!.id);
                 setFollowers(followers.totalFollowers);
+                setCurrentColor(data.color);
 
                 const following = await getFollowing(user!.id);
                 setFollowing(following.totalFollowing);
@@ -250,7 +253,35 @@ export default function AccountForm({ user }: { user: User | null }) {
                                     onUpload={(url) => {
                                         setAvatarUrl(url);
                                         console.log(url);
-                                        
+                                        extractColors("https://ehgrxskoduebhqzayeii.supabase.co/storage/v1/object/public/avatars/" + url)
+                                            .then((colors) => {
+                                                console.log(colors);
+                                                setColors(colors);
+                                                setCurrentColor(colors[0].hex);
+
+                                                // analisa e pega o que tem mais intensidade
+                                                const maxIntensityColor =
+                                                    colors.reduce(
+                                                        (prev, current) => {
+                                                            const prevIntensity =
+                                                                prev.intensity;
+                                                            const currentIntensity =
+                                                                current.intensity;
+                                                            return currentIntensity >
+                                                                prevIntensity
+                                                                ? current
+                                                                : prev;
+                                                        },
+                                                    );
+                                                setCurrentColor(
+                                                    maxIntensityColor.hex,
+                                                );
+                                                updateColor(
+                                                    maxIntensityColor.hex,
+                                                );
+                                            })
+                                            .catch(console.error);
+
                                         updateProfile({
                                             fullname,
                                             username,

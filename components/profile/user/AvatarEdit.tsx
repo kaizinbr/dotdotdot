@@ -28,8 +28,6 @@ export default function Avatar({
     const [avatarUrl, setAvatarUrl] = useState<string | null>(url);
     const [uploading, setUploading] = useState(false);
 
-    
-
     useEffect(() => {
         async function downloadImage(path: string) {
             try {
@@ -43,34 +41,17 @@ export default function Avatar({
                 const url = URL.createObjectURL(data);
                 setAvatarUrl(url);
                 extractColors(url)
-                    .then((colors) => {
-                        console.log(colors);
-                        setColors(colors);
-                        setCurrentColor(colors[0].hex);
-
-                        // analisa e pega o que tem mais intensidade
-                        const maxIntensityColor = colors.reduce(
-                            (prev, current) => {
-                                const prevIntensity =
-                                    prev.intensity;
-                                const currentIntensity =
-                                    current.intensity;
-                                return currentIntensity > prevIntensity
-                                    ? current
-                                    : prev;
-                            },
-                        );
-                        setCurrentColor(maxIntensityColor.hex);
-                        updateColor(maxIntensityColor.hex);
-                    })
-                    .catch(console.error);
+                .then((colors) => {
+                    setColors(colors);
+                })
+                .catch(console.error);
             } catch (error) {
                 console.log("Error downloading image: ", error);
             }
         }
 
         if (url) downloadImage(url);
-    }, [url, supabase]);
+    }, [url, supabase, setColors]);
 
     const uploadAvatar: React.ChangeEventHandler<HTMLInputElement> = async (
         event,
@@ -95,6 +76,7 @@ export default function Avatar({
             }
 
             onUpload(filePath);
+            
             // console.log(colors);
         } catch (error) {
             alert("Error uploading avatar!");

@@ -1,25 +1,52 @@
+"use client";
 import fetchResults from "@/lib/utils/fetchSearch";
 import DisplayUserInList from "@/components/DisplayUserInList";
+import { useState, useEffect } from "react";
+import CardsContainer from "../posts/cardsContainer";
 
-export default async function Results({
+export default function Results({
     query,
     currentPage,
+    type,
 }: {
     query: string;
     currentPage: number;
+    type: string;
 }) {
-    const invoices = await fetchResults(query, currentPage);
-    console.log(invoices);
+    const [invoices, setInvoices] = useState<any>([]);
 
+    useEffect(() => {
+        // if (!query) {
+        //     setInvoices([]);
+        //     return;
+        // }
+        // // if (type == undefined) {
+        //     fetchResults(query, currentPage).then((data) => {
+        //         setInvoices(data);
+        //     });
+        //     return;
+        // }
+        fetchResults(query, currentPage, type).then((data) => {
+            setInvoices(data);
+        });
+    }, [query, currentPage, type]);
 
     return (
-        <div className="flex flex-col w-full px-4">
-            <div className="flex flex-col w-full gap-3 p-6 bg-woodsmoke-700 rounded-3xl">
-                <h1 className="font-bold text-2xl mb-2 ">Pessoas</h1>
+        <div className="flex flex-col w-full">
+            <div className="flex flex-col w-full gap-3">
 
-                {invoices.map((invoice) => (
-                    <DisplayUserInList data={invoice} key={invoice.id} />
-                ))}
+                {type === "users" && (
+                    invoices.map((invoice: any) => (
+                        <DisplayUserInList data={invoice} key={invoice.id} />
+                    ))
+                ) }
+
+                {type === "posts" && (
+                        <CardsContainer
+                            posts={invoices}
+                            postslength={invoices.length}
+                        />
+                ) }
 
                 {invoices.length === 0 && (
                     <div className="flex flex-col items-center justify-center w-full ">
@@ -28,7 +55,6 @@ export default async function Results({
                         </h1>
                     </div>
                 )}
-
             </div>
         </div>
     );

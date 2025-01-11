@@ -12,6 +12,7 @@ export function debounce(callback: Function, delay: number) {
 
 const updatePost = async (editor: any, room: any, supabase: any) => {
     const content = editor.getJSON();
+    const raw = editor.getText({ blockSeparator: '\n\n' })
     const extractImageFromEditor =
         content.content.find((item: any) => item.type === "imageBlock") || null;
 
@@ -31,7 +32,8 @@ const updatePost = async (editor: any, room: any, supabase: any) => {
                 room,
                 content,
                 author_id: user.id,
-                author_username: userProfile.data[0].username,
+                username: userProfile.data[0].username,
+                raw
             },
         ]);
     } else {
@@ -41,7 +43,9 @@ const updatePost = async (editor: any, room: any, supabase: any) => {
             .update({
                 content,
                 updated_at: new Date(),
-                image
+                image, 
+                username: userProfile.data[0].username,
+                raw
             })
             .eq("room", room);
 
