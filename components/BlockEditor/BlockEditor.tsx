@@ -23,9 +23,6 @@ import { TbUserFilled } from "react-icons/tb";
 
 import { createClient } from "@/utils/supabase/client";
 
-import { Code, Bold, Italic, Strikethrough } from "lucide-react"
-import SelectHeading from "@/components/tiptap/heading";
-
 const MenuBtn = ({
     icon,
     onClick,

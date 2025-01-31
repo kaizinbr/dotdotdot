@@ -51,7 +51,7 @@ export default function FollowBtn({
 
     useEffect(() => {
         if (id) checkIfFollowing({ supabase, setIsFollowing, id });
-    }, [id]);
+    }, [id, supabase]);
 
     const followUser = async () => {
         const {

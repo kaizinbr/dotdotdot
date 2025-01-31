@@ -54,7 +54,7 @@ export default function LikeBtn({ postId, onClick }: LikeBtnProps) {
 
     useEffect(() => {
         if (postId) checkIfLiked({ supabase, setIsLiked, postId });
-    }, [postId]);
+    }, [postId, supabase]);
 
     const likePost = async () => {
         const {
