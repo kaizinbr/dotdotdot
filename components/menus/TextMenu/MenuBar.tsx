@@ -25,21 +25,20 @@ export type TextMenuProps = {
     editor: Editor;
 };
 
-export const TextMenu = ({ editor }: TextMenuProps) => {
+export const MenuBar = ({ editor }: TextMenuProps) => {
     const commands = useTextmenuCommands(editor);
     const states = useTextmenuStates(editor);
     const blockOptions = useTextmenuContentTypes(editor);
 
     return (
-        <BubbleMenu
-            tippyOptions={{ popperOptions: { placement: "top-start" }, maxWidth: "100%" }}
-            editor={editor}
-            pluginKey="textMenu"
-            shouldShow={states.shouldShow}
-            updateDelay={100}
-        >
-            <Toolbar.Wrapper className="md:max-w-full flex-col md:flex-row">
-                <div className="flex flex-row gap-0.5 md:pr-0.5 border-r border-transparent md:border-woodsmoke-550">
+        <div>
+            <div
+                className={`
+                    button-group
+                    bg-neutral-900 gap-1
+                    flex flex-wrap p-2
+                `}
+            >
                     <MemoContentTypePicker options={blockOptions} />
                     <MemoFontFamilyPicker
                         onChange={commands.onSetFont}
@@ -48,10 +47,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
                     <MemoFontSizePicker
                         onChange={commands.onSetFontSize}
                         value={states.currentSize || ""}
-                        
                     />
-                </div>
-                <div className="flex flex-row gap-0 5">
                     <MemoButton
                         tooltip="Bold"
                         tooltipShortcut={["Mod", "B"]}
@@ -92,7 +88,10 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
                     >
                         <Icon name="Code" />
                     </MemoButton>
-                    <MemoButton tooltip="Code block" onClick={commands.onCodeBlock}>
+                    <MemoButton
+                        tooltip="Code block"
+                        onClick={commands.onCodeBlock}
+                    >
                         <Icon name="Code" />
                     </MemoButton>
                     <EditLinkPopover onSetLink={commands.onLink} />
@@ -195,7 +194,6 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
                         </Popover.Content>
                     </Popover.Root>
                 </div>
-            </Toolbar.Wrapper>
-        </BubbleMenu>
+            </div>
     );
 };

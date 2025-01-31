@@ -7,12 +7,8 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 
 export type EditorHeaderProps = {
-    isSidebarOpen?: boolean;
-    toggleSidebar?: () => void;
     characters: number;
     words: number;
-    collabState: WebSocketStatus;
-    users: EditorUser[];
     room: string | any;
     editor?: any;
     setLoading: any;
@@ -20,11 +16,7 @@ export type EditorHeaderProps = {
 
 export const EditorHeader = ({
     characters,
-    collabState,
-    users,
     words,
-    isSidebarOpen,
-    toggleSidebar,
     room,
     editor,
     setLoading,
@@ -48,8 +40,6 @@ export const EditorHeader = ({
             <EditorInfo
                 characters={characters}
                 words={words}
-                collabState={collabState}
-                users={users}
                 room={room}
                 editor={editor}
                 setLoading={setLoading}

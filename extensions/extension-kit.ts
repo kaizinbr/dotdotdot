@@ -55,11 +55,7 @@ interface ExtensionKitProps {
     userColor?: string;
 }
 
-export const ExtensionKit = ({
-    provider,
-    userId,
-    userName = "Maxi",
-}: ExtensionKitProps) => [
+export const ExtensionKit = () => [
     Document,
     Columns,
     TaskList,
@@ -69,10 +65,7 @@ export const ExtensionKit = ({
     Column,
     Selection,
     Heading.configure({
-        levels: [1, 2, 3, 4, 5, 6],
-        // HTMLAttributes: {
-        //     class: "tk-gelica",
-        // }      
+        levels: [1, 2, 3, 4, 5, 6],   
     }),
     HorizontalRule,
     StarterKit.configure({
@@ -101,9 +94,7 @@ export const ExtensionKit = ({
     CharacterCount.configure({ limit: 50000 }),
     TableOfContents,
     TableOfContentsNode,
-    ImageUpload.configure({
-        clientId: provider?.document?.clientID,
-    }),
+    ImageUpload,
     ImageBlock,
     FileHandler.configure({
         allowedMimeTypes: [

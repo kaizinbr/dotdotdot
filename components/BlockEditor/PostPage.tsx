@@ -4,7 +4,6 @@ import { TiptapCollabProvider } from "@hocuspocus/provider";
 import "iframe-resizer/js/iframeResizer.contentWindow";
 import Loading from "../Loading";
 import { useEffect, useMemo, useState } from "react";
-import { Doc as YDoc } from "yjs";
 
 import { BlockEditor } from "@/components/BlockEditor";
 import { createClient } from "@/utils/supabase/client";
@@ -37,7 +36,7 @@ export default function PostPage({ status }: { status: string }) {
                 .select()
                 .eq("id", session!.session!.user.id)
                 .single();
-            console.log(profile);
+            // console.log(profile);
             setUserImg(profile.avatar_url);
             setUserDisplayName(profile.full_name);
             setUserUsername(profile.username);
@@ -108,15 +107,11 @@ export default function PostPage({ status }: { status: string }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const ydoc = useMemo(() => new YDoc(), []);
-
     return (
         <>
             {authorId && loggedId && (
                 <BlockEditor
                     hasCollab={false}
-                    ydoc={ydoc}
-                    provider={null}
                     room={status}
                     initialContent={initialContent}
                     authorId={authorId}

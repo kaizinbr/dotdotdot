@@ -1,16 +1,6 @@
 "use client";
 
-import { WebSocketStatus } from "@hocuspocus/provider";
 import { memo, useState, useEffect } from "react";
-import { EditorUser } from "../types";
-import { cn } from "../../../lib/utils";
-import { getConnectionText } from "../../../lib/utils/getConnectionText";
-import { useDisclosure } from "@mantine/hooks";
-import { Settings } from "lucide-react";
-import { Modal, Button } from "@mantine/core";
-import Tooltip from "../../ui/Tooltip";
-import { Icon } from "../../ui/Icon";
-import classes from "@/styles/EditorInfo.module.css";
 
 import { createClient } from "@/utils/supabase/client";
 import PubModal from "./Modal";
@@ -18,8 +8,6 @@ import PubModal from "./Modal";
 export type EditorInfoProps = {
     characters: number;
     words: number;
-    collabState: WebSocketStatus;
-    users: EditorUser[];
     room: string | any;
     editor?: any;
     setLoading: any;
@@ -28,11 +16,8 @@ export type EditorInfoProps = {
 
 
 export const EditorInfo = memo(
-    ({ characters, collabState, users, words, room, editor, setLoading }: EditorInfoProps) => {
-        const [opened, { open, close }] = useDisclosure(false);
+    ({ characters, words, room, editor, setLoading }: EditorInfoProps) => {
         const [postData, setPostData] = useState<any[]>([]);
-        const [title, setTitle] = useState<string | null>(null);
-        const [image, setImage] = useState<string | null>(null);
 
         const supabase = createClient();
 

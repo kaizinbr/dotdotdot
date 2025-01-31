@@ -1,0 +1,11 @@
+.input {
+    @apply bg-neutral-800 text-neutral-100 rounded-lg border-0 w-40;
+}
+
+.dropdown {
+    @apply bg-neutral-800 text-neutral-100 rounded-lg border-0 p-2;
+}
+
+.options {
+    @apply flex flex-col gap-2;
+}
