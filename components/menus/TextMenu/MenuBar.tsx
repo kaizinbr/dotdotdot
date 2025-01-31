@@ -31,12 +31,21 @@ export const MenuBar = ({ editor }: TextMenuProps) => {
     const blockOptions = useTextmenuContentTypes(editor);
 
     return (
-        <div>
+        <div
+            className={`
+                sticky top-16 z-[198] 
+                
+                    w-lvw overflow-hidden
+            `}
+        >
             <div
                 className={`
                     button-group
-                    bg-neutral-900 gap-1
-                    flex flex-wrap p-2
+                    gap-1
+                    flex flex-nowrap p-2
+                    backdrop-blur-xl border-b
+                    w-min
+                    bg-woodsmoke-900/70 border-woodsmoke-900/70 
                 `}
             >
                     <MemoContentTypePicker options={blockOptions} />

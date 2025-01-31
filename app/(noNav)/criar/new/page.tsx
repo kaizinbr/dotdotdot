@@ -7,7 +7,7 @@ export default async function Document({
 }: {
     params: Promise<{ status: string }>;
 }) {
-    const status = (await params).status;
+    // const status = (await params).status;
 
-    return <PostPage status={status} />;
+    return <PostPage />;
 }

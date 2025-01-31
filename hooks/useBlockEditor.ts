@@ -49,7 +49,7 @@ export const useBlockEditor = ({
         words: () => 0,
     };
 
-    window.editor = editor;
+    // window.editor = editor;
 
     return { editor, characterCount };
 };

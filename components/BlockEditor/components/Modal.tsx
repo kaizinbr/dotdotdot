@@ -1,28 +1,32 @@
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button } from "@mantine/core";
-
+import { EllipsisVertical } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import classes from "@/styles/EditorInfo.module.css";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Loading from "@/components/Loading";
+import { customAlphabet } from "nanoid";
+import updateOnDB from "@/lib/utils/updateOnDB";
 
 import { useRouter } from "next/navigation";
 
-export default function PubModal({
-    room,
+const getNanoId = (): string => {
+    const nanoid = customAlphabet("6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz", 10);
+    return nanoid();
+};
+
+export default function Publish({
     postData,
     setPostData,
     editor,
     setLoading,
 }: {
-    room: string;
     postData: any[];
     setPostData: Function;
     editor?: any;
     setLoading: Function;
 }) {
-    
     const [opened, { open, close }] = useDisclosure(false);
     const [title, setTitle] = useState<string | null>(null);
     const [image, setImage] = useState<string | null>(null);
@@ -34,6 +38,8 @@ export default function PubModal({
 
     const [isPublic, setIsPublic] = useState(false);
 
+    const room = getNanoId();
+
     const supabase = createClient();
     const router = useRouter();
 
@@ -42,7 +48,7 @@ export default function PubModal({
             const { data, error } = await supabase
                 .from("posts")
                 .select()
-                .eq("room", room)
+                .eq("room", room);
 
             if (error) {
                 console.log("Error fetching post: ", error);
@@ -64,23 +70,32 @@ export default function PubModal({
 
     async function getMainData() {
         const editorData = editor.getJSON();
-        console.log(editorData);
+
+        const raw = editor.getText({ blockSeparator: '\n\n' })
+        console.log(raw)
+
+        if (raw.length === 0) {
+            console.log("Tá vazio, palhaço!");
+            return null;
+        }
+
+        // if 
 
         const extractTitleFromEditor =
             editorData.content.find(
-                (item: any) => item.type === "heading" && item.content
+                (item: any) => item.type === "heading" && item.content,
             ) || null;
 
         // const extractTextFromTitle = extractTitleFromEditor ? extractTitleFromEditor.content[0].text : null;
 
         const extractParagraphFromEditor =
             editorData.content.find(
-                (item: any) => item.type === "paragraph" && item.content
+                (item: any) => item.type === "paragraph" && item.content,
             ) || null;
 
         const extractImageFromEditor =
             editorData.content.find(
-                (item: any) => item.type === "imageBlock"
+                (item: any) => item.type === "imageBlock",
             ) || null;
 
         console.log(extractTitleFromEditor, extractImageFromEditor);
@@ -100,171 +115,52 @@ export default function PubModal({
         if (extractImageFromEditor) {
             setImageFromEditor(extractImageFromEditor.attrs.src);
         }
+
+        return true;
     }
 
     async function setPublished({
         room,
-        value,
+        isPublic,
     }: {
         room: string;
-        value: boolean;
+        isPublic: boolean;
     }) {
         setLoading(true);
-        await getMainData();
-
-
-        const { data, error } = await supabase
-            .from("posts")
-            .update({
-                public: value,
-                content: editor.getJSON(),
-                raw: editor.getText({ blockSeparator: "\n\n" }),
-                title: titleFromEditor,
-                image: imageFromEditor,
-            })
-            .eq("room", room);
-        setIsPublic(value);
-
-
-        if (error) {
-            console.log("Error updating post: ", error);
+        const check = await getMainData();
+        if (!check) {
             setLoading(false);
-            throw error;
+            return;
         }
 
-        router.push('/');
+        await updateOnDB(editor, room, supabase, isPublic);
+
+        if (isPublic) {
+            router.push(`/room/${room}`);
+        }
+        
         setLoading(false);
     }
+
+
     return (
-        <>
-            
-            {isPublic ? (
-                <>
-                    <Button
-                        onClick={async () => {
-                            await getMainData();
-                            await setPublished({ room, value: false })
-                        }}
-                        className="!rounded-full !px-4 py-2 !bg-main-600 text-xs"
-                        classNames={{
-                            root: "rounded-full px-4 py-2 bg-main-600 text-xs",
-                        }}
-                    >
-                        Despublicar
-                    </Button>
-                    <Modal
-                        opened={opened}
-                        onClose={close}
-                        centered
-                        withCloseButton={false}
-                        classNames={{
-                            content: classes.content,
-                        }}
-                    >
-                        <p className="text-bold text-center text-2xl mb-4">
-                            Remover publicação?
-                        </p>
-                        <div className="flex justify-around">
-                            <button
-                                onClick={close}
-                                className="rounded-lg px-6 py-2 bg-woodsmoke-700 text-base text-stone-200 font-bold"
-                            >
-                                Não
-                            </button>
-                            <button
-                                onClick={async () => {
-                                    await setPublished({ room, value: false });
-                                    close();
-                                }}
-                                className="rounded-lg px-6 py-2 bg-sky-600 text-base text-stone-200 font-bold"
-                                
-                            >
-                                Sim
-                            </button>
-                        </div>
-                    </Modal>
-                </>
-            ) : (
-                <>
-                    <Button
-                        onClick={async () => {
-                            await setPublished({ room, value: true })
-                            // router.push('/')
-                        }}
-                        className="!rounded-full !px-4 py-2 !bg-main-600 text-xs"
-                        classNames={{
-                            root: "rounded-full px-4 py-2 bg-main-600 text-xs",
-                        }}
-                    >
-                        Publicar
-                    </Button>
-                    <Modal
-                        opened={opened}
-                        onClose={close}
-                        centered
-                        withCloseButton={false}
-                        classNames={{
-                            content: classes.content,
-                            inner: classes.inner,
-                        }}
-                        overlayProps={{
-                            backgroundOpacity: 0.55,
-                            blur: 3,
-                        }}
-                    >
-                        <p className="text-bold text-center text-2xl mb-4">
-                            Publicar para todos?
-                        </p>
-                        <div className="flex flex-col gap-2  border border-woodsmoke-200 rounded-3xl overflow-hidden">
-                            {imageFromEditor && (
-                                <picture className="w-full">
-                                    <Image
-                                        src={
-                                            imageFromEditor! ||
-                                            "/placeholder-image.jpg"
-                                        }
-                                        alt="image"
-                                        width={200}
-                                        height={200}
-                                        className="w-full"
-                                    />
-                                </picture>
-                            )}
-                            <div className="flex flex-col gap-3 p-3">
-                                <span className=" text-xs text-stone-500">
-                                    room /{room}
-                                </span>
-                                <h1 className="text-3xl PFRegalTextPro">
-                                    {titleFromEditor! || "Você precia adicionar um título para publicar!"}
-                                </h1>
-                                <p className="line-clamp-3 text-sm">
-                                    {paragraphFromEditor!}
-                                </p>
-                            </div>
-                        </div>
-                        <div className="flex justify-around mt-6">
-                            <button
-                                onClick={close}
-                                className="rounded-lg px-6 py-2 bg-woodsmoke-700 text-base text-stone-200 font-bold"
-                            >
-                                Não
-                            </button>
-                            <button
-                                onClick={async () => {
-                                    await setPublished({ room, value: true });
-                                    close();
-                                }}
-                                className="rounded-lg px-6 py-2 bg-sky-600 text-base text-stone-200 font-bold"
-                                {...(titleFromEditor
-                                    ? { disabled: false }
-                                    : { disabled: true })}
-                            >
-                                Sim
-                            </button>
-                        </div>
-                    </Modal>
-                </>
-            )}
-        </>
+        <div className="flex gap-2">
+            <button
+                onClick={async () => {
+                    await setPublished({ room, isPublic: false });
+                }}
+                className={`rounded-full !px-4 py-2 border-2 border-main-600 text-sm`}
+            >
+                Salvar
+            </button>
+            <button
+                onClick={async () => {
+                    await setPublished({ room, isPublic: true });
+                }}
+                className="!rounded-full !px-4 py-2 !bg-main-600 text-sm font-bold"
+            >
+                Postar
+            </button>
+        </div>
     );
 }

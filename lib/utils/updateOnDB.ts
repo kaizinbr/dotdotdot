@@ -10,7 +10,7 @@ export function debounce(callback: Function, delay: number) {
     };
 }
 
-const updatePost = async (editor: any, room: any, supabase: any) => {
+const updatePost = async (editor: any, room: any, supabase: any, isPublic: boolean) => {
     const content = editor.getJSON();
     const raw = editor.getText({ blockSeparator: '\n\n' })
     const extractImageFromEditor =
@@ -27,15 +27,23 @@ const updatePost = async (editor: any, room: any, supabase: any) => {
     const userProfile = await supabase.from("profiles").select("*").eq("id", user.id);
 
     if (exists.data?.length === 0) {
-        await supabase.from("posts").insert([
+        const { data, error } = await supabase.from("posts").insert([
             {
                 room,
                 content,
                 author_id: user.id,
                 username: userProfile.data[0].username,
-                raw
+                raw,
+                public: isPublic,   
             },
         ]);
+
+        if (error) {
+            console.log("Error inserting post: ", error);
+            throw error;
+        }
+
+        console.log("Inserted post!");
     } else {
         console.log("Updating post");
         const { data, error } = await supabase
@@ -45,7 +53,8 @@ const updatePost = async (editor: any, room: any, supabase: any) => {
                 updated_at: new Date(),
                 image, 
                 username: userProfile.data[0].username,
-                raw
+                raw,
+                isPublic,
             })
             .eq("room", room);
 
@@ -60,11 +69,11 @@ const updatePost = async (editor: any, room: any, supabase: any) => {
 const debouncedUpdatePost = debounce(updatePost, 1000);
 
 
-export default function updateOnDB(editor: any, room: any, supabase: any) {
+export default async function updateOnDB(editor: any, room: any, supabase: any, isPublic: boolean) {
     try {
         if (editor) {
             const debounced = debounce(
-                () => updatePost(editor, room, supabase),
+                () => updatePost(editor, room, supabase, isPublic),
                 500,
             );
             debounced();

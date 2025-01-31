@@ -23,6 +23,32 @@ import { TbUserFilled } from "react-icons/tb";
 
 import { createClient } from "@/utils/supabase/client";
 
+const MenuBtn = ({
+    icon,
+    onClick,
+    isActive,
+    disabled,
+}: {
+    icon: React.ReactNode;
+    onClick: () => void;
+    isActive: boolean;
+    disabled: boolean;
+}) => {
+    return (
+        <button
+            onClick={onClick}
+            disabled={disabled}
+            className={`
+                p-1 rounded-lg  text-neutral-100
+                ${isActive ? "bg-neutral-700" : "bg-transparent"}
+                transition-all duration-200
+            `}
+        >
+            {icon}
+        </button>
+    );
+};
+
 // const MenuBar = ({editor}: {editor: any}) => {
 //     // const { editor } = useCurrentEditor();
 
@@ -73,6 +99,7 @@ import { createClient } from "@/utils/supabase/client";
 //                 >
 //                     Clear nodes
 //                 </button> */}
+
 
 //                 <SelectHeading editor={editor} />
 
@@ -151,13 +178,24 @@ import { createClient } from "@/utils/supabase/client";
 //     );
 // };
 
-export const BlockEditor = ({ avatarData }: TiptapProps) => {
+export const BlockEditor = ({
+    room,
+    initialContent,
+    authorId,
+    loggedId,
+    avatarData,
+}: TiptapProps) => {
     const menuContainerRef = useRef(null);
     const editorRef = useRef<PureEditorContent | null>(null);
     const supabase = createClient();
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
 
-    const { editor, characterCount } = useBlockEditor({ supabase });
+
+    const { editor, characterCount } =
+        useBlockEditor({ room, supabase, initialContent });
+
+    console.log(avatarData);
 
     if (!editor) {
         return null;
@@ -165,71 +203,79 @@ export const BlockEditor = ({ avatarData }: TiptapProps) => {
 
     return (
         <>
-            <div className="flex h-full " ref={menuContainerRef}>
-                <div className="relative flex flex-col flex-1 h-full">
-                    <EditorHeader
-                        characters={characterCount.characters()}
-                        words={characterCount.words()}
-                        editor={editor}
-                        setLoading={setLoading}
-                    />
+            
+                <div className="flex h-full " ref={menuContainerRef}>
+                    <div className="relative flex flex-col flex-1 h-full overflow-hidden">
+                        <EditorHeader
+                            characters={characterCount.characters()}
+                            words={characterCount.words()}
+                            room={room}
+                            editor={editor}
+                            setLoading={setLoading}
+                        />
 
-                    <div className="flex flex-row items-center gap-2 mx-4 mt-16">
-                        <div className="flex relative flex-col justify-center items-center size-10 rounded-full ">
-                            {avatarData!.url ? (
-                                <AvatarB
-                                    size={40}
-                                    url={avatarData!.url}
-                                    className="size-10"
-                                />
-                            ) : (
-                                <TbUserFilled className="size-10" />
-                            )}
-                        </div>
-                        <div className="flex items-start justify-center flex-col ">
-                            <h2 className="text-sm">
-                                <span className="text-white font-bold">
-                                    {avatarData!.full_name}
-                                </span>{" "}
-                                <span className="text-xs">
-                                    @{avatarData!.username}
+
+
+                        <div className="flex flex-row items-center gap-2 mx-4 mt-16">
+                            <div className="flex relative flex-col justify-center items-center size-10 rounded-full ">
+                                {avatarData!.url ? (
+                                    <AvatarB
+                                        size={40}
+                                        url={avatarData!.url}
+                                        className="size-10"
+                                    />
+                                ) : (
+                                    <TbUserFilled className="size-10" />
+                                )}
+                            </div>
+                            <div className="flex items-start justify-center flex-col ">
+                                <h2 className="text-sm">
+                                    <span className="text-white font-bold">
+                                        {avatarData!.full_name}
+                                    </span>{" "}
+                                    <span className="text-xs">
+                                        @{avatarData!.username}
+                                    </span>
+                                </h2>
+                                <span className=" text-xs text-stone-500 dark:text-stone-400">
+                                    Não esqueça de salvar
                                 </span>
-                            </h2>
-                            <span className=" text-xs text-stone-500 dark:text-stone-400">
-                                Não esqueça de salvar
-                            </span>
+                            </div>
                         </div>
-                    </div>
-                    <MenuBar editor={editor} />
+                        <MenuBar editor={editor} />
 
-                    <EditorContent
-                        editor={editor}
-                        ref={editorRef as React.RefObject<HTMLDivElement>}
-                        className="flex-1 overflow-y-auto mt-4 min-h-dvh"
-                    />
-                    <LinkMenu editor={editor} appendTo={menuContainerRef} />
-                    {/* <TextMenu editor={editor} /> */}
-                    <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
-                    <TableRowMenu editor={editor} appendTo={menuContainerRef} />
-                    <TableColumnMenu
-                        editor={editor}
-                        appendTo={menuContainerRef}
-                    />
-                    <ImageBlockMenu
-                        editor={editor}
-                        appendTo={menuContainerRef}
-                    />
+                        <EditorContent
+                            editor={editor}
+                            ref={editorRef as React.RefObject<HTMLDivElement>}
+                            className="flex-1 overflow-y-auto mt-4 min-h-dvh"
+                        />
+                        <LinkMenu editor={editor} appendTo={menuContainerRef} />
+                        {/* <TextMenu editor={editor} /> */}
+                        <ColumnsMenu
+                            editor={editor}
+                            appendTo={menuContainerRef}
+                        />
+                        <TableRowMenu
+                            editor={editor}
+                            appendTo={menuContainerRef}
+                        />
+                        <TableColumnMenu
+                            editor={editor}
+                            appendTo={menuContainerRef}
+                        />
+                        <ImageBlockMenu
+                            editor={editor}
+                            appendTo={menuContainerRef}
+                        />
+                    </div>
                 </div>
-            </div>
             {loading && (
-                <div
-                    className={`
+                <div className={`
                     absolute top-0 left-0 w-full h-full 
                     bg-black bg-opacity-50 backdrop-blur-lg
                     z-[999] 
                     flex justify-center items-center
-                `}
-                >
+                `}>
                     <Loading />
                 </div>
             )}
