@@ -136,7 +136,8 @@ export default function Publish({
         await updateOnDB(editor, room, supabase, isPublic);
 
         if (isPublic) {
-            router.push(`/status/${room}`);
+            // router.push(`/status/${room}`);
+            router.push(`/`);
         }
         
         setLoading(false);
