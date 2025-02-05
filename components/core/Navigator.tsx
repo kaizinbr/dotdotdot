@@ -72,7 +72,7 @@ export default function Navigator({ user }: { user: User | null }) {
     return (
         <div className="relative">
             <Link 
-                href={`/compose`}
+                href={`/criar/new`}
              className={`
                     fixed right-4  z-[999]
                     transition-all duration-300 
@@ -82,7 +82,7 @@ export default function Navigator({ user }: { user: User | null }) {
                 `}>
                 <TbPlus className="size-8 " />
             </Link>
-            <div
+            <nav
                 className={`
                 fixed
                 ${scrollDirection > "down" ? "bottom-0" : "-bottom-24"}
@@ -185,7 +185,7 @@ export default function Navigator({ user }: { user: User | null }) {
                         {/* <div className="text-12 font-600">Perfil</div> */}
                     </Link>
                 </motion.button>
-            </div>
+            </nav>
         </div>
     );
 }

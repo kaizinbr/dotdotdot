@@ -1,10 +1,5 @@
-import Results from "@/components/Search/Results";
+
 import Search from "@/components/Search/SearchBar";
-import {
-    InvoicesTableSkeleton,
-    InvoicesMobileSkeleton,
-} from "@/components/Skeletons";
-import { Suspense } from "react";
 
 import MainTabs from "@/components/Search/SearchPage";
 

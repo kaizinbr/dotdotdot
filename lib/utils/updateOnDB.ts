@@ -34,7 +34,8 @@ const updatePost = async (editor: any, room: any, supabase: any, isPublic: boole
                 author_id: user.id,
                 username: userProfile.data[0].username,
                 raw,
-                public: isPublic,   
+                public: isPublic,
+                updated_at: new Date(),
             },
         ]);
 
