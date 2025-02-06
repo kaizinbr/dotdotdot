@@ -144,9 +144,8 @@ export default function Navigator({ user }: { user: User | null }) {
                         <Icon type="search" className="h-5" />
                     </Link>
                 </motion.button>
-                <motion.button whileTap={{ scale: 0.75 }}>
+                {/* <motion.button whileTap={{ scale: 0.75 }}>
                     <Link
-                        // data-active={pathname === "/"}
                         href={`#`}
                         className={`
                                 jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
@@ -158,9 +157,8 @@ export default function Navigator({ user }: { user: User | null }) {
                             `}
                     >
                         <TbBellFilled className="size-6" />
-                        {/* <div className="text-12 font-600">Notificações</div> */}
                     </Link>
-                </motion.button>
+                </motion.button> */}
                 <motion.button whileTap={{ scale: 0.75 }}>
                     <Link
                         data-active={
