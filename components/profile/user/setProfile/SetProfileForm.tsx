@@ -174,7 +174,6 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                             uid={user?.id ?? null}
                             url={avatar_url}
                             size={192}
-                            username={username}
                             onUpload={(url) => {
                                 setAvatarUrl(url);
                                 updateProfile({
@@ -186,6 +185,8 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                     bio,
                                 });
                             }}
+                            setColors={() => {}}
+                            setCurrentColor={(color) => {}}
                         />
                     </div>
                 </div>
@@ -224,9 +225,9 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 onChange={(e) => setFullname(e.target.value)}
                                 placeholder="Seu Nome..."
                                 className={`
-                                                 rounded-lg
+                                                rounded-lg
                                                 outline-none
-                                                bg-woodsmoke-100 w-full
+                                                bg-transparent w-full
                                                 transition duration-200 ease-in-out
                                                 text-3xl font-bold
                                             `}
@@ -248,7 +249,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-woodsmoke-100 w-full
+                                                bg-transparent w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium
                                             `}
@@ -267,7 +268,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-woodsmoke-100 w-full
+                                                bg-transparent w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium py-1
                                             `}
@@ -283,7 +284,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-woodsmoke-100 w-full
+                                                bg-transparent w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium py-1
                                             `}
@@ -293,7 +294,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                             className={`
                     
                                         text-lg
-                                       bg-woodsmoke-100 w-full
+                                       bg-transparent w-full
                                     `}
                         >
                             <Textarea
